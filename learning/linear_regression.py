@@ -2,12 +2,16 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from scipy.stats.stats import pearsonr
+import numpy as np
+import pickle
+from sklearn import svm
 
 """
 A linear regression model using sci-kit learn.
 """
 
-def split_data(data):
+def split_data(data, ratio=0.1):
+    # TODO consider using K-fold validation
     splitted_data = []
     new_instance = False
     start_index = 0
@@ -20,21 +24,29 @@ def split_data(data):
             start_index = index
             new_instance = False
 
-    train_runs, test_runs = train_test_split(splitted_data, test_size=0.1)
+    train_runs, test_runs = train_test_split(splitted_data, test_size=ratio)
     return pd.concat(train_runs), pd.concat(test_runs)
 
 
-def train_regression_models(data):
+def train_regression_models(data, save_models=False, retrieve_models=False):
     """
     Train one model for each parameter to be able to predict how an action will affect the current state.
     :param data:
     :param variables:
     :return:
     """
+    # TODO consider using SVM
+    if retrieve_models:
+        models = pickle.load(open("linear_models.data", "rb"))
+        relations = pickle.load(open("linear_relations.data", "rb"))
+        return models, relations
+
     models = {}
     variables = list(data)
+    relations = {}
     for i, y in enumerate(variables):
         not_linear_vars = [y]
+        relations[y] = []
         model = LinearRegression(fit_intercept=True, normalize=True, n_jobs=-1)
         Y = data.as_matrix([y])
         for j, x in enumerate(variables):
@@ -42,8 +54,11 @@ def train_regression_models(data):
                 continue
 
             X = data.as_matrix([x])
-            if not vars_are_linear(X, Y):
-                not_linear_vars.append(x)
+
+        if vars_are_linear(X, Y):
+            relations[y].append(x)
+        else:
+            not_linear_vars.append(x)
 
         if len(not_linear_vars) == len(variables):
             continue
@@ -51,17 +66,25 @@ def train_regression_models(data):
         X_linear = data.drop(not_linear_vars, axis=1)
         models[y] = model.fit(X_linear, Y)
 
-    return models
+    if save_models:
+        pickle.dump(models, open("linear_models.data", "wb"))
+        pickle.dump(relations, open("linear_relations.data", "wb"))
 
-def get_outliers(dataset, outliers_fraction=0.25):
-    # clf = svm.OneClassSVM(nu=0.95 * outliers_fraction + 0.05, kernel="rbf", gamma=0.1)
-    # clf.fit(dataset)
-    # result = clf.predict(dataset)
-    # return result
+    return models, relations
+
+def remove_outliers(data, outliers_fraction=0.25):
     pass
+    # clf = svm.OneClassSVM(nu=0.95 * outliers_fraction + 0.05, kernel="linear", gamma=0.1)
+    # print("fittar")
+    # clf = clf.fit(data)
+    # pickle.dump(clf, open("outlier_detector.model", "wb"))
+    # print("predictar")
+    # result = clf.predict(data)
+    #
+    # return result
 
 
-def suggest_action(current_state):
+def suggest_action(current_state, relations, data, timestep, models, header):
     """
     Given the current state; calculate what action that minimizes the fuel consumption.
     Available actions:
@@ -72,38 +95,67 @@ def suggest_action(current_state):
     * Do nothing
     :return: The action
     """
-    for action in actions:
-        # TODO need a way of determining how the action will affect the state values.
-        next_state = calc_next_state(action)
+    fuel_gains = []
+    speed_limit = calc_road_limit(data, timestep)
+    for action, affected_vars in actions.items():
+
+        # What variables are affected by this action?
+        for aff_var in affected_vars:
+            # How much are the variables affected?
+            # Pick the value with the lowest resulting fuel consumption.
+
+
+
+            future_state = current_state
 
 def vars_are_linear(x, y, threshold=0.3):
     """
     Calculates the Pearson correlation for x and y
-    :return: True if correlation > threshold, Fales otherwise.
+    :return: True if correlation > threshold, False otherwise.
     """
     corr = pearsonr(x, y)[0]
     return abs(corr) > threshold
 
-def calc_next_state(action):
+def calc_road_limit(data, timestep, window_size=10):
+    """
+    This is done by taking the median vehicle speed of the last 10 time steps and the rounding off
+    to the nearest tenth.
+    We're assuming that the speed kept is reasonably withing the allowed limit.
+    :return: The speed
+    """
+    steps_back = steps_forward = int(window_size / 2)
+    if timestep < steps_back:
+        steps_back = timestep
+        steps_forward = window_size - timestep
+
+    vehicle_speed = data[timestep - steps_back: timestep + steps_forward].get("Vehicle_speed")
+    med = np.median(vehicle_speed.as_matrix())
+    return int(round(med/10)*10)
+
+
+def perform_action(action):
     pass
 
-def get_current_state():
-    pass
-
-def drive():
+def drive(data, relations, models):
     """
     Simulates a drive using the test data.
     Using the linear regression model we will calculate the expected savings for each time-step
     :return:
     """
-    while True:
-        state = get_current_state()
-        a = suggest_action(state)
+    timestep = 1
+    header = {index: col for index, col in enumerate(list(data))}
+    for state in data.values:
+        # The first row is the header. We skip that.
+        a = suggest_action(state, relations, data, timestep, models, header)
+        gain = perform_action(a)
+        timestep += 1
 
 
-
-actions = {1: "Accelerate", 2: "De-accelerate", 3: "Shift gear down",
-           4: "Shift gear up", 5: "Do nothing"}
+actions = {"Accelerate": ['Accelerator_Pedal_value', 'Throttle_position_signal', 'Absolute_throttle_position'],
+           "De-accelerate": ['Accelerator_Pedal_value', 'Throttle_position_signal', 'Absolute_throttle_position'],
+           "Shift gear down": ['Current_gear'],
+           "Shift gear up": ['Current_gear'],
+           "Do nothing": []}
 
 lin_vars = ['Accelerator_Pedal_value', 'Throttle_position_signal', 'Absolute_throttle_position',
             'Engine_speed', 'Flywheel_torque_(after_torque_interventions)', 'Calculated_LOAD_value', 'Flywheel_torque',
@@ -112,8 +164,9 @@ lin_vars = ['Accelerator_Pedal_value', 'Throttle_position_signal', 'Absolute_thr
 data = pd.read_csv("../datasets/KIA_driving_data.csv")
 data = data.drop("Class", axis=1)
 train, test = split_data(data)
-models = train_regression_models(train)
-print(models)
 
+# models, relations = train_regression_models(train, save_models=True)
+models, relations = train_regression_models(train, retrieve_models=True)
+drive(test, relations, models)
 
 
