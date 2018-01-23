@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/Statistics"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Statistics" />
+        <item
+            android:id="@+id/High_score"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="High score" />
+
+        <item
+            android:id="@+id/action_settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Settings"
+           />
+        <item
+            android:id="@+id/Help_and_feedback"
+            android:title="Help &amp; Feedback"
+            android:icon="@drawable/ic_menu_manage"
+            />
+    </group>
+
+</menu>
