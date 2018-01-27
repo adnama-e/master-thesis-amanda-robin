@@ -1,31 +1,12 @@
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-from scipy.stats.stats import pearsonr
 import numpy as np
 import pickle
-from sklearn import svm
+from utils import *
 
 """
 A linear regression model using sci-kit learn.
 """
-
-def split_data(data, ratio=0.1):
-    # TODO consider using K-fold validation
-    splitted_data = []
-    new_instance = False
-    start_index = 0
-    for index, time in enumerate(data["Time(s)"]):
-        if time == 1 and start_index != index:
-            new_instance = True
-
-        if new_instance and start_index != index:
-            splitted_data.append(data[start_index:index])
-            start_index = index
-            new_instance = False
-
-    train_runs, test_runs = train_test_split(splitted_data, test_size=ratio)
-    return pd.concat(train_runs), pd.concat(test_runs)
 
 
 def train_regression_models(data, save_models=False, retrieve_models=False):
@@ -72,17 +53,6 @@ def train_regression_models(data, save_models=False, retrieve_models=False):
 
     return models, relations
 
-def remove_outliers(data, outliers_fraction=0.25):
-    pass
-    # clf = svm.OneClassSVM(nu=0.95 * outliers_fraction + 0.05, kernel="linear", gamma=0.1)
-    # print("fittar")
-    # clf = clf.fit(data)
-    # pickle.dump(clf, open("outlier_detector.model", "wb"))
-    # print("predictar")
-    # result = clf.predict(data)
-    #
-    # return result
-
 
 def suggest_action(current_state, relations, data, timestep, models, header):
     """
@@ -103,34 +73,8 @@ def suggest_action(current_state, relations, data, timestep, models, header):
         for aff_var in affected_vars:
             # How much are the variables affected?
             # Pick the value with the lowest resulting fuel consumption.
-
-
-
             future_state = current_state
 
-def vars_are_linear(x, y, threshold=0.3):
-    """
-    Calculates the Pearson correlation for x and y
-    :return: True if correlation > threshold, False otherwise.
-    """
-    corr = pearsonr(x, y)[0]
-    return abs(corr) > threshold
-
-def calc_road_limit(data, timestep, window_size=10):
-    """
-    This is done by taking the median vehicle speed of the last 10 time steps and the rounding off
-    to the nearest tenth.
-    We're assuming that the speed kept is reasonably withing the allowed limit.
-    :return: The speed
-    """
-    steps_back = steps_forward = int(window_size / 2)
-    if timestep < steps_back:
-        steps_back = timestep
-        steps_forward = window_size - timestep
-
-    vehicle_speed = data[timestep - steps_back: timestep + steps_forward].get("Vehicle_speed")
-    med = np.median(vehicle_speed.as_matrix())
-    return int(round(med/10)*10)
 
 
 def perform_action(action):
