@@ -6,7 +6,7 @@ from scipy.stats.stats import pearsonr
 import numpy as np
 
 
-def split_data(data, ratio=0.1):
+def split_data(data, ratio=0.1, concat=True):
     # TODO consider using K-fold validation
     splitted_data = []
     new_instance = False
@@ -21,7 +21,9 @@ def split_data(data, ratio=0.1):
             new_instance = False
 
     train_runs, test_runs = train_test_split(splitted_data, test_size=ratio)
-    return pd.concat(train_runs), pd.concat(test_runs)
+    if concat:
+        return pd.concat(train_runs), pd.concat(test_runs)
+    return train_runs, test_runs
 
 
 def remove_outliers(data, outliers_fraction=0.25):
