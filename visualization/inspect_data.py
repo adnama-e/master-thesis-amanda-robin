@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from pandas import Series
 from pandas.plotting import lag_plot, autocorrelation_plot
 from utils import *
-from LSTM_keras import scale_data
 
 data = pd.read_csv("../datasets/KIA_driving_data.csv", header=0)
 # It's a string. Dropping it for now.

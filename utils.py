@@ -23,7 +23,8 @@ def split_data(data, ratio=0.1, concat=True):
     train_runs, test_runs = train_test_split(splitted_data, test_size=ratio)
     if concat:
         return pd.concat(train_runs), pd.concat(test_runs)
-    return train_runs, test_runs
+    else:
+        return train_runs, test_runs
 
 
 def remove_outliers(data, outliers_fraction=0.25):
