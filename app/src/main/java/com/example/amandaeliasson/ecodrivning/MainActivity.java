@@ -3,6 +3,8 @@ package com.example.amandaeliasson.ecodrivning;
 import android.app.ActionBar;
 
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,14 +18,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity /*implements NavigationView.OnNavigationItemSelectedListener*/ {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+    View layout_interact;
 
 
     private ActionBarDrawerToggle drawerToggle;
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        layout_interact = (View) findViewById(R.id.drawLayout);
 
         //Toolbar to replace the Actionbar
         setUpToolbar();
@@ -39,11 +46,13 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         drawerLayout = (DrawerLayout) findViewById(R.id.drawLayout);
         navigationView = (NavigationView) findViewById(R.id.nView);
 
+
         setUpNavigationDrawerContent(navigationView);
 
         drawerToggle = setUpDrawerToggle();
 
         drawerLayout.addDrawerListener(drawerToggle);
+
 
     }
 
@@ -52,10 +61,10 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         setSupportActionBar(toolbar);
 
 
-
     }
-    public ActionBarDrawerToggle setUpDrawerToggle(){
-        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,  R.string.navigation_drawer_close);
+
+    public ActionBarDrawerToggle setUpDrawerToggle() {
+        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     }
 
 
@@ -113,6 +122,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         }
         return super.onOptionsItemSelected(item);
     }
+
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
@@ -126,7 +136,30 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_0) {
+            layout_interact.setBackgroundColor(getResources().getColor(R.color.green4));
+
+        } else if (keyCode == KeyEvent.KEYCODE_1) {
+            layout_interact.setBackgroundColor(getResources().getColor(R.color.red));
+        }else{
+            layout_interact.setBackgroundColor(Color.WHITE);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }
+
+//    private void updateGUI() {
+//        EditText text = (EditText) findViewById(R.id.numberText);
+//        if (text.equals("1")) {
+//            layout_interact.setBackgroundColor(Color.GREEN);
+//        } else if (text.equals("0")) {
+//            layout_interact.setBackgroundColor(Color.RED);
+//        } else {
+//            layout_interact.setBackgroundColor(Color.WHITE);
+//        }
+//    }
+
 
 
 
