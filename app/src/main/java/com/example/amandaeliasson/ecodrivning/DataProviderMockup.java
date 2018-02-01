@@ -9,17 +9,41 @@ import java.util.List;
  */
 
 public class DataProviderMockup implements DataProvider {
-    public DataProviderMockup() {
-    }
+    private Measurement latestAdd = null;
 
+
+    public DataProviderMockup() {
+
+    }
     @Override
     public List<Measurement> getData() {
         List<Measurement> measurements = new LinkedList<>();
-        measurements.add(new SpeedMeasurement(new Date(), 55.586090, 12.994164, 80));
-        measurements.add(new SpeedMeasurement(new Date(), 55.612808, 13.003448, 60));
-        measurements.add(new SpeedMeasurement(new Date(), 55.612810, 13.013448, 60));
-        measurements.add(new SpeedMeasurement(new Date(), 55.596090, 12.995164, 80));
-        measurements.add(new SpeedMeasurement(new Date(), 55.622808, 13.004448, 60));
+        Measurement m1 = new SpeedMeasurement(new Date(), 55.60457822286884, 13.001237567514181, 80);
+        measurements.add(m1);
+        latestAdd = m1;
+
+        Measurement m2 = new SpeedMeasurement(new Date(), 55.60329635732146, 13.001317111775279, 80);
+        measurements.add(m2);
+        latestAdd = m2;
+
+        Measurement m3 = new SpeedMeasurement(new Date(), 55.60299634018647, 12.998828021809459, 60);
+        measurements.add(m3);
+        latestAdd = m3;
+
+        Measurement m4 = new SpeedMeasurement(new Date(), 55.60367819399276, 12.99830767326057, 75);
+        measurements.add(m4);
+        latestAdd = m4;
+
+        Measurement m5 = new SpeedMeasurement(new Date(), 55.603563037292865, 12.996188728138804, 60);
+        measurements.add(m5);
+        latestAdd = m5;
+
+        Measurement m6 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 60);
+        measurements.add(m6);
+        latestAdd = m6;
         return measurements;
+    }
+    public Measurement getLatestAdd(){
+        return latestAdd;
     }
 }
