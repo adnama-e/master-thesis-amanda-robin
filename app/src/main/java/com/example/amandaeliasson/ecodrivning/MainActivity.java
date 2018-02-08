@@ -88,8 +88,12 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
             case R.id.nav2:
                 fragmentClass = Fragment2.class;
                 break;
-            default:
+
+            case R.id.nav3:
                 fragmentClass = Fragment3.class;
+                break;
+            default:
+                fragmentClass = DriveModeFragment.class;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -135,8 +139,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+   /* public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_0) {
             layout_interact.setBackgroundColor(getResources().getColor(R.color.green4));
 
@@ -146,7 +149,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
             layout_interact.setBackgroundColor(Color.WHITE);
         }
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 }
 
 //    private void updateGUI() {

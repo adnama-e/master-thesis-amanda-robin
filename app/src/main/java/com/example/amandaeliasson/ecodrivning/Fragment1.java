@@ -20,8 +20,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+
+import static android.graphics.Color.GREEN;
+import static android.graphics.Color.RED;
+import static android.graphics.Color.YELLOW;
 
 /**
  * Created by amandaeliasson on 2018-01-23.
@@ -31,8 +40,6 @@ public class Fragment1 extends Fragment implements
         OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
     private GoogleMap mMap;
     private DataProviderMockup dataprovider;
-    private Marker mark1;
-    private Marker mark2;
     private Context thiscontext;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -53,26 +60,54 @@ public class Fragment1 extends Fragment implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        float zoomLevel = 13.0f;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(55.612808, 13.003448), zoomLevel));
-        // Add a marker
+        float zoomLevel = 17.0f;
+
         List<Measurement> list = dataprovider.getData();
         for(Measurement m: list){
             LatLng coordinate = new LatLng(m.getCoordinate1(), m.getCoordinate2());
             String s = Double.toString(m.getCoordinate1());
             String s2 = Double.toString(m.getCoordinate2());
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, zoomLevel));
             Marker mark = mMap.addMarker(new MarkerOptions().position(coordinate).title(s + ", " + " " + s2));
             mark.setTag(0);
             mMap.setOnMapLongClickListener(this);
             markerColor(mark, m.goodValue());
-        }
-    }
 
+        }
+        drawLine();
+    }
     public void markerColor(Marker mark, boolean b){
         if(b){
             mark.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         }else{
             mark.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        }
+    }
+    public void drawLine() {
+        List<Measurement> list = dataprovider.getData();
+        Collections.sort(list, new Comparator<Measurement>() {
+            @Override
+            public int compare(Measurement measurement, Measurement t1) {
+                return measurement.date.compareTo(t1.date);
+            }
+        });
+        Measurement m1 = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            Measurement m2 = list.get(i);
+            PolylineOptions p = new PolylineOptions();
+            p.add(new LatLng(m1.getCoordinate1(), m1.getCoordinate2()), new LatLng(m2.getCoordinate1(), m2.getCoordinate2()));
+            if (m1.goodValue() && m2.goodValue()){
+                p.color(GREEN);
+            }else if(!m1.goodValue() && !m2.goodValue() ){
+                p.color(RED);
+            }else{
+                p.color(YELLOW);
+
+            }
+            if(!(m1 == list.get(list.size()-1) && m2 == list.get(0))){
+                mMap.addPolyline(p);
+            }
+            m1 = m2;
         }
     }
 

@@ -17,4 +17,7 @@ public class AccelerateMeasurement extends Measurement {
     public boolean goodValue(){
         return true;
     }
+    public String typeOfMeasurment(){
+        return "acceleratemeasurment";
+    }
 }

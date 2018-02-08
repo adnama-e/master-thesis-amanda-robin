@@ -17,14 +17,18 @@ public abstract class Measurement {
         coordinate2=c2;
     }
     public double getCoordinate1(){
+
         return coordinate1;
     }
     public double getCoordinate2(){
+
         return coordinate2;
     }
     public Date getDate(){
+
         return date;
     }
     public abstract boolean goodValue();
+    public abstract String typeOfMeasurment();
 
 }

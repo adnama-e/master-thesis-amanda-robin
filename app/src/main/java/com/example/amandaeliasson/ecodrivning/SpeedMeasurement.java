@@ -13,6 +13,7 @@ public class SpeedMeasurement extends Measurement {
         speed= s;
     }
     public double getSpeed(){
+
         return speed;
     }
     public boolean goodValue(){
@@ -21,6 +22,10 @@ public class SpeedMeasurement extends Measurement {
         }else{
             return false;
         }
+    }
+    public String typeOfMeasurment(){
+
+        return "speedmeasurment";
     }
 
 }
