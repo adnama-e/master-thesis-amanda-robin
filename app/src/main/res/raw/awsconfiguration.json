@@ -12,6 +12,17 @@
   "IdentityManager": {
     "Default": {}
   },
+  "S3TransferUtility": {
+    "Default": {
+      "Bucket": "masterthesis-userfiles-mobilehub-304424324",
+      "Region": "us-east-1"
+    }
+  },
+  "Cognito": {
+    "Default": {
+      "Region": "us-east-1"
+    }
+  },
   "PinpointAnalytics": {
     "Default": {
       "AppId": "214e762d7446472e861829bdcd44a6ad",
@@ -20,6 +31,12 @@
   },
   "PinpointTargeting": {
     "Default": {
+      "Region": "us-east-1"
+    }
+  },
+  "UserFileManager": {
+    "Default": {
+      "Bucket": "masterthesis-userfiles-mobilehub-304424324",
       "Region": "us-east-1"
     }
   }

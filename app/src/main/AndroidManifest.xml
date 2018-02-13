@@ -23,4 +23,7 @@
             android:value="AIzaSyCwba9RnszT-dw5K18lXt8NoV2X_JMHiGY"/>
     </application>
 
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 </manifest>

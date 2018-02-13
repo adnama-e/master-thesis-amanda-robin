@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.amazonaws.mobile.client.AWSMobileClient;
 
 public class MainActivity extends AppCompatActivity /*implements NavigationView.OnNavigationItemSelectedListener*/ {
     private DrawerLayout drawerLayout;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
 
         drawerLayout.addDrawerListener(drawerToggle);
 
+        // Setting up the AWS client
+        AWSMobileClient.getInstance().initialize(this).execute();
 
     }
 

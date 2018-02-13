@@ -11,7 +11,6 @@ import argparse
 
 
 
-# The training data need to be transformed into a 3-D array [samples, timesteps, features]
 def filter_data(data, threshold=0.2):
     correlations = data.corr(method="kendall")["Fuel_consumption"]
     cols = list(data)
@@ -19,7 +18,6 @@ def filter_data(data, threshold=0.2):
         if np.isnan(corr) or np.abs(corr) < threshold:
             if cols[i] != "Time(s)":
                 data = data.drop(cols[i], axis=1)
-
     return data
 
 
