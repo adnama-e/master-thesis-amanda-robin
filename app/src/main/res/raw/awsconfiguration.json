@@ -4,7 +4,7 @@
   "CredentialsProvider": {
     "CognitoIdentity": {
       "Default": {
-        "PoolId": "us-east-1:383e0a7c-6391-4691-b4d7-f51eb4691c3b",
+        "PoolId": "us-east-1:b49e888e-e6ea-4dd8-9887-cc8fe8a38c39",
         "Region": "us-east-1"
       }
     }
@@ -14,7 +14,7 @@
   },
   "PinpointAnalytics": {
     "Default": {
-      "AppId": "214e762d7446472e861829bdcd44a6ad",
+      "AppId": "0ea331392b954aad923395cf53a36699",
       "Region": "us-east-1"
     }
   },

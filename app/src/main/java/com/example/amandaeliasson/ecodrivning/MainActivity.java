@@ -2,6 +2,8 @@ package com.example.amandaeliasson.ecodrivning;
 
 import android.app.ActionBar;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -53,7 +55,8 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         drawerToggle = setUpDrawerToggle();
 
         drawerLayout.addDrawerListener(drawerToggle);
-
+        AWSProvider.initialize(getApplicationContext());
+        getApplication().registerActivityLifecycleCallbacks(new ActivityLifeCycle());
 
     }
 
@@ -144,6 +147,42 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
 
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    private class ActivityLifeCycle implements Application.ActivityLifecycleCallbacks {
+        @Override
+        public void onActivityCreated(Activity activity, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+
+        }
     }
    /* public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_0) {
