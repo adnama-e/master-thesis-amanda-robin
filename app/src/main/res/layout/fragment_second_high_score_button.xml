@@ -1,0 +1,108 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.amandaeliasson.ecodrivning.SecondHighScoreButton">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:id="@+id/textBraking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Braking" />
+
+            <TextView
+                android:id="@+id/textdatabraking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="21dp"
+                android:layout_marginStart="21dp"
+                android:layout_toEndOf="@+id/textBraking"
+                android:layout_toRightOf="@+id/textBraking"
+                android:text="Data" />
+            <ProgressBar
+                android:id="@+id/progress_H_1"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="500dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textBraking"
+                android:layout_centerHorizontal="true"
+                android:max="100" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="300dp"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/textLegal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Legal Driving" />
+
+            <TextView
+                android:id="@+id/textdatalegal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="21dp"
+                android:layout_marginStart="21dp"
+                android:layout_toEndOf="@+id/textLegal"
+                android:layout_toRightOf="@+id/textLegal"
+                android:text="data" />
+
+            <ProgressBar
+                android:id="@+id/progress_H_2"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="500dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textLegal"
+                android:layout_centerHorizontal="true"
+                android:max="100"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="500dp"
+            android:layout_marginBottom="200dp"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:id="@+id/textAcceleration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Acceleration"/>
+
+            <TextView
+                android:id="@+id/textdataAcc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="21dp"
+                android:layout_marginStart="21dp"
+                android:layout_toEndOf="@+id/textAcceleration"
+                android:layout_toRightOf="@+id/textAcceleration"
+                android:text="data"/>
+            <ProgressBar
+                android:id="@+id/progress_H_3"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="500dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:layout_below="@+id/textAcceleration"
+                android:max="100"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>

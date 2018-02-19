@@ -4,6 +4,7 @@ import android.app.ActionBar;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -138,6 +139,11 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+
+    public void onFragmentInteraction(Uri uri) {
+
     }
    /* public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_0) {

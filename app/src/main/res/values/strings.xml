@@ -8,6 +8,8 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="first_highscrore_view">first highscrore view</string>
     <string name="action_settings">Settings</string>
+    <string name="second_highscore_view">second highscore view</string>
+    <string name="third_highscore_view">third highscore view</string>
 </resources>

@@ -28,4 +28,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    compile 'com.github.anastr:speedviewlib:1.1.7'
+
+    // AWS Mobile SDK for Android
+    compile 'com.amazonaws:aws-android-sdk-core:2.6.+'
+    compile 'com.amazonaws:aws-android-sdk-auth-core:2.6.+@aar'
+    compile 'com.amazonaws:aws-android-sdk-pinpoint:2.6.+'
+
 }
