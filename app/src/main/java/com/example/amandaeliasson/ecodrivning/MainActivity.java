@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+//hej
     }
 
     public ActionBarDrawerToggle setUpDrawerToggle() {
