@@ -2,15 +2,18 @@ package com.example.amandaeliasson.ecodrivning;
 
 import android.content.Context;
 
+/*
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.mobile.auth.core.IdentityManager;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
 
+*/
 /**
  * Created by amandaeliasson on 2018-02-19.
- */
+ *//*
+
 
 public class AWSProvider {
     private static AWSProvider instance = null;
@@ -57,4 +60,4 @@ public class AWSProvider {
         }
         return pinpointManager;
     }
-}
+}*/

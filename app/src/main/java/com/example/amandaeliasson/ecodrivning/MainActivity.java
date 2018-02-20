@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         drawerToggle = setUpDrawerToggle();
 
         drawerLayout.addDrawerListener(drawerToggle);
-        AWSProvider.initialize(getApplicationContext());
+//        AWSProvider.initialize(getApplicationContext());
         getApplication().registerActivityLifecycleCallbacks(new ActivityLifeCycle());
 
     }
