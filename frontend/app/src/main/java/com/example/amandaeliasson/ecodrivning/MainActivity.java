@@ -2,6 +2,8 @@ package com.example.amandaeliasson.ecodrivning;
 
 import android.app.ActionBar;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -26,9 +28,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.amazonaws.mobile.client.AWSMobileClient;
+import android.app.Activity;
+import android.util.Log;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
+
+
+
 public class MainActivity extends AppCompatActivity /*implements NavigationView.OnNavigationItemSelectedListener*/ {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    public static PinpointManager pinpointManager;
     private Toolbar toolbar;
     View layout_interact;
 
@@ -38,29 +49,37 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         layout_interact = (View) findViewById(R.id.drawLayout);
-
         //Toolbar to replace the Actionbar
         setUpToolbar();
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawLayout);
         navigationView = (NavigationView) findViewById(R.id.nView);
-
-
         setUpNavigationDrawerContent(navigationView);
-
         drawerToggle = setUpDrawerToggle();
 
         drawerLayout.addDrawerListener(drawerToggle);
+        AWSMobileClient.getInstance().initialize(this).execute();
+        PinpointConfiguration pinpointConfig = new PinpointConfiguration(
+                getApplicationContext(),
+                AWSMobileClient.getInstance().getCredentialsProvider(),
+                AWSMobileClient.getInstance().getConfiguration());
 
+        pinpointManager = new PinpointManager(pinpointConfig);
+
+        // Start a session with Pinpoint
+        pinpointManager.getSessionClient().startSession();
+
+        // Stop the session and submit the default app started event
+        pinpointManager.getSessionClient().stopSession();
+        pinpointManager.getAnalyticsClient().submitEvents();
 
     }
 
     public void setUpToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
     }
 
@@ -145,118 +164,4 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
     public void onFragmentInteraction(Uri uri) {
 
     }
-   /* public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_0) {
-            layout_interact.setBackgroundColor(getResources().getColor(R.color.green4));
-
-        } else if (keyCode == KeyEvent.KEYCODE_1) {
-            layout_interact.setBackgroundColor(getResources().getColor(R.color.red));
-        }else{
-            layout_interact.setBackgroundColor(Color.WHITE);
-        }
-        return super.onKeyDown(keyCode, event);
-    }*/
 }
-
-//    private void updateGUI() {
-//        EditText text = (EditText) findViewById(R.id.numberText);
-//        if (text.equals("1")) {
-//            layout_interact.setBackgroundColor(Color.GREEN);
-//        } else if (text.equals("0")) {
-//            layout_interact.setBackgroundColor(Color.RED);
-//        } else {
-//            layout_interact.setBackgroundColor(Color.WHITE);
-//        }
-//    }
-
-
-
-
-    /*  *//*  ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                item.setChecked(true);
-                drawer.closeDrawers();
-                return true;
-            }
-        });*//*
-
-
-   *//* public void setUpNavigationDrawer(){
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
-
-        setUpActionBarDrawerToogle();
-
-        if(navigationView!=null){
-            setUpDrawerAsContent(navigationView);
-        }
-    }*//*
-    *//*public void setUpDrawerAsContent(NavigationView view){
-        view.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(MenuItem item) {
-                    item.setChecked(true);
-                    drawerLayout.closeDrawers();
-                    return true;
-                }
-        });
-
-    }
-    public void setUpActionBarDrawerToogle(){
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-    }*//*
-
-    @Override
-   *//* public void onBackPressed() {
-        if (isNavigationDrawerOpen()) {
-            closeNavigationDrawer();
-        } else {
-            super.onBackPressed();
-        }
-    }
-    public boolean isNavigationDrawerOpen(){
-        if(drawerLayout !=null && drawerLayout.isDrawerOpen(GravityCompat.START)){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    public void closeNavigationDrawer(){
-        if(drawerLayout!=null){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.navigation, menu);
-        return true;
-    }*//*
-
-    @Override
-   *//* public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        FragmentManager fm = getFragmentManager();
-
-        if (id == R.id.nav1) {
-            setTitle("Fragement1");
-            Fragment1 f1 = new Fragment1();
-            fm.beginTransaction().replace(R.id.main_content, f1).commit();
-
-        }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
