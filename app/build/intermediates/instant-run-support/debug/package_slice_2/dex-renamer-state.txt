@@ -1,0 +1,4 @@
+#Sun Feb 11 20:55:08 CET 2018
+base.0=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/app/build/intermediates/transforms/dexMerger/debug/154
+path.0=classes.dex
+renamed.0=classes.dex

@@ -7,14 +7,11 @@ import java.util.Date;
  */
 
 public class SpeedMeasurement extends Measurement {
-    private double speed;
     public SpeedMeasurement(Date d, double c1, double c2, double s) {
-        super(d, c1, c2);
-        speed= s;
+        super(d, c1, c2, s);
     }
     public double getSpeed(){
-
-        return speed;
+        return super.data;
     }
     public boolean goodValue(){
         if(getSpeed() > 70){
@@ -24,7 +21,6 @@ public class SpeedMeasurement extends Measurement {
         }
     }
     public String typeOfMeasurment(){
-
         return "speedmeasurment";
     }
 

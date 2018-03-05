@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ndroid="http://schemas.android.com/tools">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_gravity="right"
+        android:layout_marginLeft="100dp"
+        android:layout_centerVertical="true"
+        >
+        <com.github.anastr.speedviewlib.SpeedView
+            android:id="@+id/accView"
+            android:layout_below="@+id/av_acc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:sv_highSpeedColor="@color/green1"
+            app:sv_indicator="NeedleIndicator"
+            app:sv_lowSpeedColor="@color/red"
+            app:sv_lowSpeedPercent="33"
+            app:sv_maxSpeed="100"
+            app:sv_mediumSpeedPercent="66"
+            app:sv_minSpeed="0"
+            app:sv_unit="%"
+            app:sv_withTremble="false" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/av_acc"
+            android:text="Acceleration" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/r_2"
+        >
+        <com.github.anastr.speedviewlib.SpeedView
+            android:id="@+id/brakeView"
+            android:layout_below="@+id/av_brake"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:sv_highSpeedColor="@color/green1"
+            app:sv_indicator="NeedleIndicator"
+            app:sv_lowSpeedColor="@color/red"
+            app:sv_lowSpeedPercent="33"
+            app:sv_maxSpeed="100"
+            app:sv_mediumSpeedPercent="66"
+            app:sv_minSpeed="0"
+            app:sv_unit="%"
+            app:sv_withTremble="false" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/av_brake"
+            android:text="Brake" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/r_2"
+        android:layout_alignBottom="@+id/r_2"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="100dp">
+        <com.github.anastr.speedviewlib.SpeedView
+            android:id="@+id/speedview1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/av_speed"
+            app:sv_highSpeedColor="@color/green1"
+            app:sv_indicator="NeedleIndicator"
+            app:sv_lowSpeedColor="@color/red"
+            app:sv_lowSpeedPercent="33"
+            app:sv_maxSpeed="100"
+            app:sv_mediumSpeedPercent="66"
+            app:sv_minSpeed="0"
+            app:sv_unit="%"
+            app:sv_withTremble="false" />
+        <TextView
+            android:id="@+id/av_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Legal driving" />
+    </RelativeLayout>
+</RelativeLayout>

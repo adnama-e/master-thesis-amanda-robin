@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
     >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+    <ImageView
+        android:id="@+id/warning"
+        android:layout_width="800dp"
+        android:layout_height="500dp"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:src="@mipmap/traffic" />
 
-</FrameLayout>
+    <SeekBar
+        android:id="@+id/sb_value"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/warning"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:max="100" />
+</RelativeLayout>

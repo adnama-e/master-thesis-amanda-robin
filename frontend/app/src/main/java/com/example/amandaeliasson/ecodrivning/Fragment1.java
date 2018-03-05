@@ -36,7 +36,7 @@ import static android.graphics.Color.YELLOW;
  * Created by amandaeliasson on 2018-01-23.
  */
 
-public class Fragment1 extends Fragment implements
+public class Fragment1 extends NamedFragment implements
         OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
     private GoogleMap mMap;
     private DataProviderMockup dataprovider;
@@ -131,5 +131,10 @@ public class Fragment1 extends Fragment implements
         // for the default behavior to occur (which is for the camera to move such that the
         // marker is centered and for the marker's info window to open, if it has one).
         return false;
+    }
+
+    @Override
+    public String getName() {
+        return "Map view";
     }
 }

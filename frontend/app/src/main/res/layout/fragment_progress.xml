@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="100dp"
+        android:id="@+id/relativeLayout6">
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph_acc"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_below="@+id/acc_text"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Acceleration"
+            android:id="@+id/acc_text"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relativeLayout4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Brake"
+            android:id="@+id/brake_text"
+            />
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph_brake"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_below="@+id/brake_text"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relativeLayout5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="89dp"
+        android:layout_marginRight="89dp">
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph_speed"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_below="@+id/speed_text"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Legal driving"
+            android:id="@+id/speed_text"
+            />
+    </RelativeLayout>
+</RelativeLayout>

@@ -30,12 +30,14 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     compile 'com.github.anastr:speedviewlib:1.1.7'
-    compile ('com.amazonaws:aws-android-sdk-mobile-client:2.6.7@aar') { transitive = true; }
+    compile('com.amazonaws:aws-android-sdk-mobile-client:2.6.7@aar') { transitive = true; }
     compile 'com.amazonaws:aws-android-sdk-pinpoint:2.6.+'
     compile 'com.android.support:multidex:1.0.+'
+    compile 'com.jjoe64:graphview:4.2.1'
 }
+
 android {
     defaultConfig {
-        multiDexEnabled = true
+        multiDexEnabled= true
     }
 }

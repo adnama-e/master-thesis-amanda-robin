@@ -41,6 +41,11 @@ public class DataProviderMockup implements DataProvider {
         Measurement m6 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 60);
         measurements.add(m6);
         latestAdd = m6;
+
+
+        /*Measurement m7 = new BrakeMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 60);
+        measurements.add(m7);
+        latestAdd = m7;*/
         return measurements;
     }
     public Measurement getLatestAdd(){

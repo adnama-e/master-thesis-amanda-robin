@@ -7,15 +7,11 @@ import java.util.Date;
  */
 
 public class BrakeMeasurement extends Measurement {
-    private double breakValue;
-
     public BrakeMeasurement(Date d, double c1, double c2, double breakValue){
-        super(d,c1,c2);
-        this.breakValue=breakValue;
+        super(d,c1,c2, breakValue);
 
     }
     public boolean goodValue(){
-
         return true;
     }
     public String typeOfMeasurment(){

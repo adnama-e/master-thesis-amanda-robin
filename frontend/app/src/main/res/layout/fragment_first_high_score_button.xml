@@ -89,7 +89,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="150dp"
-            android:gravity="bottom">
+            android:gravity="bottom"
+            android:id="@+id/relativeLayout3">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -117,19 +118,43 @@
                 android:layout_marginTop="110dp"
                 android:text="15%" />
         </RelativeLayout>
-        <com.github.anastr.speedviewlib.SpeedView
+
+        <!--<RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            app:sv_lowSpeedColor="@color/red"
-            app:sv_lowSpeedPercent="33"
-            app:sv_highSpeedColor="@color/green1"
-            app:sv_mediumSpeedPercent="66"
-            app:sv_indicator="NeedleIndicator"
-            app:sv_minSpeed="0"
-            app:sv_maxSpeed="100"
-            app:sv_unit="%"
-            />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/relativeLayout3"
+            android:layout_marginLeft="54dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="56dp">
+
+            <com.github.anastr.speedviewlib.SpeedView
+                android:id="@+id/speedview1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="22dp"
+                android:layout_marginStart="22dp"
+                app:sv_highSpeedColor="@color/green1"
+                app:sv_indicator="NeedleIndicator"
+                app:sv_lowSpeedColor="@color/red"
+                app:sv_lowSpeedPercent="33"
+                app:sv_maxSpeed="100"
+                app:sv_mediumSpeedPercent="66"
+                app:sv_minSpeed="0"
+                app:sv_unit="%"
+                app:sv_withTremble="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/speedview1"
+                android:layout_centerHorizontal="true"
+                android:text="Legal driving" />
+        </RelativeLayout>
+-->
         <!--      <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/progress_pichart"
                 android:layout_width="300dp"

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 public class SecondHighScoreButton extends Fragment {
@@ -24,9 +29,10 @@ public class SecondHighScoreButton extends Fragment {
     private TextView t1;
     private TextView t2;
     private TextView t3;
+    private DataProviderMockup dataprovider;
     public SecondHighScoreButton() {
         progressBars = new ArrayList<>();
-
+        dataprovider = new DataProviderMockup();
         // Required empty public constructor
     }
 
@@ -48,9 +54,26 @@ public class SecondHighScoreButton extends Fragment {
         return v;
 
     }
-    public void setData(){
-        progressBars.get(0).setProgress(15);
-        progressBars.get(1).setProgress(70);
+    public void setData() {
+        List<Measurement> measurements = dataprovider.getData();
+        //List<Double> speed = new ArrayList<>();
+        Map<Date, Double> speed = new HashMap<>();
+        for (Measurement m : measurements) {
+            if (m.typeOfMeasurment().equals("speedmeasurment")) {
+                double i = m.getData();
+                speed.put(m.getDate(), i);
+            }
+        }
+        Set<Date> dates = speed.keySet();
+        for (Date d : dates) {
+            if(d.getDay() ==3){
+                double data = speed.get(d);
+                progressBars.get(1).setProgress((int) data);
+            }
+        }
+
+//        progressBars.get(0).setProgress(15);
+        progressBars.get(0).setProgress(70);
         progressBars.get(2).setProgress(95);
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

@@ -1,36 +1,20 @@
 package com.example.amandaeliasson.ecodrivning;
 
-import android.app.ActionBar;
-
-import android.app.Activity;
-import android.app.Application;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
-import android.app.Activity;
-import android.util.Log;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
 
@@ -60,7 +44,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         drawerToggle = setUpDrawerToggle();
 
         drawerLayout.addDrawerListener(drawerToggle);
-        AWSMobileClient.getInstance().initialize(this).execute();
+       /* AWSMobileClient.getInstance().initialize(this).execute();
         PinpointConfiguration pinpointConfig = new PinpointConfiguration(
                 getApplicationContext(),
                 AWSMobileClient.getInstance().getCredentialsProvider(),
@@ -73,7 +57,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
 
         // Stop the session and submit the default app started event
         pinpointManager.getSessionClient().stopSession();
-        pinpointManager.getAnalyticsClient().submitEvents();
+        pinpointManager.getAnalyticsClient().submitEvents();*/
 
     }
 
@@ -110,7 +94,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
                 break;
 
             case R.id.nav3:
-                fragmentClass = Fragment3.class;
+                fragmentClass = ScoreFragment.class;
                 break;
             default:
                 fragmentClass = DriveModeFragment.class;

@@ -3,8 +3,17 @@ package com.example.amandaeliasson.ecodrivning;
 import android.app.VoiceInteractor;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.service.voice.VoiceInteractionService;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
@@ -12,6 +21,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 
 import org.w3c.dom.Text;
 
@@ -27,7 +40,8 @@ public class DriveModeFragment extends Fragment {
     DataProviderMockup dataProvider;
     TextToSpeech textToSpeech;
     Context context;
-
+    ImageView v;
+    SeekBar sb_value;
     public DriveModeFragment(){
         dataProvider = new DataProviderMockup();
     // Required empty public constructor
@@ -40,8 +54,12 @@ public class DriveModeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        layout = inflater.inflate(R.layout.drivemode_fragment, container, false
+//        layout = inflater.inflate(R.layout.drivemode_fragment, container, false
+//        );
+        layout = inflater.inflate(R.layout.smiley, container, false
         );
+//        v = layout.findViewById(R.id.warning);
+
         context = container.getContext();
         textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
@@ -52,11 +70,84 @@ public class DriveModeFragment extends Fragment {
                 }
             }
         });
-        this.backgroundColor();
+        /*sb_value = layout.findViewById(R.id.sb_value);
+        sb_value.setProgress(100);
+        final ImageView im_brightness = layout.findViewById(R.id.warning);
+        sb_value.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                im_brightness.setColorFilter(setBrightness(progress));
 
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });*/
         return layout;
+
+
     }
-    public void backgroundColor() {
+
+    public static PorterDuffColorFilter setBrightness(int progress) {
+        if (progress >=    100)
+        {
+         int value = (int) (progress-100) * 255 / 100;
+         return new PorterDuffColorFilter(Color.argb( value, 255, 255, 255), PorterDuff.Mode.SRC_OVER);
+
+
+
+        }
+        else
+        {
+            int value = (int) (100-progress) * 255 / 100;
+            return new PorterDuffColorFilter(Color.argb(value, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
+
+
+        }
+    }
+
+
+
+       /* new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Animation fadeInAnimation = AnimationUtils.loadAnimation(
+                        context, R.anim.fade_in_view);
+                v.startAnimation(fadeInAnimation);
+                fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
+
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                       v.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // TODO Auto-generated method stub
+
+                    }
+                });
+            }
+
+        }, 1000);*/
+
+
+
+  /*  public void backgroundColor() {
         List<Measurement> list = dataProvider.getData();
         Measurement latestAdded = list.get(list.size()-1);
 
@@ -66,12 +157,14 @@ public class DriveModeFragment extends Fragment {
         }else{
             layout.setBackgroundColor(Color.RED);
         }
-    }
+    }*/
     public void voiceCommand(){
         List<Measurement> list = dataProvider.getData();
         Measurement latestAdded = list.get(list.size()-1);
         if(latestAdded.typeOfMeasurment().equals("speedmeasurment") && latestAdded.goodValue() ==false);
             textToSpeech.speak("Slow down, you are driving too fast", TextToSpeech.QUEUE_FLUSH, null);
+            v = layout.findViewById(R.id.happy);
+
     }
     public void onPause(){
         if(textToSpeech!=null){

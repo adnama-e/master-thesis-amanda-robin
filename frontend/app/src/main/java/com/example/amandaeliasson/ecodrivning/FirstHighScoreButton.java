@@ -14,24 +14,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import com.github.anastr.speedviewlib.SpeedView;
 
+import com.github.anastr.speedviewlib.components.Indicators.NeedleIndicator;
 import com.github.mikephil.charting.charts.PieChart;
 
+import java.util.List;
 
-public class FirstHighScoreButton extends Fragment {
-    private int mViewWidth;
-    private int mViewHeight;
 
-    private final float mStartAngle = -90;      // Always start from top (default is: "3 o'clock on a watch.")
-    private float mSweepAngle = 0;              // How long to sweep from mStartAngle
-    private float mMaxSweepAngle = 360;         // Max degrees to sweep = full circle
-    private int mStrokeWidth = 20;              // Width of outline
-    private int mAnimationDuration = 400;       // Animation duration for progress change
-    private int mMaxProgress = 100;             // Max progress to use
-    private boolean mDrawText = true;           // Set to true if progress text should be drawn
-    private boolean mRoundedCorners = true;     // Set to true if rounded corners should be applied to outline ends
-    private int mProgressColor = Color.BLACK;   // Outline color
-    private int mTextColor = Color.BLACK;       // Progress text color
+public class FirstHighScoreButton extends NamedFragment {
+    private SpeedView speedView;
+    private DataProviderMockup dataprovider;
+
 
 
     public FirstHighScoreButton() {
@@ -43,9 +37,29 @@ public class FirstHighScoreButton extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =inflater.inflate(R.layout.fragment_first_high_score_button, container, false);
+
+      /*  speedView = v.findViewById(R.id.speedview1);
+        dataprovider = new DataProviderMockup();
+        setData();*/
         //PieChart pc = (PieChart) v.findViewById(R.id.progress_pichart);
 
+
         return v;
+    /*}
+    public void setData(){
+        List<Measurement> data = dataprovider.getData();
+        for(Measurement m: data){
+            if(m.typeOfMeasurment().equals("speedmeasurment")){
+                speedView.speedPercentTo((int)m.getData());
+            }
+        }*/
+
+
+    }
+
+    @Override
+    public String getName() {
+        return "Old average view";
     }
     // Allocate paint outside onDraw to avoid unnecessary object creation
 }

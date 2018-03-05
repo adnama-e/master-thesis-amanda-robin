@@ -9,7 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 /**
  * Created by amandaeliasson on 2018-01-24.
@@ -18,9 +20,8 @@ import android.widget.Button;
 public class Fragment2 extends Fragment implements View.OnClickListener {
     public Button b;
 
-    public Fragment2() {
 
-        // Required empty public constructor
+    public Fragment2() {
     }
 
     @Override
@@ -32,7 +33,6 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
         b.setOnClickListener(this);
         ((Button) v.findViewById(R.id.button3)).setOnClickListener(this);
         ((Button) v.findViewById(R.id.button4)).setOnClickListener(this);
-
         return v;
     }
     @Override
