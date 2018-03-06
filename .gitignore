@@ -6,3 +6,7 @@
 /build
 /captures
 .externalNativeBuild
+backend/.idea/
+backend/datasets/
+backend/learning/__pycache__/
+backend/learning/aws.key
