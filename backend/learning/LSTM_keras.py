@@ -6,24 +6,54 @@ from matplotlib import pyplot
 import argparse
 from utils import *
 import pickle
+import os
 
 
 def build_model(data, settings):
-	y = data["Fuel_consumption"].as_matrix()
-	X = data.drop("Fuel_consumption", axis=1).as_matrix()
-	X = X.reshape(X.shape[0], 1, X.shape[1])
-	model = Sequential()
-	model.add(LSTM(settings["units"],
-	               batch_input_shape=(settings["batch_size"], X.shape[1], X.shape[2]), stateful=True))
-	model.add(Dense(1))
-	model.compile(loss="mean_squared_error", optimizer="adam")
+	# var1 is Fuel_consumption
+	n_obs = settings["timesteps"] * settings["features"]
+	X, y = data.values[:, :n_obs], data.values[:, -settings["features"]]
+	# reshape input to be 3D [samples, timesteps, features]
+	X = X.reshape((X.shape[0], settings["timesteps"], settings["features"]))
 	
-	for i in range(settings["num_epochs"]):
-		model.fit(X, y, epochs=1, batch_size=settings["batch_size"], verbose=1, shuffle=False)
-		model.reset_states()
+	# Design network
+	model = Sequential()
+	model.add(LSTM(settings["units"], input_shape=(X.shape[1], X.shape[2])))
+	model.add(Dense(1))
+	model.compile(loss="mae", optimizer="adam")
+	
+	# Fit network
+	model.fit(X, y, epochs=settings["epochs"], batch_size=settings["batch_size"], verbose=1, shuffle=False)
 	
 	return model
 
+
+def prepare_data(scaled_file="scaled_kia.csv"):
+	"""
+	Filter and scale data. Save to csv.
+	"""
+	if os.path.isfile(scaled_file):
+		print("Prepared data found. Opening..")
+		return pd.read_csv(scaled_file), pickle.load("f")
+	
+	# Read data from csv
+	data = pd.read_csv("../datasets/KIA_driving_data.csv")
+	data = data.drop("Class", axis=1)
+	time = data["Time(s)"]
+	
+	# Filter unuseful columns
+	data = filter_data(data)
+	
+	# Scale data to fit into [0,1]
+	scaled_df, scaler = scale_data(data)
+	scaled_df["Time(s)"] = time
+	scaled_df.to_csv(scaled_file)
+	return scaled_df, scaler
+
+
+def plot_time_series(data):
+	pass
+	
 
 def predict_fuel_consumption(model, state, settings):
 	X = state.reshape(1, 1, state.size)
@@ -31,12 +61,11 @@ def predict_fuel_consumption(model, state, settings):
 	return prediction[0]
 
 
-def predict_test(model, data, settings):
-	# TODO investigate how to make it to multi-step predictions
-	num_states = data.shape[0]
+def predict(model, test, settings):
+	num_states = test.shape[0]
 	predictions = []
 	for i in range(num_states):
-		state = data.iloc[[i]]
+		state = test.iloc[[i]]
 		state_values = state.drop("Fuel_consumption", axis=1).as_matrix()
 		predicted_fuel = predict_fuel_consumption(model, state_values, settings)[0]
 		predictions.append(predicted_fuel)
@@ -59,15 +88,15 @@ def plot_predictions(predictions, true_values, time_series):
 	pyplot.show()
 
 
-
 # ###############################################
 # ###########          MAIN           ###########
 # ###############################################
 
-settings = {"batch_size": 1,
-            "lag": 1,
-            "units": 1,
-            "num_epochs": 30}
+
+settings = {"batch_size": 12,
+            "timesteps": 5,
+            "units": 50,
+            "epochs": 30}
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--new-model", action="store_true", dest="train_new")
@@ -79,23 +108,27 @@ model_name = args.model_name
 train_new_model = args.train_new
 visualize = args.visualize_it
 
-data = pd.read_csv("../datasets/KIA_driving_data.csv")
-data = data.drop("Class", axis=1)
-data = filter_data(data)
+data, scaler = prepare_data()
 training_drives, test_drives = split_data(data, concat=False)
 train = pd.concat(training_drives)
-train = train.drop("Time(s)", axis=1)
-train, scaler = scale_data(train)
+train.drop("Time(s)", axis=1, inplace=True)
+
+settings["features"] = train.shape[1] - 1
+
+train_reframed = series_to_supervised(train, settings["timesteps"], 1)
 
 if train_new_model:
 	print("Training new model..")
-	model = build_model(train, settings)
+	model = build_model(train_reframed, settings)
 	print("Model trained..")
 	model.save(model_name + ".h5")
 	pickle.dump(scaler, open(model_name + ".scl", "wb"))
 	pickle.dump(test_drives, open(model_name + ".test", "wb"))
 else:
+	print("Loading pre-trained model..")
 	model = load_model(model_name + ".h5")
+	scaler = pickle.load(open(model_name + ".scl" ))
+	test_drives = pickle.load(open(model_name + ".test"))
 
 if visualize:
 	for drive in test_drives:
@@ -104,7 +137,7 @@ if visualize:
 		drive = drive.drop("Time(s)", axis=1)
 		scaled_drive = scaler.transform(drive.as_matrix())
 		scaled_drive_df = pd.DataFrame(scaled_drive, columns=list(drive))
-		predictions = predict_test(model, scaled_drive_df, settings)
+		predictions = predict(model, scaled_drive_df, settings)
 		
 		# Invert the transformation before plotting
 		true_fuel_consumption = drive["Fuel_consumption"].values

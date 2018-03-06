@@ -39,11 +39,11 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 	return agg
 
 
-def scale_data(data):
-	scaler = MinMaxScaler((-1, 1))
+def scale_data(data, interval=(0,1)):
+	scaler = MinMaxScaler(interval)
 	scaled_values = scaler.fit_transform(data.as_matrix())
 	scaled_df = pd.DataFrame(scaled_values, columns=list(data))
-	print("Data has been scaled to fit in the range -1 to 1")
+	print("Data has been scaled to fit in the range {}..".format(interval))
 	return scaled_df, scaler
 
 
@@ -90,9 +90,8 @@ def filter_data(data, threshold=0.2, filter_discrete=False):
 				data = data.drop(cols[i], axis=1)
 				
 	num_cols_remaining = len(list(data))
-	print("{removed} columns filtered.\n"
-	      "{kept} columns remaining".format(removed=num_cols_before - num_cols_remaining,
-	                                        kept=num_cols_remaining))
+	print("{removed} of {total} columns filtered..".format(removed=num_cols_before-num_cols_remaining,
+	                                                       total=num_cols_before))
 	return data
 
 
