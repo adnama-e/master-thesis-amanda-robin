@@ -1,40 +1,54 @@
 from sklearn.metrics import mean_squared_error
 from keras.models import Sequential, load_model
 from keras.layers import Dense, LSTM
+from keras.callbacks import EarlyStopping
 from math import sqrt
 from matplotlib import pyplot
 import argparse
 from utils import *
 import pickle
 import os
+import pandas as pd
 
 
 def build_model(data, settings):
-	# var1 is Fuel_consumption
 	n_obs = settings["timesteps"] * settings["features"]
 	X, y = data.values[:, :n_obs], data.values[:, -settings["features"]]
+
 	# reshape input to be 3D [samples, timesteps, features]
 	X = X.reshape((X.shape[0], settings["timesteps"], settings["features"]))
-	
+	print("Training data has shape {}".format(X.shape))
+
 	# Design network
 	model = Sequential()
 	model.add(LSTM(settings["units"], input_shape=(X.shape[1], X.shape[2])))
 	model.add(Dense(1))
 	model.compile(loss="mae", optimizer="adam")
-	
+
 	# Fit network
-	model.fit(X, y, epochs=settings["epochs"], batch_size=settings["batch_size"], verbose=1, shuffle=False)
-	
+	early_stopping = EarlyStopping(patience=3, verbose=2)
+	model.fit(X, y, epochs=settings["epochs"], verbose=1, batch_size=settings["batch_size"],
+			  shuffle=False, callbacks=[early_stopping], validation_split=0.1)
+
+	# Training is preferably done with a batch size > 1 but since we're looking to do
+	# online prediction we need a model that will accept batch size = 1
+	online_model = Sequential()
+	online_model.add(LSTM(settings["units"], batch_input_shape=(1, X.shape[1], X.shape[2])))
+	trained_weights = model.get_weights()
+	online_model.set_weights(trained_weights)
+
 	return model
 
 
-def prepare_data(scaled_file="scaled_kia.csv"):
+def prepare_data(file):
 	"""
 	Filter and scale data. Save to csv.
 	"""
-	if os.path.isfile(scaled_file):
+	scaled_data_file = "scaled_" + file + ".csv"
+	scaler_file = file + ".scl"
+	if os.path.isfile(scaled_data_file) and os.path.isfile(scaler_file):
 		print("Prepared data found. Opening..")
-		return pd.read_csv(scaled_file), pickle.load("f")
+		return pd.read_csv(scaled_data_file), pickle.load(open(scaler_file, "rb"))
 	
 	# Read data from csv
 	data = pd.read_csv("../datasets/KIA_driving_data.csv")
@@ -47,7 +61,8 @@ def prepare_data(scaled_file="scaled_kia.csv"):
 	# Scale data to fit into [0,1]
 	scaled_df, scaler = scale_data(data)
 	scaled_df["Time(s)"] = time
-	scaled_df.to_csv(scaled_file)
+	scaled_df.to_csv(scaled_data_file, index=False)
+	pickle.dump(scaler, open(scaler_file, "wb"))
 	return scaled_df, scaler
 
 
@@ -93,25 +108,35 @@ def plot_predictions(predictions, true_values, time_series):
 # ###############################################
 
 
-settings = {"batch_size": 12,
+settings = {"batch_size": 32,
             "timesteps": 5,
-            "units": 50,
+            "units": 32,
             "epochs": 30}
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--new-model", action="store_true", dest="train_new")
 parser.add_argument("--name", dest="model_name", default="lstm_model")
 parser.add_argument("-v", action="store_true", dest="visualize_it")
+parser.add_argument("--list-models", action="store_true", dest="list_models")
 args = parser.parse_args()
 
 model_name = args.model_name
 train_new_model = args.train_new
 visualize = args.visualize_it
+list_models = args.list_models
 
-data, scaler = prepare_data()
-training_drives, test_drives = split_data(data, concat=False)
+if list_models:
+	models = [model for model in os.listdir(".") if model.endswith("h5")]
+	print("Available models are:")
+	for model in models:
+		print("* {}".format(model))
+	exit(1)
+
+data, scaler = prepare_data("kia")
+training_drives, test_drives = split_data(data, ratio=0.05, concat=False)
+print("Using {} drives for training and {} for testing..".format(len(training_drives), len(test_drives)))
 train = pd.concat(training_drives)
-train.drop("Time(s)", axis=1, inplace=True)
+train = train.drop("Time(s)", axis=1)
 
 settings["features"] = train.shape[1] - 1
 
@@ -122,7 +147,6 @@ if train_new_model:
 	model = build_model(train_reframed, settings)
 	print("Model trained..")
 	model.save(model_name + ".h5")
-	pickle.dump(scaler, open(model_name + ".scl", "wb"))
 	pickle.dump(test_drives, open(model_name + ".test", "wb"))
 else:
 	print("Loading pre-trained model..")
