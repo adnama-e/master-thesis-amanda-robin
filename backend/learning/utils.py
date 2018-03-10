@@ -2,6 +2,7 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
+import os
 
 
 # Credit to: https://machinelearningmastery.com/convert-time-series-supervised-learning-problem-python/
@@ -38,6 +39,12 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 		agg.dropna(inplace=True)
 	
 	return agg
+
+
+def get_models():
+	model_dir = "/home/robintiman/master-thesis-amanda-robin/backend/learning/models"
+	models = [model for model in os.listdir(model_dir) if model.endswith("h5")]
+	return models
 
 
 def scale_data(data, interval=(0,1)):

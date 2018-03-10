@@ -50,7 +50,7 @@ def convert_to_online_model(model):
 	online_model.add(Dense(1))
 	trained_weights = model.get_weights()
 	online_model.set_weights(trained_weights)
-	
+	online_model.compile(loss="mae", optimizer="adam")
 	return online_model
 
 
@@ -66,9 +66,9 @@ def prepare_data(file):
 	
 	# Read data from csv
 	data = pd.read_csv("../datasets/KIA_driving_data.csv")
-	data = data.drop("Class", axis=1)
 	time = data["Time(s)"]
-	
+	data = data.drop(["Class", "Time(s)"], axis=1)
+
 	# Filter unuseful columns
 	data = filter_data(data)
 	
@@ -84,23 +84,6 @@ def plot_time_series(data):
 	pass
 	
 
-def predict_fuel_consumption(model, state):
-	X = state.reshape(1, 1, state.size)
-	prediction = model.predict(X, batch_size=settings["batch_size"])
-	return prediction[0]
-
-
-def predict(model, test):
-	num_states = test.shape[0]
-	predictions = []
-	for i in range(num_states):
-		state = test.iloc[[i]]
-		state_values = state.drop("Fuel_consumption", axis=1).as_matrix()
-		predicted_fuel = predict_fuel_consumption(model, state_values)[0]
-		predictions.append(predicted_fuel)
-	return predictions
-
-
 def evaluate(predictions, data, scaler):
 	for i, pred in enumerate(predictions):
 		state = data.iloc[[i]]
@@ -114,6 +97,7 @@ def evaluate(predictions, data, scaler):
 def plot_predictions(predictions, true_values, time_series):
 	pyplot.plot(time_series, predictions, label="Predicted")
 	pyplot.plot(time_series, true_values, 'r--', label="Actual")
+	pyplot.legend()
 	pyplot.show()
 
 
@@ -143,11 +127,10 @@ do_predict = args.predict
 dataset = "kia"
 
 if list_models:
-	models = [model for model in os.listdir(".") if model.endswith("h5")]
+	models = get_models()
 	print("Available models are:")
 	for model in models:
 		print("* {}".format(model))
-	exit(1)
 
 data, scaler = prepare_data(dataset)
 training_drives, test_drives = split_data(data, ratio=0.05, concat=False)
@@ -175,16 +158,27 @@ else:
 if do_predict:
 	for drive in test_drives:
 		drive = drive.drop("Time(s)", axis=1)
-		drive = series_to_supervised(drive, settings["timesteps"], 1)
-		for time in range(drive.shape[0]):
-			row = drive.iloc[[time]]
+		drive_reframed = series_to_supervised(drive, settings["timesteps"], 1)
+		y_pred, y_truth = [], []
+		for time in range(drive_reframed.shape[0]):
+			# Predict each timestep one at a time.
+			row = drive_reframed.iloc[[time]]
 			X, y = split_x_y(row)
-			y_pred = model.predict(X, batch_size=1)[0]
-			print(y_pred, y)
-	
-	if visualize:
-		pass
-			
+			y_hat = model.predict(X, batch_size=1)[0]
+			y_pred.append(y_hat[0])
+			y_truth.append(y[0])
+
+
+		# Drop the first columns
+		drive = drive.iloc[settings["timesteps"]:]
+
+		# Invert the scaling.
+		truth = scaler.inverse_transform(drive.as_matrix())[:,0]
+		drive["Fuel_consumption"] = y_pred
+		predictions = scaler.inverse_transform(drive.as_matrix())[:,0]
+
+		# Plot the predictions
+		plot_predictions(predictions, truth, range(len(predictions)))
 			
 
 if visualize:
