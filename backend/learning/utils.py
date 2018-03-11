@@ -3,6 +3,9 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import os
+import tensorflow as tf
+from tensorflow.python.tools import freeze_graph, optimize_for_inference_lib
+from keras import backend as K
 
 
 # Credit to: https://machinelearningmastery.com/convert-time-series-supervised-learning-problem-python/
@@ -19,32 +22,82 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 	"""
 	n_vars = 1 if type(data) is list else data.shape[1]
 	df = pd.DataFrame(data)
-	cols, names = list(), list()
+	input_cols, output_cols, input_names, output_names = [], [], [], []
 	# input sequence (t-n, ... t-1)
 	for i in range(n_in, 0, -1):
-		cols.append(df.shift(i))
-		names += [('var%d(t-%d)' % (j + 1, i)) for j in range(n_vars)]
+		input_cols.append(df.shift(i))
+		input_names += [('var%d(t-%d)' % (j + 1, i)) for j in range(n_vars)]
 	# forecast sequence (t, t+1, ... t+n)
 	for i in range(0, n_out):
-		cols.append(df.shift(-i))
+		output_cols.append(df.shift(-i))
 		if i == 0:
-			names += [('var%d(t)' % (j + 1)) for j in range(n_vars)]
+			output_names += [('var%d(t)' % (j + 1)) for j in range(n_vars)]
 		else:
-			names += [('var%d(t+%d)' % (j + 1, i)) for j in range(n_vars)]
+			output_names += [('var%d(t+%d)' % (j + 1, i)) for j in range(n_vars)]
 	# put it all together
-	agg = pd.concat(cols, axis=1)
-	agg.columns = names
+	input_agg = pd.concat(input_cols, axis=1)
+	input_agg.columns = input_names
+	output_agg = pd.concat(output_cols, axis=1)
+	output_agg.columns = output_names
+	output_agg = output_agg.iloc[n_in:]
 	# drop rows with NaN values
 	if dropnan:
-		agg.dropna(inplace=True)
-	
-	return agg
+		input_agg.dropna(inplace=True)
+		output_agg.dropna(inplace=True)
+
+	return input_agg, output_agg
 
 
 def get_models():
+	"""
+	:return: A list of the trained models.  
+	"""
 	model_dir = "/home/robintiman/master-thesis-amanda-robin/backend/learning/models"
 	models = [model for model in os.listdir(model_dir) if model.endswith("h5")]
 	return models
+
+
+# Credit to: https://github.com/anuradhacse/MachineLearningRepo/blob/master/regression.py
+def export_model(saver, model, model_name):
+	"""
+	For usage in the android app we need to export the model to a protobuf file. 
+	This is done by converting our Keras model into a Tensorflow model and then
+	saving it as a pbtxt file. 
+	:param model: The model to export
+	:param model_name: Its name 
+	"""
+	model_dir = "models/"
+	input_node_names = [model.input._op.name]
+	output_node_name = model.output._op.name
+	tf.train.write_graph(K.get_session().graph_def, 'models',
+	                     model_name + '_graph.pbtxt')
+
+	saver.save(K.get_session(), model_dir + model_name + '.chkp')
+
+	freeze_graph.freeze_graph(model_dir + model_name + '_graph.pbtxt', None,
+	                          False, model_dir + model_name + '.chkp', output_node_name,
+	                          "save/restore_all", "save/Const:0",
+	                          model_dir + 'frozen_' + model_name + '.pb', True, "")
+
+	input_graph_def = tf.GraphDef()
+	with tf.gfile.Open(model_dir + 'frozen_' + model_name + '.pb', "rb") as f:
+		input_graph_def.ParseFromString(f.read())
+
+	output_graph_def = optimize_for_inference_lib.optimize_for_inference(
+		input_graph_def, input_node_names, [output_node_name],
+		tf.float32.as_datatype_enum)
+
+	with tf.gfile.FastGFile(model_dir + 'opt_' + model_name + '.pb', "wb") as f:
+		f.write(output_graph_def.SerializeToString())
+
+	print("Model saved as protobuf file.")
+
+
+def reshape_io(input, output, settings):
+	X = input.as_matrix()
+	y = output.as_matrix()[:, 0]
+	X = X.reshape((X.shape[0], settings["timesteps"], settings["features"]))
+	return X, y
 
 
 def scale_data(data, interval=(0,1)):
@@ -80,7 +133,7 @@ def filter_data(data, threshold=0.2, filter_discrete=False):
 	# They're practically identical to Vehicle_speed.
 	num_cols_before = len(list(data))
 	always_drop = ["Wheel_velocity_front_left-hand", "Wheel_velocity_rear_right-hand",
-				   "Wheel_velocity_front_right-hand", "Wheel_velocity_rear_left-hand"]
+	               "Wheel_velocity_front_right-hand", "Wheel_velocity_rear_left-hand"]
 	data = data.drop(always_drop, axis=1)
 	correlations = data.corr(method="kendall")["Fuel_consumption"]
 	cols = list(data)
@@ -96,7 +149,7 @@ def filter_data(data, threshold=0.2, filter_discrete=False):
 		if np.isnan(corr) or np.abs(corr) < threshold:
 			if cols[i] != "Time(s)":
 				data = data.drop(cols[i], axis=1)
-				
+
 	num_cols_remaining = len(list(data))
 	print("{removed} of {total} columns filtered..".format(removed=num_cols_before-num_cols_remaining,
 	                                                       total=num_cols_before))

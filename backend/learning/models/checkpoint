@@ -1,0 +1,2 @@
+model_checkpoint_path: "lstm-32-batch2.chkp"
+all_model_checkpoint_paths: "lstm-32-batch2.chkp"
