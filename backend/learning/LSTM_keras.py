@@ -87,8 +87,8 @@ def evaluate(predictions, data, scaler):
 
 
 def plot_predictions(predictions, true_values, time_series):
-	pyplot.plot(time_series, predictions, label="Predicted")
-	pyplot.plot(time_series, true_values, 'r--', label="Actual")
+	pyplot.plot(time_series, predictions, 'r--', label="Predicted")
+	pyplot.plot(time_series, true_values, label="Actual")
 	pyplot.legend()
 	pyplot.show()
 
@@ -145,7 +145,6 @@ else:
 	model = load_model(model_name + ".h5")
 	scaler = pickle.load(open(dataset + ".scl" , "rb"))
 	test_drives = pickle.load(open(model_name + ".test", "rb"))
-	settings = pickle.load(open("settings.d", "rb"))
 	print("Loaded pre-trained model.")
 
 if args.save_pb:
@@ -154,6 +153,7 @@ if args.save_pb:
 if do_predict:
 	for drive in test_drives:
 		drive = drive.drop("Time(s)", axis=1)
+		settings["features"] = drive.shape[1]
 		input_df, output_df = series_to_supervised(drive, settings["timesteps"], 1)
 		y_pred, y_truth = [], []
 		for step in range(input_df.shape[0]):
@@ -164,16 +164,16 @@ if do_predict:
 			y_hat = model.predict(X, batch_size=1)[0]
 			y_pred.append(y_hat[0])
 			y_truth.append(y[0])
-
-
+		
+		
 		# Drop the first columns
 		drive = drive.iloc[settings["timesteps"]:]
-
+		
 		# Invert the scaling.
 		truth = scaler.inverse_transform(drive.as_matrix())[:,0]
 		drive["Fuel_consumption"] = y_pred
 		predictions = scaler.inverse_transform(drive.as_matrix())[:,0]
-
+		
 		# Plot the predictions
 		plot_predictions(predictions, truth, range(len(predictions)))
 			

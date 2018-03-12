@@ -40,7 +40,7 @@ class Simulation:
 			y_pred = scaler.inverse_transform(actual_array)[0, 0]
 
 			print(self.RTA(y_pred, y_actual))
-		# sleep(1)
+			# sleep(1)
 
 
 	def RTA(self, prediction, truth, tol=0.01):
@@ -51,11 +51,10 @@ class Simulation:
 		:param tol: The tolerance
 		:return:
 		"""
-		# TODO find a more sophisticated classifying function
-		if prediction <= truth + tol:
-			return ":)"
-		else:
-			return ":("
+		# TODO find a more sophisticated classifying function.
+		# TODO implement a fader function for use with the warning triangle.
+		HAPPY, NEUTRAL, SAD = ":)", ":|", ":("
+		
 
 	def PDA(self):
 		"""
