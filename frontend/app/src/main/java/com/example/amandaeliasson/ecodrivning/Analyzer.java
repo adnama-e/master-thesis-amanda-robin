@@ -40,12 +40,16 @@ public class Analyzer {
     }
 
     public void realTime() {
-        String[] row = dataHandler.getRow();
+        float[] row = dataHandler.getRow();
         while (row != null) {
             System.out.println("new row");
-            for (String s : row) System.out.println(s);
             row = dataHandler.getRow();
-            Thread.sleep(1000);
+            tf.feed(INPUT_NODE, row);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -55,25 +59,36 @@ public class Analyzer {
 
     private class DataHandler {
         private CSVReader csvReader;
+        private String[] header;
 
         private DataHandler(AssetManager assetManager) {
             try {
                 Reader reader = new InputStreamReader(assetManager.open("scaled_kia.csv"));
                 csvReader = new CSVReader(reader);
+                String[] header = csvReader.readNext();
             } catch (Exception e ) {
                 System.err.println(e.getStackTrace());
             }
         }
 
-        private String[] getRow() {
-            String[] row;
+        private String[] getHeader() {
+            return header;
+        }
+
+        private float[] getRow() {
+            String[] inputRow;
+            float[] convRow;
             try {
-                row = csvReader.readNext();
-            } catch (IOException e) {
+                inputRow = csvReader.readNext();
+                convRow = new float[inputRow.length - 1];
+                for (int i = 0; i < inputRow.length-1; i++) {
+                    convRow[i] = Float.parseFloat(inputRow[i]);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
-                row = null;
+                convRow = null;
             }
-            return row;
+            return convRow;
         }
     }
 }
