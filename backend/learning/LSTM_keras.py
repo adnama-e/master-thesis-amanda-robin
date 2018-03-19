@@ -14,6 +14,7 @@ import tensorflow as tf
 def build_model(input, output):
 	# reshape input to be 3D [samples, timesteps, features]
 	X, y = reshape_io(input, output, settings)
+	
 	print("Training data has shape {}".format(X.shape))
 
 	# Design network
@@ -26,7 +27,7 @@ def build_model(input, output):
 	early_stopping = EarlyStopping(patience=3, verbose=2)
 	model.fit(X, y, epochs=settings["epochs"], verbose=1, batch_size=settings["batch_size"],
 	          shuffle=False, callbacks=[early_stopping], validation_split=0.1)
-
+	
 	# Training is preferably done with a batch size > 1 but since we're looking to do
 	# online prediction we need a model that will accept batch size = 1
 	model = convert_to_online_model(model)
@@ -100,6 +101,7 @@ def plot_predictions(predictions, true_values, time_series):
 
 settings = {"batch_size": 32,
             "timesteps": 5,
+            "delay": 3,
             "units": 32,
             "epochs": 30}
 
@@ -107,7 +109,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--new-model", action="store_true", dest="train_new")
 parser.add_argument("--name", dest="model_name", default="lstm_model")
 parser.add_argument("--visualize", action="store_true", dest="visualize_it")
-parser.add_argument("--list-models", action="store_true", dest="list_models")
+parser.add_argument("--list-pbfiles", action="store_true", dest="list_models")
 parser.add_argument("--predict", action="store_true", dest="predict")
 parser.add_argument("--save-pb", action="store_true", dest="save_pb")
 args = parser.parse_args()
@@ -121,7 +123,7 @@ dataset = "kia"
 
 if list_models:
 	models = get_models()
-	print("Available models are:")
+	print("Available pbfiles are:")
 	for model in models:
 		print("* {}".format(model))
 
@@ -148,7 +150,8 @@ else:
 	print("Loaded pre-trained model.")
 
 if args.save_pb:
-	export_model(tf.train.Saver(), model, model_name)
+	export_to_pb(model, model_name)
+	# export_model(tf.train.Saver(), model, model_name)
 
 if do_predict:
 	for drive in test_drives:

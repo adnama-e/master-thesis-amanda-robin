@@ -109,7 +109,7 @@ data = pd.read_csv("../datasets/KIA_driving_data.csv")
 data = data.drop("Class", axis=1)
 train, test = split_data(data)
 
-# models, relations = train_regression_models(train, save_models=True)
+# pbfiles, relations = train_regression_models(train, save_models=True)
 models, relations = train_regression_models(train, retrieve_models=True)
 drive(test, relations, models)
 

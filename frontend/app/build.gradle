@@ -35,6 +35,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.+'
     compile 'com.jjoe64:graphview:4.2.1'
     compile 'org.tensorflow:tensorflow-android:+'
+    compile 'com.opencsv:opencsv:3.9'
 }
 
 android {

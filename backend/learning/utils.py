@@ -5,8 +5,10 @@ import numpy as np
 import os
 import tensorflow as tf
 from tensorflow.python.tools import freeze_graph, optimize_for_inference_lib
+from tensorflow.python.framework import graph_util
+from tensorflow.python.framework import graph_io
 from keras import backend as K
-
+import os.path as osp
 
 # Credit to: https://machinelearningmastery.com/convert-time-series-supervised-learning-problem-python/
 def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
@@ -27,6 +29,7 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 	for i in range(n_in, 0, -1):
 		input_cols.append(df.shift(i))
 		input_names += [('var%d(t-%d)' % (j + 1, i)) for j in range(n_vars)]
+		
 	# forecast sequence (t, t+1, ... t+n)
 	for i in range(0, n_out):
 		output_cols.append(df.shift(-i))
@@ -50,11 +53,52 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 
 def get_models():
 	"""
-	:return: A list of the trained models.  
+	:return: A list of the trained pbfiles.
 	"""
-	model_dir = "/home/robintiman/master-thesis-amanda-robin/backend/learning/models"
+	model_dir = "/home/robintiman/master-thesis-amanda-robin/backend/learning/pbfiles"
 	models = [model for model in os.listdir(model_dir) if model.endswith("h5")]
 	return models
+
+
+def export_to_pb(model, model_name):
+	nb_classes = 1  # The number of output nodes in the model
+	prefix_output_node_names_of_final_network = 'output_node'
+	
+	K.set_learning_phase(0)
+	
+	pred = [None] * nb_classes
+	pred_node_names = [None] * nb_classes
+	for i in range(nb_classes):
+		pred_node_names[i] = prefix_output_node_names_of_final_network + str(i)
+		pred[i] = tf.identity(model.output[i], name=pred_node_names[i])
+	print('output nodes names are: ', pred_node_names)
+	
+	sess = K.get_session()
+	output_fld = 'pbfiles/'
+	if not os.path.isdir(output_fld):
+		os.mkdir(output_fld)
+	output_graph_name = model_name + '.pb'
+	output_graph_suffix = '_inference'
+	
+	constant_graph = graph_util.convert_variables_to_constants(sess, sess.graph.as_graph_def(), pred_node_names)
+	graph_io.write_graph(constant_graph, output_fld, output_graph_name, as_text=False)
+	print('saved the constant graph (ready for inference) at: ', osp.join(output_fld, output_graph_name))
+
+
+def print_graph_nodes(filename):
+	import tensorflow as tf
+	g = tf.GraphDef()
+	g.ParseFromString(open(filename, 'rb').read())
+	print()
+	print(filename)
+	print("=======================INPUT=========================")
+	print([n for n in g.node if n.name.find('input') != -1])
+	print("=======================OUTPUT========================")
+	print([n for n in g.node if n.name.find('output') != -1])
+	print("===================KERAS_LEARNING=====================")
+	print([n for n in g.node if n.name.find('keras_learning_phase') != -1])
+	print("======================================================")
+	print()
 
 
 # Credit to: https://github.com/anuradhacse/MachineLearningRepo/blob/master/regression.py
@@ -66,10 +110,10 @@ def export_model(saver, model, model_name):
 	:param model: The model to export
 	:param model_name: Its name 
 	"""
-	model_dir = "models/"
+	model_dir = "pbfiles/"
 	input_node_names = [model.input._op.name]
 	output_node_name = model.output._op.name
-	tf.train.write_graph(K.get_session().graph_def, 'models',
+	tf.train.write_graph(K.get_session().graph_def, 'pbfiles',
 	                     model_name + '_graph.pbtxt')
 
 	saver.save(K.get_session(), model_dir + model_name + '.chkp')

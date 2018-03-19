@@ -2,10 +2,7 @@ from utils import *
 from keras.models import load_model
 from time import sleep
 import pickle
-import pandas as pd
 from argparse import ArgumentParser
-import matplotlib.pyplot as plt
-from matplotlib import image
 
 
 class Simulation:
@@ -30,7 +27,7 @@ class Simulation:
 		for time in range(drive_reframed.shape[0]):
 			# Predict each timestep one at a time.
 			row = drive_reframed.iloc[[time]]
-			X, y_actual = split_x_y(row, settings)
+			X, y_actual = reshape_io(row, settings)
 			y_pred = model.predict(X, batch_size=1)[0]
 
 			# Invert the scaling.
@@ -83,14 +80,14 @@ if __name__ == '__main__':
 
 	if not model_name:
 		avail_models = get_models()
-		print("Choose one of the available models:")
+		print("Choose one of the available pbfiles:")
 		for idx, model in enumerate(avail_models):
 			print("* {} ({})".format(model, idx+1))
 
 		model_name = avail_models[int(input()) - 1]
 		model_name = model_name.replace(model_suffix, "")
 
-	model = load_model("models/" + model_name + model_suffix)
+	model = load_model("pbfiles/" + model_name + model_suffix)
 	test_drives = pickle.load(open(model_name + test_suffix, "rb"))
 	scaler = pickle.load(open(dataset + scaler_suffix, "rb"))
 	sim = Simulation(model, scaler, settings)

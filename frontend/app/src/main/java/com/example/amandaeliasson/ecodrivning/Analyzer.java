@@ -1,6 +1,12 @@
 package com.example.amandaeliasson.ecodrivning;
 
+import android.content.res.AssetManager;
+import android.os.Environment;
+import com.opencsv.CSVReader;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Uses a pre-trained LSTM model to predict the expected fuel consumption.
@@ -13,17 +19,47 @@ import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
  */
 
 public class Analyzer {
+    private TensorFlowInferenceInterface tf;
+    private DataHandler dataHandler;
 
-    public Analyzer() {
-        
+    public Analyzer(AssetManager am, String model) {
+        tf = new TensorFlowInferenceInterface(am, "file:///android_asset/" + model);
+        dataHandler = new DataHandler("scaled_kia.csv");
     }
 
-    public void realTimeAnalysis() {
+    public void realTime() {
+        String[] row;
+        while (row = dataHandler.getRow() != null) {
+            tf.feed("input:0", input, INPUT_SHAPE);
+
+        }
+    }
+
+    public void postDrive() {
 
     }
 
-    public void postDriveAnalysis() {
+    private class DataHandler {
+        private CSVReader reader;
 
+        private DataHandler(String pathToCSV) {
+            try {
+                File csvFile = new File(Environment.getExternalStorageDirectory() + pathToCSV);
+                reader = new CSVReader(new FileReader("csvFile.getAbsolutePath"));
+            } catch (Exception e ) {
+                System.err.println(e.getStackTrace());
+            }
+        }
+
+        private String[] getRow(String dataType) {
+            String[] row;
+            try {
+                row = reader.readNext();
+            } catch (IOException e) {
+                e.printStackTrace();
+                row = null;
+            }
+            return row;
+        }
     }
-
 }
