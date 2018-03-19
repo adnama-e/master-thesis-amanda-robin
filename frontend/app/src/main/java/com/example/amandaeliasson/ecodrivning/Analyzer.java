@@ -21,17 +21,23 @@ import java.io.IOException;
 public class Analyzer {
     private TensorFlowInferenceInterface tf;
     private DataHandler dataHandler;
+    private static final String MODEL_FILE = "file:///android_asset/lstm-32-batch2.pb";
+    private static final String INPUT_NODE = "lstm_2_input";
+    private static final String[] OUTPUT_NODES = {"output_node0"};
+    private static final String OUTPUT_NODE = "output_node0";
+    private static final long[] INPUT_SIZE = {1, 5, 27};
+    private static final int OUTPUT_SIZE = 1;
+    private static AssetManager assetManager;
 
-    public Analyzer(AssetManager am, String model) {
-        tf = new TensorFlowInferenceInterface(am, "file:///android_asset/" + model);
+    public Analyzer(AssetManager am) {
+        tf = new TensorFlowInferenceInterface(am, MODEL_FILE);
         dataHandler = new DataHandler("scaled_kia.csv");
     }
 
     public void realTime() {
-        String[] row;
-        while (row = dataHandler.getRow() != null) {
-            tf.feed("input:0", input, INPUT_SHAPE);
-
+        String[] row = dataHandler.getRow();
+        while (row != null) {
+            System.out.println(row.toString());
         }
     }
 
@@ -51,7 +57,7 @@ public class Analyzer {
             }
         }
 
-        private String[] getRow(String dataType) {
+        private String[] getRow() {
             String[] row;
             try {
                 row = reader.readNext();
