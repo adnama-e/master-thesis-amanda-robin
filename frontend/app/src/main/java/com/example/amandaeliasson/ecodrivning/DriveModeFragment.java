@@ -26,6 +26,7 @@ public class DriveModeFragment extends Fragment {
     Context context;
     ImageView v;
     SeekBar sb_value;
+    Analyzer analyzer;
 
     public DriveModeFragment() {
         dataProvider = new DataProviderMockup();
@@ -34,12 +35,13 @@ public class DriveModeFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     public void onStart() {
         super.onStart();
-        Analyzer analyzer = new Analyzer(context.getAssets(), "lstm-32-batch2.pb");
+        Analyzer analyzer = new Analyzer(context.getAssets());
+        analyzer.realTime();
+
     }
 
 //  #############################################################################

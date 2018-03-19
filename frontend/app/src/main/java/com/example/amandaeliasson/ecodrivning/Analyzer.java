@@ -7,6 +7,10 @@ import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.file.Files;
 
 /**
  * Uses a pre-trained LSTM model to predict the expected fuel consumption.
@@ -21,17 +25,27 @@ import java.io.IOException;
 public class Analyzer {
     private TensorFlowInferenceInterface tf;
     private DataHandler dataHandler;
+    private static final String MODEL_FILE = "file:///android_asset/lstm-32-batch2.pb";
+    private static final String INPUT_NODE = "lstm_2_input";
+    private static final String[] OUTPUT_NODES = {"output_node0"};
+    private static final String OUTPUT_NODE = "output_node0";
+    private static final long[] INPUT_SIZE = {1, 5, 27};
+    private static final int OUTPUT_SIZE = 1;
+    private AssetManager assetManager;
 
-    public Analyzer(AssetManager am, String model) {
-        tf = new TensorFlowInferenceInterface(am, "file:///android_asset/" + model);
-        dataHandler = new DataHandler("scaled_kia.csv");
+    public Analyzer(AssetManager assetManager) {
+        this.assetManager = assetManager;
+        tf = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
+        dataHandler = new DataHandler(assetManager);
     }
 
     public void realTime() {
-        String[] row;
-        while (row = dataHandler.getRow() != null) {
-            tf.feed("input:0", input, INPUT_SHAPE);
-
+        String[] row = dataHandler.getRow();
+        while (row != null) {
+            System.out.println("new row");
+            for (String s : row) System.out.println(s);
+            row = dataHandler.getRow();
+            Thread.sleep(1000);
         }
     }
 
@@ -40,21 +54,21 @@ public class Analyzer {
     }
 
     private class DataHandler {
-        private CSVReader reader;
+        private CSVReader csvReader;
 
-        private DataHandler(String pathToCSV) {
+        private DataHandler(AssetManager assetManager) {
             try {
-                File csvFile = new File(Environment.getExternalStorageDirectory() + pathToCSV);
-                reader = new CSVReader(new FileReader("csvFile.getAbsolutePath"));
+                Reader reader = new InputStreamReader(assetManager.open("scaled_kia.csv"));
+                csvReader = new CSVReader(reader);
             } catch (Exception e ) {
                 System.err.println(e.getStackTrace());
             }
         }
 
-        private String[] getRow(String dataType) {
+        private String[] getRow() {
             String[] row;
             try {
-                row = reader.readNext();
+                row = csvReader.readNext();
             } catch (IOException e) {
                 e.printStackTrace();
                 row = null;
