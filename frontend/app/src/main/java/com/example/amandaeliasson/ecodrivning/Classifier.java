@@ -1,5 +1,5 @@
 package com.example.amandaeliasson.ecodrivning;
 
 public interface Classifier {
-    float classify(float[] data);
+    float classify(float refValue, float trueValue);
 }

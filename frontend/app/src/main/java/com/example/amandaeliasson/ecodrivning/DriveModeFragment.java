@@ -39,9 +39,7 @@ public class DriveModeFragment extends Fragment {
 
     public void onStart() {
         super.onStart();
-        Analyzer analyzer = new Analyzer(context.getAssets());
-        analyzer.predictFuelConsumption();
-
+        Analyzer analyzer = new Analyzer(context.getAssets(), Analyzer.INTERVAL_MODE);
     }
 
 //  #############################################################################

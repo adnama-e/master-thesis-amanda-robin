@@ -1,16 +1,18 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.content.res.AssetManager;
-import android.util.Log;
-
+import org.apache.commons.math3.distribution.NormalDistribution;
 import com.opencsv.CSVReader;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 
 /**
  * Uses a pre-trained LSTM model to predict the expected fuel consumption.
+ * Input:
+ *  Measured vehicle values as an array of floats.
+ * Output:
+ *  A classification of the current fuel consumption.
  *
  * Requires NDK. Install by:
  *  Go to tools > Android > SDK Manager
@@ -28,20 +30,31 @@ public class Analyzer {
     private static final String OUTPUT_NODE = "output_node0";
     private static final long[] INPUT_SHAPE = {1, 5, 27};
     private static final int OUTPUT_SIZE = 1;
-    private static final int CLASSIFY_MODE = 1, REGRESSION_MODE = 2;
-    private AssetManager assetManager;
-    private Classifier classifier;
-    private int currentMode;
+    public static final int REGRESSION_MODE = 1, INTERVAL_MODE = 2;
+    private int classifier;
 
-    public Analyzer(AssetManager assetManager, Classifier classifier) {
-        this.assetManager = assetManager;
+    public Analyzer(AssetManager assetManager, int classifier) {
         this.classifier = classifier;
-        currentMode = CLASSIFY_MODE;
         tf = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
         dataHandler = new DataHandler(assetManager);
     }
 
-    public float predictFuelConsumption(float[] data) {
+    public float classify(float[] data, float output, int classificationMode) {
+        // Calculate the expected fuel consumption.
+        float expFuel = predictFuelConsumption(data);
+        // Fetch the actual fuel consumption.
+        float actFuel = dataHandler.getOutput();
+
+        switch (classificationMode) {
+            case INTERVAL_MODE:
+                intervalClassification(expFuel, actFuel);
+            case REGRESSION_MODE:
+                regressionClassification(expFuel, actFuel);
+
+        }
+    }
+
+    private float predictFuelConsumption(float[] data) {
         float[] output = new float[OUTPUT_SIZE];
         // Feed the data to the model.
         tf.feed(INPUT_NODE, data, INPUT_SHAPE);
@@ -52,68 +65,55 @@ public class Analyzer {
         return output[0];
     }
 
-    /**
-     * Sets the classifying mode.
-     * Available modes:
-     *  Classes - Outputs a class.
-     *  Regression - Outputs a value between 0 and 1.
-     * @param clsMode The mode to use.
-     */
-    public void setClassifyingMode(int clsMode) {
-        currentMode = clsMode;
+    private float regressionClassification(float refValue, float trueValue) {
+        // TODO find suitable distribution. Normal is NOT what we're looking for. 
+        NormalDistribution nd = new NormalDistribution(refValue, 1);
     }
 
-    public String classify(float refValue, float trueValue) {
-        if (currentMode == CLASSIFY_MODE) {
-
-        } else if (currentMode == REGRESSION_MODE) {
-
-        } else {
-            Log.e("ERROR", "Chosen mode (" + currentMode + ") isn't available");
-            return null;
-        }
-    }
-
-    public void postDrive() {
-
+    private float intervalClassification(float refValue, float trueValue) {
+        NormalDistribution nd = new NormalDistribution(refValue, 1);
     }
 
     private class DataHandler {
-        private CSVReader csvReader;
-        private String[] header;
+        private CSVReader inputReader, outputReader;
         private int dataIndex = 0;
         private final int NUM_DATASETS = 3;
+        private float output;
 
         private DataHandler(AssetManager assetManager) {
-            String csvFile = "test_input" + Integer.toString(dataIndex) + ".csv";
+            String inputCSV = "test_input" + Integer.toString(dataIndex) + ".csv";
+            String outputCSV = "test_output" + Integer.toString(dataIndex) + ".csv";
             try {
-                Reader reader = new InputStreamReader(assetManager.open(csvFile));
-                csvReader = new CSVReader(reader);
-                header = csvReader.readNext();
+                inputReader = new CSVReader(new InputStreamReader(assetManager.open(inputCSV)));
+                outputReader = new CSVReader(new InputStreamReader(assetManager.open(outputCSV)));
+                // We're not interested in the first row.
+                inputReader.readNext();
+                outputReader.readNext();
             } catch (IOException e) {
-                System.err.println(e.getStackTrace());
+                e.printStackTrace();
             }
-        }
-
-        private String[] getHeader() {
-            return header;
         }
 
         private boolean pickDataset(int newIndex) {
             return false;
         }
 
-        private float[] getRow() {
-            String[] inputRow;
-            float[] convRow;
+        private float getOutput(){
+            return output;
+        }
+
+        private float[] getInput() {
+            float[] inputRow, outputRow;
             try {
-                inputRow = csvReader.readNext();
-                convRow = toFloat(inputRow);
+                inputRow = toFloat(inputReader.readNext());
+                outputRow = toFloat(outputReader.readNext());
+                // The first element is the fuel consumption.
+                output = outputRow[0];
             } catch (Exception e) {
                 e.printStackTrace();
-                convRow = null;
+                inputRow = null;
             }
-            return convRow;
+            return inputRow;
         }
 
         private float[] toFloat(String[] data) {
