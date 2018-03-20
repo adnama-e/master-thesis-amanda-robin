@@ -1,6 +1,8 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.content.res.AssetManager;
+import android.util.Log;
+
 import com.opencsv.CSVReader;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 import java.io.IOException;
@@ -24,33 +26,51 @@ public class Analyzer {
     private static final String INPUT_NODE = "lstm_2_input";
     private static final String[] OUTPUT_NODES = {"output_node0"};
     private static final String OUTPUT_NODE = "output_node0";
-    private static final long[] INPUT_SIZE = {1, 5, 27};
+    private static final long[] INPUT_SHAPE = {1, 5, 27};
     private static final int OUTPUT_SIZE = 1;
+    private static final int CLASSIFY_MODE = 1, REGRESSION_MODE = 2;
     private AssetManager assetManager;
+    private Classifier classifier;
+    private int currentMode;
 
-    public Analyzer(AssetManager assetManager) {
+    public Analyzer(AssetManager assetManager, Classifier classifier) {
         this.assetManager = assetManager;
+        this.classifier = classifier;
+        currentMode = CLASSIFY_MODE;
         tf = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
         dataHandler = new DataHandler(assetManager);
     }
 
-    public void realTime() {
-        float[] row = dataHandler.getRow();
-        float[] output = new float[1];
-        while (row != null) {
-            System.out.println("new row");
-            row = dataHandler.getRow();
-            // Feed the data to the model.
-            tf.feed(INPUT_NODE, row);
-            // Process the data.
-            tf.run(OUTPUT_NODES, true);
-            // Fetch the result.
-            tf.fetch(OUTPUT_NODE, output);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    public float predictFuelConsumption(float[] data) {
+        float[] output = new float[OUTPUT_SIZE];
+        // Feed the data to the model.
+        tf.feed(INPUT_NODE, data, INPUT_SHAPE);
+        // Process the data.
+        tf.run(OUTPUT_NODES);
+        // Fetch the result.
+        tf.fetch(OUTPUT_NODE, output);
+        return output[0];
+    }
+
+    /**
+     * Sets the classifying mode.
+     * Available modes:
+     *  Classes - Outputs a class.
+     *  Regression - Outputs a value between 0 and 1.
+     * @param clsMode The mode to use.
+     */
+    public void setClassifyingMode(int clsMode) {
+        currentMode = clsMode;
+    }
+
+    public String classify(float refValue, float trueValue) {
+        if (currentMode == CLASSIFY_MODE) {
+
+        } else if (currentMode == REGRESSION_MODE) {
+
+        } else {
+            Log.e("ERROR", "Chosen mode (" + currentMode + ") isn't available");
+            return null;
         }
     }
 
@@ -63,15 +83,14 @@ public class Analyzer {
         private String[] header;
         private int dataIndex = 0;
         private final int NUM_DATASETS = 3;
-        private final int TIMESTEPS = 5;
 
         private DataHandler(AssetManager assetManager) {
-            String csvFile = "test_df" + Integer.toString(dataIndex) + ".csv";
+            String csvFile = "test_input" + Integer.toString(dataIndex) + ".csv";
             try {
                 Reader reader = new InputStreamReader(assetManager.open(csvFile));
                 csvReader = new CSVReader(reader);
                 header = csvReader.readNext();
-            } catch (IOException e ) {
+            } catch (IOException e) {
                 System.err.println(e.getStackTrace());
             }
         }
@@ -89,10 +108,7 @@ public class Analyzer {
             float[] convRow;
             try {
                 inputRow = csvReader.readNext();
-                convRow = new float[inputRow.length - 1];
-                for (int i = 0; i < inputRow.length - 1; i++) {
-                    convRow[i] = Float.parseFloat(inputRow[i]);
-                }
+                convRow = toFloat(inputRow);
             } catch (Exception e) {
                 e.printStackTrace();
                 convRow = null;
@@ -100,8 +116,13 @@ public class Analyzer {
             return convRow;
         }
 
-        private float[] formatData() {
-            return null;
+        private float[] toFloat(String[] data) {
+            float[] floatData = new float[data.length];
+            int i = 0;
+            for (String val : data) {
+                floatData[i++] = Float.parseFloat(val);
+            }
+            return floatData;
         }
     }
 }

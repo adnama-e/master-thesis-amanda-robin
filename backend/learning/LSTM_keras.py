@@ -151,7 +151,6 @@ else:
 
 if args.save_pb:
 	export_to_pb(model, model_name)
-	# export_model(tf.train.Saver(), model, model_name)
 
 if do_predict:
 	for drive in test_drives:
@@ -164,6 +163,7 @@ if do_predict:
 			row = input_df.iloc[[step]]
 			out = output_df.iloc[[step]]
 			X, y = reshape_io(row, out, settings)
+			print(X.shape)
 			y_hat = model.predict(X, batch_size=1)[0]
 			y_pred.append(y_hat[0])
 			y_truth.append(y[0])

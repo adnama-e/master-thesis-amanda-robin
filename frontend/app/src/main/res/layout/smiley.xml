@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/emoji"
         android:tint="@color/green1"
         />
 </RelativeLayout>
