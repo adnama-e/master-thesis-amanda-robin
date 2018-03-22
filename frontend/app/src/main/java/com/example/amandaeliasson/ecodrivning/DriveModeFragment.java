@@ -48,7 +48,7 @@ public class DriveModeFragment extends Fragment {
     DataProviderMockup dataProvider;
     TextToSpeech textToSpeech;
     Context context;
-    ImageView v;
+    ImageView image;
     SeekBar sb_value;
     private BluetoothAdapter BA;
     private Set<BluetoothDevice> pairedDevices;
@@ -67,20 +67,20 @@ public class DriveModeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         BA = BluetoothAdapter.getDefaultAdapter();
     }
-
+/*
     public void onStart() {
         super.onStart();
         connectToOBD();
-    }
+    }*/
 
-    public void connectToOBD() {
+   /* public void connectToOBD() {
         if (OBDAdress == null) {
             enableBluetooth();
             linkOBD();
         }
-    }
+    }*/
 
-    public void enableBluetooth() {
+  /*  public void enableBluetooth() {
         if (!BA.isEnabled()) {
             Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(turnOn, ENABLE_BLUETOOTH);
@@ -88,7 +88,7 @@ public class DriveModeFragment extends Fragment {
         } else {
             System.out.println("Already on!");
         }
-    }
+    }*/
 
     public void makeVisible() {
         Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -171,31 +171,62 @@ public class DriveModeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-//        layout = inflater.inflate(R.layout.drivemode_fragment, container, false
-//        );
-        layout = inflater.inflate(R.layout.smiley, container, false
-        );
-//        v = layout.findViewById(R.id.warning);
+        layout = inflater.inflate(R.layout.drivemode_fragment, container, false);
+        // layout = inflater.inflate(R.layout.smiley, container, false
+        // );
 
         context = container.getContext();
         textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                if(status != TextToSpeech.ERROR){
+                if (status != TextToSpeech.ERROR) {
                     textToSpeech.setLanguage(Locale.ENGLISH);
-                    voiceCommand();
+                    //voiceCommand();
                 }
             }
         });
-        /*sb_value = layout.findViewById(R.id.sb_value);
-        sb_value.setProgress(100);
-        final ImageView im_brightness = layout.findViewById(R.id.warning);
-        sb_value.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        //sb_value = layout.findViewById(R.id.sb_value);
+        //sb_value.setProgress(100);
+        image = layout.findViewById(R.id.warning);
+        //int alpha = sb_value.getProgress();
+        //image.setAlpha(alpha);
+        //sb_value.setOnSeekBarChangeListener(onSeekBarChangeListener);
+        setAlpha();
+        return layout;
+    }
+    public void setAlpha(){
+        List<Measurement> list = dataProvider.getData();
+        Measurement latestAdded = list.get(list.size()-1);
+        if(latestAdded.typeOfMeasurment().equals("speedmeasurment") && latestAdded.goodValue() ==false);
+            image.setImageAlpha(1 * (255/100));
+    }
+   /* SeekBar.OnSeekBarChangeListener onSeekBarChangeListener =
+            new SeekBar.OnSeekBarChangeListener() {
+
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress,
+                                              boolean fromUser) {
+                    int alpha = sb_value.getProgress();
+                    image.setAlpha(alpha);   //deprecated
+                    //image.setImageAlpha(alpha); //for API Level 16+
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            };*/
+        /*sb_value.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                im_brightness.setColorFilter(setBrightness(progress));
-
-
+                //im_brightness.setColorFilter(setBrightness(progress));
+                seekBar.setProgress(30);
+                image.setImageAlpha((int)(progress * (255/100)));
             }
 
             @Override
@@ -208,10 +239,6 @@ public class DriveModeFragment extends Fragment {
 
             }
         });*/
-        return layout;
-
-
-    }
 
     public static PorterDuffColorFilter setBrightness(int progress) {
         if (progress >=    100)
@@ -279,7 +306,7 @@ public class DriveModeFragment extends Fragment {
         Measurement latestAdded = list.get(list.size()-1);
         if(latestAdded.typeOfMeasurment().equals("speedmeasurment") && latestAdded.goodValue() ==false);
             textToSpeech.speak("Slow down, you are driving too fast", TextToSpeech.QUEUE_FLUSH, null);
-            v = layout.findViewById(R.id.happy);
+            //v = layout.findViewById(R.id.happy);
 
     }
     public void onPause(){

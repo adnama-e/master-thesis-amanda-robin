@@ -6,6 +6,7 @@ import android.support.design.widget.NavigationView;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,11 +22,15 @@ import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
 
 
 public class MainActivity extends AppCompatActivity /*implements NavigationView.OnNavigationItemSelectedListener*/ {
+
+    public static String ARGS_DATA_PROVIDER = "ARGS_DATA_PROVIDER";
+
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     public static PinpointManager pinpointManager;
     private Toolbar toolbar;
     View layout_interact;
+    private DataProvider dp;
 
 
     private ActionBarDrawerToggle drawerToggle;
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        FragmentTransaction fragment;
         layout_interact = (View) findViewById(R.id.drawLayout);
         //Toolbar to replace the Actionbar
         setUpToolbar();
@@ -44,6 +50,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         drawerToggle = setUpDrawerToggle();
 
         drawerLayout.addDrawerListener(drawerToggle);
+        dp = new DataProviderMockup();
        /* AWSMobileClient.getInstance().initialize(this).execute();
         PinpointConfiguration pinpointConfig = new PinpointConfiguration(
                 getApplicationContext(),
@@ -97,10 +104,13 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
                 fragmentClass = ScoreFragment.class;
                 break;
             default:
-                fragmentClass = DriveModeFragment.class;
+                fragmentClass = DriveMode.class;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
+            Bundle args = new Bundle();
+            args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dp);
+            fragment.setArguments(args);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -5,7 +5,12 @@
     <color name="colorAccent">#FF4081</color>
     <color name="green1">#a7277650</color>
     <color name="green2">#014018</color>
-    <color name="green3">#D5E5DD</color>
+    <color name="green3">#004D40</color>
     <color name="green4">#2d882d</color>
-    <color name= "red">#aa3939</color>
+    <color name="greenS">#4CAF50</color>
+    <color name= "LimeS">#CDDC39</color>
+    <color name="yellowS">#FFEB3B</color>
+    <color name="orange">#FF8F00</color>
+    <color name="red">#E65100</color>
+
 </resources>
