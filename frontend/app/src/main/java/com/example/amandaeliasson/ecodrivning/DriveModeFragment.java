@@ -1,6 +1,7 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -12,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+
+import com.google.gson.internal.bind.DateTypeAdapter;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -39,12 +43,19 @@ public class DriveModeFragment extends Fragment {
 
     public void onStart() {
         super.onStart();
-        Analyzer analyzer = new Analyzer(context.getAssets(), Analyzer.INTERVAL_MODE);
+        AssetManager am = context.getAssets();
+        DataHandler dh = new DataHandler(am);
+        Analyzer analyzer = new Analyzer(am, Analyzer.INTERVAL_MODE);
+        float[] input;
+        long startTime, endTime;
+        while ((input = dh.getInput()) != null) {
+            startTime = System.currentTimeMillis();
+            float cls = analyzer.classify(input, dh.getOutput());
+            endTime = System.currentTimeMillis();
+            System.out.println("Prediction: " + cls);
+            System.out.println("Execution time: " + (endTime - startTime));
+        }
     }
-
-//  #############################################################################
-
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
