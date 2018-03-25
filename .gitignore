@@ -1,8 +1,9 @@
-*.iml
-.gradle
-/local.properties
-/.idea/*
-.DS_Store
-/build
-/captures
-.externalNativeBuild
+frontend/*.iml
+frontend/.gradle
+frontend/local.properties
+frontend/.idea/workspace.xml
+frontend/.idea/libraries
+frontend/.DS_Store
+frontend/build
+frontend/captures
+frontend/.externalNativeBuild
