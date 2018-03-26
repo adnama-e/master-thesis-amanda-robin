@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
     public static PinpointManager pinpointManager;
     private Toolbar toolbar;
     View layout_interact;
-    private DataProvider dp;
+    private DataHandler dataHandler;
 
 
     private ActionBarDrawerToggle drawerToggle;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         drawerToggle = setUpDrawerToggle();
 
         drawerLayout.addDrawerListener(drawerToggle);
-        dp = new DataProviderMockup();
+        dataHandler = new DataHandler(getAssets());
        /* AWSMobileClient.getInstance().initialize(this).execute();
         PinpointConfiguration pinpointConfig = new PinpointConfiguration(
                 getApplicationContext(),
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         try {
             fragment = (Fragment) fragmentClass.newInstance();
             Bundle args = new Bundle();
-            args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dp);
+            args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dataHandler);
             fragment.setArguments(args);
 
         } catch (Exception e) {

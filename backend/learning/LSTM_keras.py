@@ -3,13 +3,14 @@ from keras.models import Sequential, load_model
 from keras.layers import Dense, LSTM
 from keras.callbacks import EarlyStopping
 from math import sqrt
-from matplotlib import pyplot
+from matplotlib import pyplot as plt
 import argparse
 from utils import *
 import pickle
 import os
 import pandas as pd
 import tensorflow as tf
+from scipy.stats import norm
 
 def build_model(input, output):
 	# reshape input to be 3D [samples, timesteps, features]
@@ -87,11 +88,15 @@ def evaluate(predictions, data, scaler):
 		print("RMSE: {}, for state {}".format(rmse, i))
 
 
-def plot_predictions(predictions, true_values, time_series):
-	pyplot.plot(time_series, predictions, 'r--', label="Predicted")
-	pyplot.plot(time_series, true_values, label="Actual")
-	pyplot.legend()
-	pyplot.show()
+def plot_predictions(predictions, true_values, time_series, density):
+	plt.subplot(2, 1, 1)
+	plt.plot(time_series, predictions, 'r--', label="Predicted")
+	plt.plot(time_series, true_values, label="Actual")
+	plt.legend()
+	plt.subplot(2, 1, 2)
+	plt.plot(time_series, density, "o-", label="Density")
+	plt.legend()
+	plt.show()
 
 
 # ###############################################
@@ -108,15 +113,13 @@ settings = {"batch_size": 32,
 parser = argparse.ArgumentParser()
 parser.add_argument("--new-model", action="store_true", dest="train_new")
 parser.add_argument("--name", dest="model_name", default="lstm_model")
-parser.add_argument("--visualize", action="store_true", dest="visualize_it")
-parser.add_argument("--list-pbfiles", action="store_true", dest="list_models")
+parser.add_argument("--list-models", action="store_true", dest="list_models")
 parser.add_argument("--predict", action="store_true", dest="predict")
 parser.add_argument("--save-pb", action="store_true", dest="save_pb")
 args = parser.parse_args()
 
 model_name = args.model_name
 train_new_model = args.train_new
-visualize = args.visualize_it
 list_models = args.list_models
 do_predict = args.predict
 dataset = "kia"
@@ -157,17 +160,20 @@ if do_predict:
 		drive = drive.drop("Time(s)", axis=1)
 		settings["features"] = drive.shape[1]
 		input_df, output_df = series_to_supervised(drive, settings["timesteps"], 1)
-		y_pred, y_truth = [], []
+		y_pred, y_truth, density = [], [], []
 		for step in range(input_df.shape[0]):
 			# Predict each timestep one at a time.
 			row = input_df.iloc[[step]]
 			out = output_df.iloc[[step]]
 			X, y = reshape_io(row, out, settings)
-			print(X.shape)
 			y_hat = model.predict(X, batch_size=1)[0]
 			y_pred.append(y_hat[0])
 			y_truth.append(y[0])
-		
+			upper_density = norm.pdf(y_hat[0], loc=y_hat[0], scale=0.069652)
+			lower_density = norm.pdf(y[0], loc=y_hat[0], scale=0.069652)
+			print("Difference: {}\n"
+			      "Density: {}\n\n".format(y[0] - y_hat[0], lower_density / upper_density))
+			density.append(lower_density / upper_density)
 		
 		# Drop the first columns
 		drive = drive.iloc[settings["timesteps"]:]
@@ -178,5 +184,5 @@ if do_predict:
 		predictions = scaler.inverse_transform(drive.as_matrix())[:,0]
 		
 		# Plot the predictions
-		plot_predictions(predictions, truth, range(len(predictions)))
+		plot_predictions(predictions, truth, range(len(predictions)), density)
 			

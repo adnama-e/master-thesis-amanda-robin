@@ -39,52 +39,6 @@ public class DriveModeFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        connectToOBD();
-    }
-
-
-//    public void connectToOBD() {
-//        if (OBDAdress == null) {
-//            enableBluetooth();
-//            linkOBD();
-//        }
-//    }
-//
-//    public void enableBluetooth() {
-//        if (!BA.isEnabled()) {
-//            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(turnOn, ENABLE_BLUETOOTH);
-//            System.out.println("Turned on!");
-//        } else {
-//            System.out.println("Already on!");
-//        }
-//    }
-//
-//    public void makeVisible() {
-//        Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-//        startActivityForResult(getVisible, MAKE_VISIBLE);
-//    }
-//
-//    public void linkOBD() {
-//        // Get paired devices.
-//        ArrayList<String> deviceNames = new ArrayList<String>();
-//        final ArrayList<String> deviceAddresses = new ArrayList<String>();
-//        pairedDevices = BA.getBondedDevices();
-//        if (pairedDevices.size() > 0) {
-//            for (BluetoothDevice device : pairedDevices) {
-//                deviceNames.add(device.getName());
-//                deviceAddresses.add(device.getAddress());
-//            }
-//        } else {
-//            System.out.println("No paired devices");
-//            Toast.makeText(getActivity(), "Please pair tablet with OBD device",
-//                    Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//    }
-
-    public void onStart() {
-        super.onStart();
         AssetManager am = context.getAssets();
         DataHandler dh = new DataHandler(am);
         Analyzer analyzer = new Analyzer(am, Analyzer.INTERVAL_MODE);
@@ -92,11 +46,16 @@ public class DriveModeFragment extends Fragment {
         long startTime, endTime;
         while ((input = dh.getInput()) != null) {
             startTime = System.currentTimeMillis();
-            float cls = analyzer.classify(input, dh.getOutput());
+            double cls = analyzer.classify(input, dh.getOutput());
             endTime = System.currentTimeMillis();
             System.out.println("Prediction: " + cls);
             System.out.println("Execution time: " + (endTime - startTime));
         }
+    }
+
+    public void onStart() {
+        super.onStart();
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

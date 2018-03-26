@@ -4,9 +4,10 @@ import android.content.res.AssetManager;
 import com.opencsv.CSVReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 
 
-public class DataHandler {
+public class DataHandler implements Serializable {
     private CSVReader inputReader, outputReader;
     private int dataIndex = 0;
     private final int NUM_DATASETS = 3;
@@ -30,7 +31,7 @@ public class DataHandler {
         return false;
     }
 
-    public float getOutput(){
+    public float getOutput() {
         return output;
     }
 

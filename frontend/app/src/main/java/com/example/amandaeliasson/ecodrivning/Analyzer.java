@@ -1,6 +1,8 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.content.res.AssetManager;
+
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 /**
@@ -34,17 +36,16 @@ public class Analyzer {
         tf = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
     }
 
-    public float classify(float[] data, float actualFuelConsumption) {
+    public double classify(float[] data, float actualFuelConsumption) {
         // Calculate the expected fuel consumption.
         float expFuel = predictFuelConsumption(data);
-        float diff = expFuel - actualFuelConsumption;
-        float cls = -1;
+        double cls = -1;
         switch (classificationMode) {
             case INTERVAL_MODE:
-                cls = intervalClassification(sigmoid(diff));
+                cls = intervalClassification(expFuel, actualFuelConsumption);
                 break;
             case REGRESSION_MODE:
-                cls = regressionClassification(sigmoid(diff));
+                cls = regressionClassification(expFuel, actualFuelConsumption);
                 break;
         }
         return cls;
@@ -61,18 +62,31 @@ public class Analyzer {
         return output[0];
     }
 
-    private float regressionClassification(float activationValue) {
-        return 1 - activationValue;
+    private double regressionClassification(float refValue, float actValue) {
+        if (actValue < refValue) {
+            return 0;
+        }
+        return 1 - usingDensity(refValue, actValue);
     }
 
-    private float intervalClassification(float activationValue) {
-        float limit = 1;
-        for (int i = NUM_CLASSES; i > 0; i--) {
-            if (activationValue < limit / i) {
-                return (float) i;
-            }
-        }
+    private float intervalClassification(float refValue, float actValue) {
         return -1;
+    }
+
+    private double usingProbability(float refValue, float actValue) {
+        NormalDistribution nd = new NormalDistribution(refValue, 0.069652);
+        if (refValue < actValue) {
+            return nd.probability(refValue, actValue);
+        } else {
+            return nd.probability(actValue, refValue);
+        }
+    }
+
+    private double usingDensity(float refValue, float actValue) {
+        NormalDistribution nd = new NormalDistribution(refValue, 0.069652);
+        double upper = nd.density(refValue);
+        double lower = nd.density(actValue);
+        return lower / upper;
     }
 
     /**

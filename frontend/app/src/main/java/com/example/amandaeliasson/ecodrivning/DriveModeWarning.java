@@ -27,25 +27,28 @@ import java.util.Observer;
  */
 
 public class DriveModeWarning extends Fragment implements Observer {
-
-
     View layout;
-    DataProvider dataProvider;
+//    DataProvider dataProvider;
+    DataHandler dataHandler;
     TextToSpeech textToSpeech;
     Context context;
     ImageView image;
     Button dataButton;
     int trans;
+    Analyzer analyzer;
 
-    public DriveModeWarning(){
-           trans = 0;
+    public DriveModeWarning() {
+        trans = 0;
+        analyzer = new Analyzer(getContext().getAssets(), Analyzer.REGRESSION_MODE);
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-       dataProvider = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
-       dataProvider.addObserver(this);
+        dataHandler = (DataHandler) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
+        dataHandler.addObserver(this);
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,11 +66,11 @@ public class DriveModeWarning extends Fragment implements Observer {
             public void onClick(View view) {
                 image.setVisibility(View.VISIBLE);
                 Measurement m = dataProvider.getMeasurement();
-                if(m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() ==false){
-                    if(trans != 255){
+                if (m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() == false) {
+                    if (trans != 255) {
                         trans = trans + 20;
                     }
-                }else{
+                } else {
                     if (trans != 0) {
                         trans = trans - 20;
                     }
@@ -77,80 +80,51 @@ public class DriveModeWarning extends Fragment implements Observer {
         });
 
 
-
         context = container.getContext();
         textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                if(status != TextToSpeech.ERROR){
+                if (status != TextToSpeech.ERROR) {
                     textToSpeech.setLanguage(Locale.ENGLISH);
-                   // voiceCommand();
+                    // voiceCommand();
                 }
             }
         });
-//        sb_value = layout.findViewById(R.id.sb_value);
-//       // final ImageView im_brightness = layout.findViewById(R.id.warning);
-//        sb_value.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                //im_brightness.setColorFilter(setBrightness(progress));
-//                image.setImageAlpha((int)(progress * (255/100)));
-//
-//                /*seekBar.setProgress(progress);
-//                int p = seekBar.getProgress();*/
-//                //setProgress();
-//            }
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//        });
         return layout;
 
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    public void setProgress(){
-        List<Measurement> list = dataProvider.getData();
-        Measurement latestAdded = list.get(list.size()-1);
-        if(latestAdded.typeOfMeasurment().equals("speedmeasurment") && latestAdded.goodValue() ==false);
-        image.setImageAlpha((int)(100 * (255/100)));
+    public void setProgress() {
+        List<Measurement> list = dataProvider.getData(); // TODO replace with analyzer.classify()
+        Measurement latestAdded = list.get(list.size() - 1);
+        if (latestAdded.typeOfMeasurment().equals("speedmeasurment") && latestAdded.goodValue() == false)
+            ;
+        image.setImageAlpha((int) (100 * (255 / 100)));
 
     }
 
     public static PorterDuffColorFilter setBrightness(int progress) {
-        if (progress >=    100)
-        {
-            int value = (int) (progress-100) * 255 / 100;
-            return new PorterDuffColorFilter(Color.argb( value, 255, 255, 255), PorterDuff.Mode.SRC_OVER);
-
-
-
-        }
-        else
-        {
-            int value = (int) (100-progress) * 255 / 100;
+        if (progress >= 100) {
+            int value = (int) (progress - 100) * 255 / 100;
+            return new PorterDuffColorFilter(Color.argb(value, 255, 255, 255), PorterDuff.Mode.SRC_OVER);
+        } else {
+            int value = (int) (100 - progress) * 255 / 100;
             return new PorterDuffColorFilter(Color.argb(value, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
-
-
         }
     }
-    public void voiceCommand(){
+
+    public void voiceCommand() {
         List<Measurement> list = dataProvider.getData();
-        Measurement latestAdded = list.get(list.size()-1);
-        if(latestAdded.typeOfMeasurment().equals("speedmeasurment") && latestAdded.goodValue() ==false);
+        Measurement latestAdded = list.get(list.size() - 1);
+        if (latestAdded.typeOfMeasurment().equals("speedmeasurment") && latestAdded.goodValue() == false)
+            ;
         textToSpeech.speak("Slow down, you are driving too fast", TextToSpeech.QUEUE_FLUSH, null);
-
-
     }
-    public void onPause(){
-        if(textToSpeech!=null){
+
+    public void onPause() {
+        if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
         }
