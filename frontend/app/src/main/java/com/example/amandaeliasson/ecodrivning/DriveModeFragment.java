@@ -22,7 +22,6 @@ import java.util.Locale;
 /**
  * Created by amandaeliasson on 2018-01-31.
  */
-
 public class DriveModeFragment extends Fragment {
     View layout;
     DataProviderMockup dataProvider;
@@ -41,8 +40,6 @@ public class DriveModeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 //        connectToOBD();
     }
-
-
 //    public void connectToOBD() {
 //        if (OBDAdress == null) {
 //            enableBluetooth();
