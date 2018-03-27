@@ -1,4 +1,4 @@
-frontend/*.iml
+frontend/app/*.iml
 frontend/.gradle
 frontend/local.properties
 frontend/.idea/workspace.xml
@@ -7,3 +7,16 @@ frontend/.DS_Store
 frontend/build
 frontend/captures
 frontend/.externalNativeBuild
+.DS_Store
+.gradle/
+.idea/
+backend/.DS_Store
+backend/.idea/	
+backend/datasets/.DS_Store
+backend/datasets/Kaggle-OBD-1/
+backend/datasets/Kaggle-OBD-2/
+backend/datasets/OBD.csv.xls
+backend/datasets/latex.py
+backend/datasets/own-data/
+backend/learning/__pycache__/
+backend/learning/aws.key

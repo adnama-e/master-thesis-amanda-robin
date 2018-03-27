@@ -1,5 +1,6 @@
 package com.example.amandaeliasson.ecodrivning;
 
+import android.content.res.AssetManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,8 +19,8 @@ public class DriveMode extends Fragment implements View.OnClickListener {
     private DataProvider dp;
     //public Button dataButton;
 
-
     public DriveMode() {
+
     }
 
     @Override
@@ -27,6 +28,14 @@ public class DriveMode extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         dp = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
+        AssetManager am = getContext().getAssets();
+        DataHandler dh = new DataHandler(am);
+        Analyzer analyzer = new Analyzer(am, Analyzer.REGRESSION_MODE);
+        float[] input;
+        while ((input = dh.getInput()) != null) {
+            double cls = analyzer.classify(input, dh.getOutput());
+            System.out.println("Prediction: " + cls);
+        }
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,7 +47,7 @@ public class DriveMode extends Fragment implements View.OnClickListener {
         ((Button) v.findViewById(R.id.buttonS)).setOnClickListener(this);
         ((Button) v.findViewById(R.id.buttonT)).setOnClickListener(this);
         ((Button) v.findViewById(R.id.buttonSC)).setOnClickListener(this);
-        ((Button)v.findViewById(R.id.buttonfe)).setOnClickListener(this);
+        ((Button) v.findViewById(R.id.buttonfe)).setOnClickListener(this);
         //dataButton  = v.findViewById(R.id.data_button);
         return v;
     }
