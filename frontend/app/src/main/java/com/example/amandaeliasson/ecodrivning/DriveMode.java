@@ -26,16 +26,8 @@ public class DriveMode extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        dp = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
-        AssetManager am = getContext().getAssets();
-        DataHandler dh = new DataHandler(am);
-        Analyzer analyzer = new Analyzer(am, Analyzer.REGRESSION_MODE);
-        float[] input;
-        while ((input = dh.getInput()) != null) {
-            double cls = analyzer.classify(input, dh.getOutput());
-            System.out.println("Prediction: " + cls);
-        }
+//        Bundle args = getArguments();
+//        dp = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

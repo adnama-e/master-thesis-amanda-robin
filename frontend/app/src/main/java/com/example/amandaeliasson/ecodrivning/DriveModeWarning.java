@@ -1,6 +1,7 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -17,10 +18,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
+import com.google.android.gms.tasks.Task;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by amandaeliasson on 2018-03-12.
@@ -28,54 +33,57 @@ import java.util.Observer;
 
 public class DriveModeWarning extends Fragment implements Observer {
     View layout;
+
   DataProvider dataProvider;
-    DataHandler dataHandler;
+
     TextToSpeech textToSpeech;
     Context context;
     ImageView image;
     Button dataButton;
     int trans;
+    DataHandler dataHandler;
     Analyzer analyzer;
 
     public DriveModeWarning() {
         trans = 0;
-        analyzer = new Analyzer(getContext().getAssets(), Analyzer.REGRESSION_MODE);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        dataHandler = (DataHandler) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
-        //dataHandler.addObserver(this);
-
+        AssetManager am = getContext().getAssets();
+        dataHandler = new DataHandler(am, 0);
+        analyzer = new Analyzer(am, Analyzer.REGRESSION_MODE);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.drivemodewarning, container, false);
-        // layout = inflater.inflate(R.layout.smiley, container, false
-        // );
         image = layout.findViewById(R.id.warning);
         image.setVisibility(View.INVISIBLE);
-        //dataProvider = new DataProviderMockup();
         dataButton = layout.findViewById(R.id.dataB);
         dataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Timer timer = new Timer();
                 image.setVisibility(View.VISIBLE);
-                Measurement m = dataProvider.getMeasurement();
-                if (m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() == false) {
-                    if (trans != 255) {
-                        trans = trans + 20;
-                    }
-                } else {
-                    if (trans != 0) {
-                        trans = trans - 20;
-                    }
+                while (dataHandler.nextRow()) {
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            float[] input = dataHandler.getInput();
+                            float output = dataHandler.getOutput();
+                            double cls = analyzer.classify(input, output);
+                            int alpha = (int) (cls * 255);
+                            System.out.println(alpha + ", " + cls);
+                            image.setImageAlpha(alpha);
+                        }
+                    }, 0, 500);
+
+
                 }
-                image.setImageAlpha(trans);
             }
         });
 
@@ -97,10 +105,7 @@ public class DriveModeWarning extends Fragment implements Observer {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void setProgress() {
-        List<Measurement> list = dataProvider.getData(); // TODO replace with analyzer.classify()
-        Measurement latestAdded = list.get(list.size() - 1);
-        if (latestAdded.typeOfMeasurment().equals("speedmeasurment") && latestAdded.goodValue() == false)
-            ;
+        // TODO insert datahandler here
         image.setImageAlpha((int) (100 * (255 / 100)));
 
     }
@@ -116,10 +121,6 @@ public class DriveModeWarning extends Fragment implements Observer {
     }
 
     public void voiceCommand() {
-        List<Measurement> list = dataProvider.getData();
-        Measurement latestAdded = list.get(list.size() - 1);
-        if (latestAdded.typeOfMeasurment().equals("speedmeasurment") && latestAdded.goodValue() == false)
-            ;
         textToSpeech.speak("Slow down, you are driving too fast", TextToSpeech.QUEUE_FLUSH, null);
     }
 
@@ -133,7 +134,5 @@ public class DriveModeWarning extends Fragment implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        dataProvider.getData();
-        image.setImageAlpha(100);
     }
 }

@@ -38,18 +38,6 @@ public class DriveModeFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AssetManager am = context.getAssets();
-        DataHandler dh = new DataHandler(am);
-        Analyzer analyzer = new Analyzer(am, Analyzer.INTERVAL_MODE);
-        float[] input;
-        long startTime, endTime;
-        while ((input = dh.getInput()) != null) {
-            startTime = System.currentTimeMillis();
-            double cls = analyzer.classify(input, dh.getOutput());
-            endTime = System.currentTimeMillis();
-            System.out.println("Prediction: " + cls);
-            System.out.println("Execution time: " + (endTime - startTime));
-        }
     }
 
     public void onStart() {

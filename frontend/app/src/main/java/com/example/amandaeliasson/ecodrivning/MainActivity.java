@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
     private State state;
     private TextView startDate;
 
-
     private ActionBarDrawerToggle drawerToggle;
 
     @Override
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
         drawerToggle = setUpDrawerToggle();
 
         drawerLayout.addDrawerListener(drawerToggle);
+
         dp = new DataProviderMockup();
         state= new State();
         state.addObserver(this);
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
         });
 
 //        dataHandler = new DataHandler(getAssets());
+
        /* AWSMobileClient.getInstance().initialize(this).execute();
         PinpointConfiguration pinpointConfig = new PinpointConfiguration(
                 getApplicationContext(),
@@ -145,10 +146,12 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
+
             Bundle args = new Bundle();
             args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dataHandler);
             args.putSerializable(MainActivity.ARGS_STATE, state);
             fragment.setArguments(args);
+
 
         } catch (Exception e) {
             e.printStackTrace();

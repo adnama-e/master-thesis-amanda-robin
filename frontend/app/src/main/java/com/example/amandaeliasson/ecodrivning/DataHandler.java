@@ -5,17 +5,28 @@ import com.opencsv.CSVReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
-public class DataHandler implements Serializable {
+public class DataHandler extends TimerTask implements Serializable{
     private CSVReader inputReader, outputReader;
-    private int dataIndex = 0;
-    private final int NUM_DATASETS = 3;
+    private AssetManager assetManager;
     private float output;
+    private float[] inputRow;
 
-    public DataHandler(AssetManager assetManager) {
-        String inputCSV = "test_input" + Integer.toString(dataIndex) + ".csv";
-        String outputCSV = "test_output" + Integer.toString(dataIndex) + ".csv";
+    public DataHandler(AssetManager assetManager, int dataIndex) {
+        this.assetManager = assetManager;
+        setDataset(dataIndex);
+    }
+
+    /**
+     * There are currently three available test sets.
+     * @param index - 0, 1, or 2.
+     */
+    public void setDataset(int index) {
+        String inputCSV = "test_input" + Integer.toString(index) + ".csv";
+        String outputCSV = "test_output" + Integer.toString(index) + ".csv";
         try {
             inputReader = new CSVReader(new InputStreamReader(assetManager.open(inputCSV)));
             outputReader = new CSVReader(new InputStreamReader(assetManager.open(outputCSV)));
@@ -27,26 +38,37 @@ public class DataHandler implements Serializable {
         }
     }
 
-    private boolean pickDataset(int newIndex) {
-        return false;
+    public void run() {
+
     }
 
+    /**
+     * @return - The fuel consumption.
+     */
     public float getOutput() {
         return output;
     }
 
+    /**
+     * @return - The input data to be fed to the Analyzer.classify method.
+     */
     public float[] getInput() {
-        float[] inputRow, outputRow;
+        return inputRow;
+    }
+
+    /**
+     * Parses the next row of the chosen dataset. Should always be called before
+     * getOutput() and getInput().
+     * @return - True if there was a next row, false otherwise.
+     */
+    public boolean nextRow() {
         try {
             inputRow = toFloat(inputReader.readNext());
-            outputRow = toFloat(outputReader.readNext());
-            // The first column is the fuel consumption.
-            output = outputRow[0];
-        } catch (Exception e) {
-            e.printStackTrace();
-            inputRow = null;
+            output = toFloat(outputReader.readNext())[0];
+            return true;
+        } catch (IOException | NullPointerException e) {
+            return false;
         }
-        return inputRow;
     }
 
     private float[] toFloat(String[] data) {
