@@ -1,7 +1,6 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.content.res.AssetManager;
-
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
@@ -70,7 +69,8 @@ public class Analyzer {
     }
 
     private float intervalClassification(float refValue, float actValue) {
-        return -1;
+        double densityRatio = usingDensity(refValue, actValue);
+        return 0;
     }
 
     private double usingProbability(float refValue, float actValue) {
