@@ -1,5 +1,6 @@
 package com.example.amandaeliasson.ecodrivning;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,10 +11,18 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class ScorePagerAdapter extends FragmentPagerAdapter {
     NamedFragment [] fragments;
-    public ScorePagerAdapter(FragmentManager fm) {
+    public ScorePagerAdapter(FragmentManager fm, State state) {
         super(fm);
+        Bundle args= new Bundle();
+        args.putSerializable(MainActivity.ARGS_STATE, state);
+        NamedFragment fragment1 = new Fragment1();
+        fragment1.setArguments(args);
+        NamedFragment progressFragment = new ProgressFragment();
+        progressFragment.setArguments(args);
+        NamedFragment averageFragment = new AverageFragment();
+        averageFragment.setArguments(args);
         fragments = new NamedFragment[] {
-                new Fragment1(), new ProgressFragment(), new AverageFragment()
+                fragment1, progressFragment, averageFragment
         };
     }
 

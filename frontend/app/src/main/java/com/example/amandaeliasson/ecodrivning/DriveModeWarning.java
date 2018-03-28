@@ -28,7 +28,7 @@ import java.util.Observer;
 
 public class DriveModeWarning extends Fragment implements Observer {
     View layout;
-//    DataProvider dataProvider;
+  DataProvider dataProvider;
     DataHandler dataHandler;
     TextToSpeech textToSpeech;
     Context context;
@@ -47,7 +47,7 @@ public class DriveModeWarning extends Fragment implements Observer {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         dataHandler = (DataHandler) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
-        dataHandler.addObserver(this);
+        //dataHandler.addObserver(this);
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.amandaeliasson.ecodrivning;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,12 +19,15 @@ public class DataProviderMockup extends DataProvider {
     }
     @Override
     public List<Measurement> getData() {
+        Calendar c=Calendar.getInstance();
+        c.set(2018+1900,3,1,12,30,6);
         List<Measurement> measurements = new LinkedList<>();
-        Measurement m1 = new SpeedMeasurement(new Date(), 55.60457822286884, 13.001237567514181, 60);
+        Measurement m1 = new SpeedMeasurement(c.getTime(), 55.60457822286884, 13.001237567514181, 60);
         measurements.add(m1);
         latestAdd = m1;
 
-        Measurement m2 = new SpeedMeasurement(new Date(), 55.60329635732146, 13.001317111775279, 60);
+        c.set(0,0,0);
+        Measurement m2 = new SpeedMeasurement(c.getTime(), 55.60329635732146, 13.001317111775279, 60);
         measurements.add(m2);
         latestAdd = m2;
 

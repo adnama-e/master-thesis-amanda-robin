@@ -41,6 +41,6 @@ dependencies {
 
 android {
     defaultConfig {
-        multiDexEnabled= true
+        multiDexEnabled = true
     }
 }
