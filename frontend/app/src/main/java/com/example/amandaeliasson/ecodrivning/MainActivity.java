@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
             fragment = (Fragment) fragmentClass.newInstance();
 
             Bundle args = new Bundle();
-            args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dataHandler);
             args.putSerializable(MainActivity.ARGS_STATE, state);
             fragment.setArguments(args);
 

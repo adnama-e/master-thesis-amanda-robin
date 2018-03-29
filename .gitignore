@@ -10,6 +10,7 @@ frontend/.externalNativeBuild
 .DS_Store
 .gradle/
 .idea/
+local.properties
 backend/.DS_Store
 backend/.idea/	
 backend/datasets/.DS_Store
