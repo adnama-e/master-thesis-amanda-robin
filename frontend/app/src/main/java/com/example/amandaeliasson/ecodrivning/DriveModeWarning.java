@@ -27,9 +27,6 @@ import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created by amandaeliasson on 2018-03-12.
- */
 
 public class DriveModeWarning extends Fragment implements Observer {
     View layout;
@@ -49,8 +46,8 @@ public class DriveModeWarning extends Fragment implements Observer {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AssetManager am = getContext().getAssets();
-        dataHandler = new DataHandler(am, 0);
-        analyzer = new Analyzer(am, Analyzer.REGRESSION_MODE);
+        dataHandler = new DataHandler(am, 1);
+        analyzer = new Analyzer(am);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,21 +63,23 @@ public class DriveModeWarning extends Fragment implements Observer {
             public void onClick(View view) {
                 Timer timer = new Timer();
                 image.setVisibility(View.VISIBLE);
-                while (dataHandler.nextRow()) {
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            float[] input = dataHandler.getInput();
-                            float output = dataHandler.getOutput();
-                            double cls = analyzer.classify(input, output);
-                            int alpha = (int) (cls * 255);
-                            System.out.println(alpha + ", " + cls);
-                            image.setImageAlpha(alpha);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (!dataHandler.nextRow()) {
+                            this.cancel();
                         }
-                    }, 0, 500);
-
-
-                }
+                        float[] input = dataHandler.getInput();
+                        float output = dataHandler.getOutput();
+                        double cls = analyzer.classify(input, output);
+                        int alpha = 0;
+                        if (cls < 0) {
+                            alpha = (int) (cls * -1 * 255);
+                        }
+                        System.out.println(alpha + ", " + cls);
+                        image.setImageAlpha(alpha);
+                    }
+                }, 0, 500);
             }
         });
 
@@ -100,12 +99,6 @@ public class DriveModeWarning extends Fragment implements Observer {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    public void setProgress() {
-        // TODO insert datahandler here
-        image.setImageAlpha((int) (100 * (255 / 100)));
-
-    }
 
     public static PorterDuffColorFilter setBrightness(int progress) {
         if (progress >= 100) {

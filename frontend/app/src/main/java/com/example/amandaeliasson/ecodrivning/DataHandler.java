@@ -4,11 +4,9 @@ import android.content.res.AssetManager;
 import com.opencsv.CSVReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
-public class DataHandler extends TimerTask{
+public class DataHandler {
     private CSVReader inputReader, outputReader;
     private AssetManager assetManager;
     private float output;
@@ -35,10 +33,6 @@ public class DataHandler extends TimerTask{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void run() {
-
     }
 
     /**
