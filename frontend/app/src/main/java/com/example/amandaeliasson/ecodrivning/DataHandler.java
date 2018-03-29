@@ -5,7 +5,6 @@ import com.opencsv.CSVReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
 public class DataHandler {
     private CSVReader inputReader, outputReader;
     private AssetManager assetManager;

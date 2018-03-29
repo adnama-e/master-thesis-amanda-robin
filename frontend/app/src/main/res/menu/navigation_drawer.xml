@@ -5,22 +5,23 @@
     <!--Setup drawer Resouces-->
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav1"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Statistics" />
+            android:id="@+id/drive"
+            android:icon="@drawable/ic_drive"
+            android:title="Drive"
+            />
         <item
-            android:id="@+id/nav2"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="High score" />
-
-        <item
-            android:id="@+id/nav3"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/score"
+            android:icon="@drawable/ic_score"
             android:title="Score" />
         <item
-            android:id="@+id/nav4"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Drivemode"
+            android:id="@+id/goal"
+            android:title="Goal"
+            android:icon="@drawable/ic_goal"
+            />
+        <item
+            android:id="@+id/Friends"
+            android:title="Friends"
+            android:icon="@drawable/ic_friends"
             />
         <item
             android:id="@+id/nav5"

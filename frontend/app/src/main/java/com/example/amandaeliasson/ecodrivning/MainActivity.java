@@ -1,5 +1,6 @@
 package com.example.amandaeliasson.ecodrivning;
 
+import android.app.DatePickerDialog;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.design.widget.NavigationView;
@@ -12,25 +13,40 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.TimeZone;
 
 
-public class MainActivity extends AppCompatActivity /*implements NavigationView.OnNavigationItemSelectedListener*/ {
+public class MainActivity extends AppCompatActivity implements Observer /*implements NavigationView.OnNavigationItemSelectedListener*/ {
 
     public static String ARGS_DATA_PROVIDER = "ARGS_DATA_PROVIDER";
+    public static String ARGS_STATE = "ARGS_STATE";
+
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     public static PinpointManager pinpointManager;
     private Toolbar toolbar;
     View layout_interact;
-
+    private DataHandler dataHandler;
+    private DataProvider dp;
+    private State state;
+    private TextView startDate;
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -49,6 +65,21 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         drawerToggle = setUpDrawerToggle();
 
         drawerLayout.addDrawerListener(drawerToggle);
+
+        dp = new DataProviderMockup();
+        state= new State();
+        state.addObserver(this);
+
+        startDate = findViewById(R.id.start_date);
+        startDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openStartDatePicker();
+            }
+        });
+
+//        dataHandler = new DataHandler(getAssets());
+
        /* AWSMobileClient.getInstance().initialize(this).execute();
         PinpointConfiguration pinpointConfig = new PinpointConfiguration(
                 getApplicationContext(),
@@ -65,11 +96,16 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         pinpointManager.getAnalyticsClient().submitEvents();*/
 
     }
-
     public void setUpToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.navigation, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     public ActionBarDrawerToggle setUpDrawerToggle() {
@@ -91,21 +127,31 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         Fragment fragment = null;
         Class fragmentClass;
         switch (menuItem.getItemId()) {
-            case R.id.nav1:
-                fragmentClass = Fragment1.class;
+            case R.id.drive:
+                fragmentClass = DriveMode.class;
                 break;
-            case R.id.nav2:
-                fragmentClass = Fragment2.class;
+            case R.id.score:
+                fragmentClass = ScoreFragment.class;
+                startDate.setVisibility(View.VISIBLE);
                 break;
 
-            case R.id.nav3:
-                fragmentClass = ScoreFragment.class;
+            case R.id.goal:
+                fragmentClass = GoalFragment.class;
+                break;
+            case R.id.Friends:
+                fragmentClass = FriendFragment.class;
                 break;
             default:
-                fragmentClass = DriveMode.class;
+                fragmentClass = SettingsFragment.class;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
+
+            Bundle args = new Bundle();
+            args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dataHandler);
+            args.putSerializable(MainActivity.ARGS_STATE, state);
+            fragment.setArguments(args);
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,8 +195,25 @@ public class MainActivity extends AppCompatActivity /*implements NavigationView.
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    public void openStartDatePicker(){
+        Calendar currentDate = state.getStartDate();
+        DatePickerDialog pickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                state.setStartDate(year, month, day);
+            }
+        },currentDate.get(Calendar.YEAR),currentDate.get(Calendar.MONTH),currentDate.get(Calendar.DAY_OF_MONTH));
+        pickerDialog.show();
+    }
+
 
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+        startDate.setText(dateFormat.format(state.getStartDate().getTime()));
     }
 }

@@ -30,6 +30,9 @@ import java.util.TimerTask;
 
 public class DriveModeWarning extends Fragment implements Observer {
     View layout;
+
+  DataProvider dataProvider;
+
     TextToSpeech textToSpeech;
     Context context;
     ImageView image;
