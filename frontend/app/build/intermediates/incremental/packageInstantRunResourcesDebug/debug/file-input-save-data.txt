@@ -1,0 +1,35 @@
+#Internal package file, do not edit.
+#Wed Mar 28 16:06:07 CEST 2018
+7.path=test_output1.csv
+2.base=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/assets/debug
+5.set=ASSET
+0.path=lstm-32-batch2.pb
+2.baseType=DIRECTORY
+3.base=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/assets/debug
+7.baseType=DIRECTORY
+2.set=ASSET
+1.path=test_input0.csv
+4.base=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/assets/debug
+7.set=ASSET
+count=8
+5.baseType=DIRECTORY
+2.path=test_input2.csv
+5.base=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/assets/debug
+4.set=ASSET
+3.path=test_input1.csv
+6.base=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/assets/debug
+3.baseType=DIRECTORY
+1.set=ASSET
+4.path=test_output0.csv
+7.base=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/assets/debug
+6.set=ASSET
+1.baseType=DIRECTORY
+6.baseType=DIRECTORY
+5.path=scaled_kia.csv
+0.base=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/assets/debug
+0.baseType=DIRECTORY
+3.set=ASSET
+6.path=test_output2.csv
+1.base=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/assets/debug
+4.baseType=DIRECTORY
+0.set=ASSET

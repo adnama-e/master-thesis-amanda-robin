@@ -1,0 +1,84 @@
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/speedviewlib-1.1.7.aar/f3a5066919e663f884424ccca2b15b9c/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/aws-android-sdk-mobile-client-2.6.7.aar/3e8f7dc933493ce016571e65c5c2784c/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-android-sdk-pinpoint/2.6.17/373346c9f278cabf730f71e303f46cbbd3fb41e6/aws-android-sdk-pinpoint-2.6.17.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/multidex-1.0.3.aar/67baa89d3348c58b5400f847a380ee6b/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/graphview-4.2.1.aar/814ceb3fb3d8a98bfa56f039f4d4e8c2/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/tensorflow-android-1.7.0-rc1.aar/76a9ffe594ca0a75bac6aa2b002ea33b/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/com.opencsv/opencsv/3.9/1e0df53c5ef2431f072d1da3fd31bea9da5b529/opencsv-3.9.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-math3/3.6.1/e4ba98f1d4b3c80ec46392f25e094a6a2e58fcbf/commons-math3-3.6.1.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/e40ab1a44d8bd6aa0172763bdec7cdc1/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bcd84733ab243d91e7141947cdb7eb88/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/e3cf0ceec7e485bdc6e2bbf3c09637fa/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/transition-26.1.0.aar/bff3dca50b89a7c1bd5e0c696697a1f1/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/play-services-maps-11.8.0.aar/015573178f4b2f2e8250556a052b956a/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/play-services-base-11.8.0.aar/ad494af637825d579c8ee424ac0e4797/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/play-services-tasks-11.8.0.aar/417082b2d515c9345f9e14760e5a2aad/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/play-services-basement-11.8.0.aar/d06fc6ea840805c917aa2a3c423ff599/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/support-v4-26.1.0.aar/02545230f4151dd01edeefb7d4c1a429/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/com.github.PhilJay/MPAndroidChart/v3.0.3/92fb46ea210fc3f0ab1125f28b33cf098583e8cf/MPAndroidChart-v3.0.3.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/aws-android-sdk-auth-core-2.6.7.aar/6cb6f4ca75595e3f825824de231cbe45/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-android-sdk-core/2.6.17/1d4693b72b3d0126fb9733871a1e575c8cedeace/aws-android-sdk-core-2.6.17.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/6c6c702c89bfff3cd9e80b04d668c5e190d588c6/commons-lang3-3.5.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/commons-beanutils/commons-beanutils/1.9.3/c845703de334ddc6b4b3cd26835458cb1cba1f3d/commons-beanutils-1.9.3.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-26.1.0.aar/b0cf6ea8537c034ac5f473ec73336f45/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-26.1.0.aar/6e8fe3849a81a2e95d5f80784535299d/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-26.1.0.aar/84ce7b3e22014e179cb4a9e865eb4a29/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/support-fragment-26.1.0.aar/5d9d831f0cba89460957011cf60c1334/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/support-core-ui-26.1.0.aar/81e7669173a60d06568923ea8447daea/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/543288f2ecab58ec1ae000dfa591fae5/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/support-core-utils-26.1.0.aar/c0bd7e1219ca34a15fc7672b12188618/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/bc0c53c3d120db9680a50539bfc0f8ef/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/com.android.support/support-annotations/26.1.0/814258103cf26a15fcc26ecce35f5b7d24b73f8/support-annotations-26.1.0.jar(**.class)
+-injars /Users/amandaeliasson/Library/Android/sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/play-services-maps-license-11.8.0.aar/017ad4cb2ef8eabb7eb97a66a94d92cc/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/commons-collections/commons-collections/3.2.2/8ad72fe39fa8c91eaaf12aadb21e0c3661fe26d5/commons-collections-3.2.2.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/play-services-base-license-11.8.0.aar/e94ecd58ae3e0276083a9dc7391f15f5/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-11.8.0.aar/1339fd0c474624aba546b696ae38cb2a/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/3afaf4f4252b88154c971b1d732e52b7/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-11.8.0.aar/3eaa40dae64fbc3b4fc931177723bef6/jars/classes.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/android.arch.lifecycle/common/1.0.0/e414a4cb28434e25c4f6aa71426eb20cf4874ae9/common-1.0.0.jar(**.class)
+-injars /Users/amandaeliasson/.gradle/caches/modules-2/files-2.1/android.arch.core/common/1.0.0/a2d487452376193fc8c103dd2b9bd5f2b1b44563/common-1.0.0.jar(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/m2repository/com/google/code/gson/gson/2.2.4/gson-2.2.4.jar'(**.class)
+-injars /Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/classes/debug(**.class)
+-outjars /Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/multi-dex/debug/componentClasses.jar
+
+-libraryjars /Users/amandaeliasson/Library/Android/sdk/build-tools/26.0.2/lib/shrinkedAndroid.jar
+
+-forceprocessing
+-dontoptimize
+-dontobfuscate
+-dontusemixedcaseclassnames
+-dontpreverify
+-dontnote **
+-dontwarn **
+-printconfiguration /Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/multi-dex/debug/components.flags
+
+
+# Referenced at /Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/manifests/full/debug/AndroidManifest.xml:21
+-keep class android.support.multidex.MultiDexApplication {
+    <init>(...);
+}
+
+-keep public class * extends android.app.Instrumentation {
+    <init>();
+}
+
+-keep public class * extends android.app.Application {
+    <init>();
+    void attachBaseContext(android.content.Context);
+}
+
+-keep public class * extends android.app.backup.BackupAgent {
+    <init>();
+}
+
+-keep public class * extends java.lang.annotation.Annotation {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.android.tools.ir.** {
+    <fields>;
+    <methods>;
+}
