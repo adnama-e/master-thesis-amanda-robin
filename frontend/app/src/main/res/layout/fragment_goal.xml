@@ -11,17 +11,17 @@
         android:layout_centerVertical="true"
         >
         <ImageView
-            android:layout_width="500dp"
-            android:layout_height="500dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/friendspicture"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/price"
+            android:src="@drawable/cup"
             />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add a goal"
-            android:textSize="50dp"
+            android:textSize="30dp"
             android:id="@+id/goalbutton"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"

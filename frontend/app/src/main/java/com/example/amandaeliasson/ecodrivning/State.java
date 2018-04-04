@@ -24,8 +24,8 @@ public class State extends Observable implements Serializable {
         return startDate;
     }
 
-    public void setEndDate(Calendar endDate) {
-        this.endDate = endDate;
+    public void setEndDate(int year, int month, int date) {
+        this.endDate.set(year, month, date);
         setChanged();
         notifyObservers();
     }

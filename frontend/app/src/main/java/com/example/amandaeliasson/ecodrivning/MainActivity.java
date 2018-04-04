@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
     private DataProvider dp;
     private State state;
     private TextView startDate;
+    private TextView endDate;
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -71,6 +72,13 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
         state.addObserver(this);
 
         startDate = findViewById(R.id.start_date);
+        endDate = findViewById(R.id.end_date);
+        endDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openEndDatePicker();
+            }
+        });
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
             case R.id.score:
                 fragmentClass = ScoreFragment.class;
                 startDate.setVisibility(View.VISIBLE);
+                endDate.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.goal:
@@ -148,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
             fragment = (Fragment) fragmentClass.newInstance();
 
             Bundle args = new Bundle();
-            args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dataHandler);
+            args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dp);
             args.putSerializable(MainActivity.ARGS_STATE, state);
             fragment.setArguments(args);
 
@@ -205,6 +214,16 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
         },currentDate.get(Calendar.YEAR),currentDate.get(Calendar.MONTH),currentDate.get(Calendar.DAY_OF_MONTH));
         pickerDialog.show();
     }
+    public void openEndDatePicker(){
+        Calendar currentDate = state.getEndDate();
+        DatePickerDialog pickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                state.setEndDate(year, month, day);
+            }
+        },currentDate.get(Calendar.YEAR),currentDate.get(Calendar.MONTH),currentDate.get(Calendar.DAY_OF_MONTH));
+        pickerDialog.show();
+    }
 
 
     public void onFragmentInteraction(Uri uri) {
@@ -214,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
     @Override
     public void update(Observable observable, Object o) {
         DateFormat dateFormat = SimpleDateFormat.getDateInstance();
-        startDate.setText(dateFormat.format(state.getStartDate().getTime()));
+        startDate.setText("From:"+" "+dateFormat.format(state.getStartDate().getTime()));
+        endDate.setText("To:"+" "+dateFormat.format(state.getEndDate().getTime()));
     }
 }

@@ -26,8 +26,8 @@ public class DriveMode extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Bundle args = getArguments();
-//        dp = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
+       Bundle args = getArguments();
+       dp = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

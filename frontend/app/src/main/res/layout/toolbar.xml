@@ -21,25 +21,36 @@
         android:background="@color/green1"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="700dp"
+            >
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:padding="8dp"
+                android:id="@+id/start_date"
+                android:textSize="20dp"
+                android:layout_marginRight="20dp"
+                android:text="From:__________"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                />
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:padding="8dp"
+                android:textSize="20dp"
+                android:id="@+id/end_date"
+                android:text="To:__________"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/start_date"
+                android:visibility="invisible"
+                />
 
-        <TextView
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:padding="10dp"
-            android:id="@+id/start_date"
-            android:layout_marginRight="20dp"
-            android:text="2018-01-01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            />
-        <TextView
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:padding="10dp"
-            android:id="@+id/end_date"
-            android:text="2018-02-01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+        </RelativeLayout>
+
 
 
     </android.support.v7.widget.Toolbar>
