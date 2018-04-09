@@ -8,7 +8,7 @@ MERGED from [com.github.anastr:speedviewlib:1.1.7] /Users/amandaeliasson/.gradle
 MERGED from [com.amazonaws:aws-android-sdk-mobile-client:2.6.7] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/aws-android-sdk-mobile-client-2.6.7.aar/3e8f7dc933493ce016571e65c5c2784c/AndroidManifest.xml:2:1-4:12
 MERGED from [com.android.support:multidex:1.0.3] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/multidex-1.0.3.aar/67baa89d3348c58b5400f847a380ee6b/AndroidManifest.xml:17:1-22:12
 MERGED from [com.jjoe64:graphview:4.2.1] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/graphview-4.2.1.aar/814ceb3fb3d8a98bfa56f039f4d4e8c2/AndroidManifest.xml:2:1-14:12
-MERGED from [org.tensorflow:tensorflow-android:1.7.0-rc1] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/tensorflow-android-1.7.0-rc1.aar/76a9ffe594ca0a75bac6aa2b002ea33b/AndroidManifest.xml:2:1-8:12
+MERGED from [org.tensorflow:tensorflow-android:1.7.0] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/tensorflow-android-1.7.0.aar/4de5a3deeeab3b9f2c3c42e14ec7a860/AndroidManifest.xml:2:1-8:12
 MERGED from [com.android.support:design:26.1.0] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/e40ab1a44d8bd6aa0172763bdec7cdc1/AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support:appcompat-v7:26.1.0] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bcd84733ab243d91e7141947cdb7eb88/AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/e3cf0ceec7e485bdc6e2bbf3c09637fa/AndroidManifest.xml:2:1-11:12
@@ -67,8 +67,8 @@ MERGED from [com.github.anastr:speedviewlib:1.1.7] /Users/amandaeliasson/.gradle
 MERGED from [com.github.anastr:speedviewlib:1.1.7] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/speedviewlib-1.1.7.aar/f3a5066919e663f884424ccca2b15b9c/AndroidManifest.xml:11:5-12:19
 MERGED from [com.jjoe64:graphview:4.2.1] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/graphview-4.2.1.aar/814ceb3fb3d8a98bfa56f039f4d4e8c2/AndroidManifest.xml:11:5-12:19
 MERGED from [com.jjoe64:graphview:4.2.1] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/graphview-4.2.1.aar/814ceb3fb3d8a98bfa56f039f4d4e8c2/AndroidManifest.xml:11:5-12:19
-MERGED from [org.tensorflow:tensorflow-android:1.7.0-rc1] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/tensorflow-android-1.7.0-rc1.aar/76a9ffe594ca0a75bac6aa2b002ea33b/AndroidManifest.xml:5:5-6:19
-MERGED from [org.tensorflow:tensorflow-android:1.7.0-rc1] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/tensorflow-android-1.7.0-rc1.aar/76a9ffe594ca0a75bac6aa2b002ea33b/AndroidManifest.xml:5:5-6:19
+MERGED from [org.tensorflow:tensorflow-android:1.7.0] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/tensorflow-android-1.7.0.aar/4de5a3deeeab3b9f2c3c42e14ec7a860/AndroidManifest.xml:5:5-6:19
+MERGED from [org.tensorflow:tensorflow-android:1.7.0] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/tensorflow-android-1.7.0.aar/4de5a3deeeab3b9f2c3c42e14ec7a860/AndroidManifest.xml:5:5-6:19
 MERGED from [com.android.support:design:26.1.0] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/e40ab1a44d8bd6aa0172763bdec7cdc1/AndroidManifest.xml:25:5-29:19
 MERGED from [com.android.support:design:26.1.0] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/e40ab1a44d8bd6aa0172763bdec7cdc1/AndroidManifest.xml:25:5-29:19
 MERGED from [com.android.support:appcompat-v7:26.1.0] /Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bcd84733ab243d91e7141947cdb7eb88/AndroidManifest.xml:25:5-29:19

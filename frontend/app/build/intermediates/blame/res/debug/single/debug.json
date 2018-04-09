@@ -16,12 +16,12 @@
         "source": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/color_abc_tint_seek_thumb.xml.flat",
-        "source": "/Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bcd84733ab243d91e7141947cdb7eb88/res/color/abc_tint_seek_thumb.xml"
-    },
-    {
         "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/raw_car2.mp4.flat",
         "source": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/src/main/res/raw/car2.mp4"
+    },
+    {
+        "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/color_abc_tint_seek_thumb.xml.flat",
+        "source": "/Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bcd84733ab243d91e7141947cdb7eb88/res/color/abc_tint_seek_thumb.xml"
     },
     {
         "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/drawable-v24_ic_launcher_foreground.xml.flat",
@@ -98,6 +98,10 @@
     {
         "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/layout_drivemodewarning.xml.flat",
         "source": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/src/main/res/layout/drivemodewarning.xml"
+    },
+    {
+        "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/drawable_s3.png.flat",
+        "source": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/src/main/res/drawable/s3.png"
     },
     {
         "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/drawable-xhdpi-v4_abc_scrubber_control_to_pressed_mtrl_005.png.flat",
@@ -1336,6 +1340,10 @@
         "source": "/Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/e40ab1a44d8bd6aa0172763bdec7cdc1/res/layout/design_bottom_sheet_dialog.xml"
     },
     {
+        "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/drawable_s4.png.flat",
+        "source": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/src/main/res/drawable/s4.png"
+    },
+    {
         "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/layout_drivemode_fragment.xml.flat",
         "source": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/src/main/res/layout/drivemode_fragment.xml"
     },
@@ -2336,6 +2344,10 @@
         "source": "/Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bcd84733ab243d91e7141947cdb7eb88/res/drawable-xxhdpi-v4/abc_list_longpressed_holo.9.png"
     },
     {
+        "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/drawable_s1.png.flat",
+        "source": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/src/main/res/drawable/s1.png"
+    },
+    {
         "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_abc_ic_menu_selectall_mtrl_alpha.png.flat",
         "source": "/Users/amandaeliasson/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bcd84733ab243d91e7141947cdb7eb88/res/drawable-hdpi-v4/abc_ic_menu_selectall_mtrl_alpha.png"
     },
@@ -2414,6 +2426,10 @@
     {
         "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/raw_car.mp4.flat",
         "source": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/src/main/res/raw/car.mp4"
+    },
+    {
+        "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/drawable_s2.png.flat",
+        "source": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/src/main/res/drawable/s2.png"
     },
     {
         "merged": "/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/res/merged/debug/drawable-v21_abc_edit_text_material.xml.flat",

@@ -47,10 +47,21 @@ public class DataProviderMockup extends DataProvider {
         measurements.add(m6);
         latestAdd = m6;
 
-
-        /*Measurement m7 = new BrakeMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 60);
+        Measurement m7 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 60);
         measurements.add(m7);
-        latestAdd = m7;*/
+        latestAdd = m7;
+
+        Measurement m8 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 60);
+        measurements.add(m8);
+        latestAdd = m8;
+
+        Measurement m9 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 60);
+        measurements.add(m9);
+        latestAdd = m9;
+
+        Measurement m10 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 60);
+        measurements.add(m10);
+        latestAdd = m10;
         return measurements;
     }
     public Measurement getMeasurement(){

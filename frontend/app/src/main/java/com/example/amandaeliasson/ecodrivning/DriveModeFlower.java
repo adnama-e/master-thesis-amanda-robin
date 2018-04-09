@@ -1,6 +1,7 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.annotation.SuppressLint;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -19,11 +22,13 @@ import java.util.Observer;
  */
 
 public class DriveModeFlower extends Fragment implements Observer {
-    ImageView image;
+    FlowerView image1, image2, image3;
     Button button;
     RelativeLayout layout;
     DataProvider dataProvider;
-    int picture;
+
+    int picture, picture2, picture3;
+
     @SuppressLint("ResourceAsColor")
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,38 +36,39 @@ public class DriveModeFlower extends Fragment implements Observer {
         dataProvider = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
         dataProvider.addObserver(this);
     }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.drivemodeflower, container, false);
         button = (Button) v.findViewById(R.id.flowerdata);
-        image = (ImageView)v.findViewById(R.id.flower1);
-        picture = R.drawable.growing1;
+        image1 = (FlowerView) v.findViewById(R.id.flower1);
+        image1.setVisibility(View.INVISIBLE);
+        image2 = (FlowerView) v.findViewById(R.id.flower2);
+        image2.setVisibility(View.INVISIBLE);
+        image2.setFlowerToWaitFor(image1);
+        image3 = (FlowerView) v.findViewById(R.id.flower3);
+        image3.setVisibility(View.INVISIBLE);
+        image3.setFlowerToWaitFor(image2);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Measurement m = dataProvider.getMeasurement();
 
                 //Denna ska ändras sedan, då blomman ska växa när man kör bra!
-                if(m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() ==false) {
-                    if(picture == R.drawable.growing1){
-                        picture = R.drawable.growing2;
-                    }else if (picture == R.drawable.growing2){
-                        picture = R.drawable.growing3;
-                    }else if(picture == R.drawable.growing3){
-                        picture = R.drawable.growing4;
-                    }else if(picture == R.drawable.growing4){
-                        picture = R.drawable.growing5;
-                    }else if(picture == R.drawable.growing5){
-                        picture = R.drawable.growing6;
-                    }else if(picture == R.drawable.growing6){
-                        picture = R.drawable.growing7;
-                    }
-                    image.setImageResource(picture);
-                }}});
-        return v;
+                if (m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() == false) {
+                    image1.grow();
+                    image2.grow();
+                    image3.grow();
 
+                }
+
+
+            }
+        });
+        return v;
     }
+
     @Override
     public void update(Observable observable, Object o) {
 

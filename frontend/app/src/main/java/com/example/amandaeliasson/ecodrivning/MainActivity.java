@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
     private State state;
     private TextView startDate;
     private TextView endDate;
+    private int visable;
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -130,6 +131,13 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
             }
         });
     }
+    public boolean isVisable(View v){
+        if(visable == v.INVISIBLE){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     public void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
@@ -137,21 +145,29 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
         switch (menuItem.getItemId()) {
             case R.id.drive:
                 fragmentClass = DriveMode.class;
+                endDate.setVisibility(View.INVISIBLE);
+                startDate.setVisibility(View.INVISIBLE);
                 break;
             case R.id.score:
                 fragmentClass = ScoreFragment.class;
-                startDate.setVisibility(View.VISIBLE);
                 endDate.setVisibility(View.VISIBLE);
+                startDate.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.goal:
                 fragmentClass = GoalFragment.class;
+                endDate.setVisibility(View.INVISIBLE);
+                startDate.setVisibility(View.INVISIBLE);
                 break;
             case R.id.Friends:
                 fragmentClass = FriendFragment.class;
+                endDate.setVisibility(View.INVISIBLE);
+                startDate.setVisibility(View.INVISIBLE);
                 break;
             default:
                 fragmentClass = SettingsFragment.class;
+                endDate.setVisibility(View.INVISIBLE);
+                startDate.setVisibility(View.INVISIBLE);
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();

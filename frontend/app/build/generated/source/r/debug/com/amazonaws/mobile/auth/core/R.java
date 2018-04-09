@@ -12,8 +12,8 @@ public final class R {
         public static final int text = 0x7f03019f;
     }
     public static final class id {
-        public static final int large = 0x7f0800ae;
-        public static final int small = 0x7f080103;
+        public static final int large = 0x7f0800b2;
+        public static final int small = 0x7f080107;
     }
     public static final class string {
         public static final int sign_in_canceled_message_format = 0x7f0e0041;

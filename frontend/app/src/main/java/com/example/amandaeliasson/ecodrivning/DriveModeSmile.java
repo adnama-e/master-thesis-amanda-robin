@@ -37,7 +37,7 @@ public class DriveModeSmile extends Fragment implements Observer {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.drivemodesmile, container, false);
         image = (ImageView)v.findViewById(R.id.smileyId);
-        picture = R.drawable.emoji1;
+        picture = R.drawable.s1;
         image.setImageResource(picture);
         layout  = (RelativeLayout)v.findViewById(R.id.background);
         layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greenS));
@@ -47,20 +47,16 @@ public class DriveModeSmile extends Fragment implements Observer {
             public void onClick(View view) {
                 Measurement m = dataProvider.getMeasurement();
                 if(m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() ==false){
-                    if(picture == (R.drawable.emoji1)){
-                        picture = R.drawable.emoji2;
+                    if(picture == (R.drawable.s1)){
+                        picture = R.drawable.s2;
                         layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.LimeS));
                     }
-                    else if (picture == (R.drawable.emoji2)){
-                        picture = R.drawable.emoji3;
-                        layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.yellowS));
-                    }
-                    else if(picture == (R.drawable.emoji3)){
-                        picture = R.drawable.emoji4;
+                    else if (picture == (R.drawable.s2)){
+                        picture = R.drawable.s3;
                         layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.orange));
-
-                    }else if(picture == (R.drawable.emoji4)){
-                        picture = R.drawable.emoji5;
+                    }
+                    else if(picture == (R.drawable.s3)){
+                        picture = R.drawable.s4;
                         layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red));
 
                     }

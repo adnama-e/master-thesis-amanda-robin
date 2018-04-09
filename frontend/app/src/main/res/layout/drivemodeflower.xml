@@ -9,22 +9,51 @@
         android:text="Get data"
         android:id="@+id/flowerdata"
         />
-
     <RelativeLayout
-        android:layout_width="500dp"
-        android:layout_height="500dp"
+        android:layout_width="200dp"
+        android:layout_height="400dp"
         android:id="@+id/backgroundflower"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="327dp"
-        android:layout_marginStart="327dp"
-        android:layout_toEndOf="@+id/flowerdata"
-        android:layout_toRightOf="@+id/flowerdata">
-
-        <ImageView
+        >
+        <com.example.amandaeliasson.ecodrivning.FlowerView
             android:id="@+id/flower1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" />
+    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="200dp"
+            android:layout_height="400dp"
+            android:layout_toRightOf="@+id/backgroundflower"
+            android:id="@+id/backgroundflower2"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            >
+            <com.example.amandaeliasson.ecodrivning.FlowerView
+                android:id="@+id/flower2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="200dp"
+        android:layout_height="400dp"
+        android:layout_toLeftOf="@+id/backgroundflower"
+        android:id="@+id/backgroundflower3"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        >
+        <com.example.amandaeliasson.ecodrivning.FlowerView
+            android:id="@+id/flower3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            />
+
     </RelativeLayout>
 </RelativeLayout>
