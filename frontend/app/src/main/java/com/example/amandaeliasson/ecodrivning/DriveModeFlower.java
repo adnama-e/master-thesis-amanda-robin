@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by amandaeliasson on 2018-03-19.
@@ -26,6 +28,7 @@ public class DriveModeFlower extends Fragment implements Observer {
     Button button;
     RelativeLayout layout;
     DataProvider dataProvider;
+    Timer time;
 
     int picture, picture2, picture3;
 
@@ -50,23 +53,38 @@ public class DriveModeFlower extends Fragment implements Observer {
         image3 = (FlowerView) v.findViewById(R.id.flower3);
         image3.setVisibility(View.INVISIBLE);
         image3.setFlowerToWaitFor(image2);
+        time = new Timer();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Measurement m = dataProvider.getMeasurement();
 
-                //Denna ska ändras sedan, då blomman ska växa när man kör bra!
-                if (m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() == false) {
-                    image1.grow();
-                    image2.grow();
-                    image3.grow();
+                time.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Measurement m = dataProvider.getMeasurement();
 
-                }
+                        //Denna ska ändras sedan, då blomman ska växa när man kör bra!
+                        if (m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() == false) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    image1.grow();
+                                    image2.grow();
+                                    image3.grow();
+                                }
+                            });
 
+                        }
+                    }
+                }, 0, 1000);
 
             }
         });
         return v;
+    }
+    public void onPause() {
+        time.cancel();
+        super.onPause();
     }
 
     @Override

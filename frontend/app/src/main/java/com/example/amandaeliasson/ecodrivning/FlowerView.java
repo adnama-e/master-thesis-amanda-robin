@@ -45,7 +45,7 @@ public class FlowerView extends ImageView {
         waitFor = fv;
     }
     public void grow(){
-        if(waitFor==null||((waitFor !=null) && waitFor.fullGrown())){
+        if(waitFor==null||waitFor.fullGrown()){
             if(index ==-1){
                 setVisibility(VISIBLE);
             }

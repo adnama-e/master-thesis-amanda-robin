@@ -15,17 +15,20 @@ import android.widget.VideoView;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by amandaeliasson on 2018-03-12.
  */
 
 public class DriveModeThird extends Fragment implements Observer {
-    ImageView image1, image2, image3, image4, image5;
+    ThirdView image1, image2, image3, image4, image5;
     int picture;
     DataProvider dataProvider;
     int visibility;
     VideoView video;
+    Timer time;
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,16 +44,16 @@ public class DriveModeThird extends Fragment implements Observer {
         final View v = inflater.inflate(R.layout.drivemodethird, container, false);
         Button button = (Button) v.findViewById(R.id.videoButton);
         Button databutton = (Button) v.findViewById(R.id.dataButton2);
-        image1 = (ImageView) v.findViewById(R.id.cloud1m);
-        image2 = (ImageView) v.findViewById(R.id.cloud2m);
-        image3 = (ImageView) v.findViewById(R.id.cloud3m);
-        image4 = (ImageView) v.findViewById(R.id.cloud4m);
-        image5 = (ImageView) v.findViewById(R.id.cloud5m);
-        image1.setVisibility(View.INVISIBLE);
-        image2.setVisibility(View.INVISIBLE);
-        image3.setVisibility(View.INVISIBLE);
-        image4.setVisibility(View.INVISIBLE);
-        image5.setVisibility(View.INVISIBLE);
+        image1 = (ThirdView) v.findViewById(R.id.cloud1m);
+
+        image2 = (ThirdView) v.findViewById(R.id.cloud2m);
+        image2.setFlowerToWaitFor(image1);
+        image3 = (ThirdView) v.findViewById(R.id.cloud3m);
+        image3.setFlowerToWaitFor(image2);
+        image4 = (ThirdView) v.findViewById(R.id.cloud4m);
+        image4.setFlowerToWaitFor(image3);
+        image5 = (ThirdView) v.findViewById(R.id.cloud5m);
+        image5.setFlowerToWaitFor(image4);
 
         video = (VideoView) v.findViewById(R.id.video);
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -70,6 +73,7 @@ public class DriveModeThird extends Fragment implements Observer {
         video.setVideoURI(uri);
         video.requestFocus();
         video.start();
+        time = new Timer();
 
        /* button.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -85,29 +89,34 @@ public class DriveModeThird extends Fragment implements Observer {
         databutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Measurement m = dataProvider.getMeasurement();
-                if (m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() == false) {
-                    if (visibility == 0) {
-                        image1.setVisibility(View.VISIBLE);
-                        visibility = 1;
-                    } else if (visibility == 1) {
-                        image2.setVisibility(View.VISIBLE);
-                        visibility = 2;
-                    } else if (visibility == 2) {
-                        image3.setVisibility(View.VISIBLE);
-                        visibility = 3;
-                    } else if (visibility == 3) {
-                        image4.setVisibility(View.VISIBLE);
-                        visibility = 4;
-                    } else if (visibility == 4) {
-                        image5.setVisibility(View.VISIBLE);
-                        visibility = 5;
+                time.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Measurement m = dataProvider.getMeasurement();
+                        if (m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() == false) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    image1.grow();
+                                    image2.grow();
+                                    image3.grow();
+                                    image4.grow();
+                                    image5.grow();
+                                }
+                            });
+                        }
                     }
-                }
+                }, 0, 1000);
+
+
             }
         });
 
         return v;
+    }
+    public void onPause() {
+        time.cancel();
+        super.onPause();
     }
 
 

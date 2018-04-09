@@ -14,17 +14,20 @@ import android.widget.RelativeLayout;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by amandaeliasson on 2018-03-12.
  */
 
 public class DriveModeSmile extends Fragment implements Observer {
-    ImageView image;
+    SmileView image;
     RelativeLayout layout;
     Button b;
     DataProvider dataProvider;
     int picture;
+    Timer time;
     @SuppressLint("ResourceAsColor")
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,35 +39,42 @@ public class DriveModeSmile extends Fragment implements Observer {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.drivemodesmile, container, false);
-        image = (ImageView)v.findViewById(R.id.smileyId);
+        image = (SmileView)v.findViewById(R.id.smileyId);
         picture = R.drawable.s1;
         image.setImageResource(picture);
-        layout  = (RelativeLayout)v.findViewById(R.id.background);
-        layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greenS));
+        //layout  = (RelativeLayout)v.findViewById(R.id.background);
+        //layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greenS));
+        time = new Timer();
         b = (Button)v.findViewById(R.id.dataButton);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Measurement m = dataProvider.getMeasurement();
-                if(m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() ==false){
-                    if(picture == (R.drawable.s1)){
-                        picture = R.drawable.s2;
-                        layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.LimeS));
-                    }
-                    else if (picture == (R.drawable.s2)){
-                        picture = R.drawable.s3;
-                        layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.orange));
-                    }
-                    else if(picture == (R.drawable.s3)){
-                        picture = R.drawable.s4;
-                        layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red));
 
+                time.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Measurement m = dataProvider.getMeasurement();
+                        if(m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() ==false) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    image.change();
+                                }
+                            });
+
+                        }
                     }
-                    image.setImageResource(picture);
-                }else{}
+                }, 0, 1000);;
+
             }
             });
         return v;
+    }
+
+    @Override
+    public void onPause() {
+        time.cancel();
+        super.onPause();
     }
 
     @Override
