@@ -25,7 +25,7 @@
             />
         <item
             android:id="@+id/nav5"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_settings"
             android:title="Settings"/>
     </group>
 </menu>

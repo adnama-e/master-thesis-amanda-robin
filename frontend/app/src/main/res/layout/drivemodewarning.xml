@@ -5,7 +5,7 @@
     android:background="@color/green3">
 
 
-    <ImageView
+    <com.example.amandaeliasson.ecodrivning.WarningView
         android:id="@+id/warning"
         android:layout_width="800dp"
         android:layout_height="500dp"

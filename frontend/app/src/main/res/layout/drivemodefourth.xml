@@ -31,7 +31,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true">
 
-            <ImageView
+            <com.example.amandaeliasson.ecodrivning.FourthView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:id="@+id/cloud1"
@@ -42,7 +42,7 @@
                 android:layout_marginRight="148dp"
                 android:src="@drawable/cloud" />
 
-            <ImageView
+            <com.example.amandaeliasson.ecodrivning.FourthView
                 android:id="@+id/cloud2"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -54,7 +54,7 @@
                 android:layout_marginRight="67dp"
                 android:src="@drawable/cloud" />
 
-            <ImageView
+            <com.example.amandaeliasson.ecodrivning.FourthView
                 android:id="@+id/cloud3"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -64,7 +64,7 @@
                 android:layout_marginBottom="17dp"
                 android:src="@drawable/cloud" />
 
-            <ImageView
+            <com.example.amandaeliasson.ecodrivning.FourthView
                 android:id="@+id/cloud4"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -76,7 +76,7 @@
                 android:layout_marginStart="12dp"
                 android:src="@drawable/cloud" />
 
-            <ImageView
+            <com.example.amandaeliasson.ecodrivning.FourthView
                 android:id="@+id/cloud5"
                 android:layout_width="150dp"
                 android:layout_height="150dp"

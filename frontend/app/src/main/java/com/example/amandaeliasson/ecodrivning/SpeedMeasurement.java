@@ -14,7 +14,7 @@ public class SpeedMeasurement extends Measurement {
         return super.data;
     }
     public boolean goodValue(){
-        if(getSpeed() > 70){
+        if(getSpeed() ==1){
             return true;
         }else{
             return false;

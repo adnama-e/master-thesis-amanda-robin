@@ -63,8 +63,7 @@ public class DriveModeFlower extends Fragment implements Observer {
                     public void run() {
                         Measurement m = dataProvider.getMeasurement();
 
-                        //Denna ska ändras sedan, då blomman ska växa när man kör bra!
-                        if (m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() == false) {
+                        if (m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() == true) {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -73,7 +72,6 @@ public class DriveModeFlower extends Fragment implements Observer {
                                     image3.grow();
                                 }
                             });
-
                         }
                     }
                 }, 0, 1000);

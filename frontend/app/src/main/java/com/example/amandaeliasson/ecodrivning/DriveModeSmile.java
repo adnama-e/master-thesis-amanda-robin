@@ -40,8 +40,9 @@ public class DriveModeSmile extends Fragment implements Observer {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.drivemodesmile, container, false);
         image = (SmileView)v.findViewById(R.id.smileyId);
-        picture = R.drawable.s1;
+        picture = R.drawable.smiley_happy;
         image.setImageResource(picture);
+        //image.changeBackgroundColor();
         //layout  = (RelativeLayout)v.findViewById(R.id.background);
         //layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greenS));
         time = new Timer();
@@ -59,9 +60,18 @@ public class DriveModeSmile extends Fragment implements Observer {
                                 @Override
                                 public void run() {
                                     image.change();
+                                    //image.changeBackgroundColor();
                                 }
                             });
 
+                        }else{
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    image.changeBack();
+                                   // image.changeBackgroundColor();
+                                }
+                            });
                         }
                     }
                 }, 0, 1000);;

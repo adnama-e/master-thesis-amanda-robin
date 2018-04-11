@@ -31,18 +31,19 @@ import java.util.TimerTask;
 public class DriveModeWarning extends Fragment implements Observer {
     View layout;
 
-  DataProvider dataProvider;
+    DataProvider dataProvider;
 
     TextToSpeech textToSpeech;
     Context context;
-    ImageView image;
+    WarningView image;
     Button dataButton;
-    int trans;
+    int alpha;
     DataHandler dataHandler;
     Analyzer analyzer;
+    Timer time;
 
     public DriveModeWarning() {
-        trans = 0;
+        alpha = 0;
     }
 
     @Override
@@ -51,6 +52,10 @@ public class DriveModeWarning extends Fragment implements Observer {
         AssetManager am = getContext().getAssets();
         dataHandler = new DataHandler(am, 1);
         analyzer = new Analyzer(am);
+        Bundle args = getArguments();
+        dataProvider = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
+        dataProvider.addObserver(this);
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,28 +66,43 @@ public class DriveModeWarning extends Fragment implements Observer {
         image = layout.findViewById(R.id.warning);
         image.setVisibility(View.INVISIBLE);
         dataButton = layout.findViewById(R.id.dataB);
+        time = new Timer();
         dataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Timer timer = new Timer();
-                image.setVisibility(View.VISIBLE);
-                timer.schedule(new TimerTask() {
+                time.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        if (!dataHandler.nextRow()) {
-                            this.cancel();
-                        }
-                        float[] input = dataHandler.getInput();
-                        float output = dataHandler.getOutput();
-                        double cls = analyzer.classify(input, output);
-                        int alpha = 0;
-                        if (cls < 0) {
-                            alpha = (int) (cls * -1 * 255);
-                        }
-                        System.out.println(alpha + ", " + cls);
-                        image.setImageAlpha(alpha);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                            @Override
+                            public void run() {
+                                Measurement m = dataProvider.getMeasurement();
+                                    if(m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() ==false) {
+                                        image.increaseAlpha();
+                                  /*      if (!dataHandler.nextRow()) {
+                                    onPause();
+                                }
+                                float[] input = dataHandler.getInput();
+                                float output = dataHandler.getOutput();
+                                double cls = analyzer.classify(input, output);
+                                int alpha = 0;
+                                if (cls < 0) {
+                                    alpha = (int) (cls * -1 * 255);
+                                }*/
+
+                                        }else{
+                                            image.reduceAlpha();
+
+                                    }
+                                    System.out.println(image.alpha());
+                                    //image.setImageAlpha(alpha);
+                                    image.setVisibility(View.VISIBLE);
+                                    image.setAlpha();
+                                    }});
+
                     }
-                }, 0, 500);
+                }, 0, 300);
             }
         });
 
@@ -118,10 +138,11 @@ public class DriveModeWarning extends Fragment implements Observer {
     }
 
     public void onPause() {
-        if (textToSpeech != null) {
+        time.cancel();
+        /*if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
-        }
+        }*/
         super.onPause();
     }
 

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 public class SmileView extends ImageView {
     private int[] images;
     int index;
+    private  int[] colors;
     public SmileView(Context context) {
         super(context);
         init();
@@ -34,22 +35,34 @@ public class SmileView extends ImageView {
         init();
     }
     public void init(){
-        images = new int[]{R.drawable.s1,R.drawable.s2, R.drawable.s3, R.drawable.s4};
+        images = new int[]{R.drawable.smiley_happy,R.drawable.smiley_ok, R.drawable.smiley_ok, R.drawable.smiley_sad};
+        colors = new int[]{R.color.greenS, R.color.LimeS, R.color.orange,R.color.red};
         index = 0;
-        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greenS));
     }
     public void change(){
         if(index<images.length-1){
-            if (index == 0) {
-                setBackgroundColor(ContextCompat.getColor(getContext(), R.color.LimeS));
-            } else if (index == 1) {
-                setBackgroundColor(ContextCompat.getColor(getContext(), R.color.orange));
-            } else {
-                setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red));
-            }
             index++;
             setImageResource(images[index]);
 
+        }
+    }
+
+    public void changeBack() {
+        if(index !=0){
+            index--;
+            setImageResource(images[index]);
+
+        }
+    }
+    public void changeBackgroundColor(){
+        if(index ==0){
+            setBackgroundColor(ContextCompat.getColor(getContext(), colors[0]));
+        }else if(index ==1){
+            setBackgroundColor(ContextCompat.getColor(getContext(), colors[1]));
+        }else if(index ==2){
+            setBackgroundColor(ContextCompat.getColor(getContext(), colors[2]));
+        }else{
+            setBackgroundColor(ContextCompat.getColor(getContext(), colors[3]));
         }
     }
 }

@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        FragmentTransaction fragment;
         layout_interact = (View) findViewById(R.id.drawLayout);
         //Toolbar to replace the Actionbar
         setUpToolbar();
@@ -74,6 +73,17 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
 
         startDate = findViewById(R.id.start_date);
         endDate = findViewById(R.id.end_date);
+        /*Bundle args = new Bundle();
+
+        args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dp);
+
+        args.putSerializable(MainActivity.ARGS_STATE, state);
+        Fragment fragment = new DriveMode();
+        fragment.setArguments(args);
+*/
+        //FragmentManager fragmentManager = getSupportFragmentManager();
+        //fragmentManager.beginTransaction().replace(R.id.flcontent, fragment).commit();
+
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
