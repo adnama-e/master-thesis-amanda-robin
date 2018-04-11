@@ -3,7 +3,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green3"
+    android:background="@color/darkGreen"
     >
     >
     <RelativeLayout
@@ -28,7 +28,8 @@
         android:layout_alignParentStart="true"
         android:layout_marginLeft="108dp"
         android:layout_marginStart="108dp"
-        android:background="@color/green3"
+        android:textColor="@color/green1"
+        android:background="@color/darkGreen"
         android:text="first" />
 
     <Button
@@ -40,7 +41,8 @@
         android:layout_marginRight="171dp"
         android:layout_toLeftOf="@+id/buttonT"
         android:layout_toStartOf="@+id/buttonT"
-        android:background="@color/green3"
+        android:textColor="@color/green1"
+        android:background="@color/darkGreen"
         android:text="second" />
 
     <Button
@@ -49,7 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/green3"
+        android:textColor="@color/green1"
+        android:background="@color/darkGreen"
         android:text="third" />
 
     <Button
@@ -61,7 +64,8 @@
         android:layout_alignStart="@+id/buttonT"
         android:layout_marginLeft="239dp"
         android:layout_marginStart="239dp"
-        android:background="@color/green3"
+        android:textColor="@color/green1"
+        android:background="@color/darkGreen"
         android:text="fourth" />
 
     <Button
@@ -73,7 +77,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginEnd="110dp"
         android:layout_marginRight="110dp"
-        android:background="@color/green3"
+        android:textColor="@color/green1"
+        android:background="@color/darkGreen"
         android:text="fifth" />
 </RelativeLayout>
     </RelativeLayout>

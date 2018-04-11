@@ -38,12 +38,16 @@ public class WarningView extends ImageView {
     }
     public void increaseAlpha(){
         if(alpha < 255){
-            alpha += 10;
+            alpha += 40;
+        }else{
+            alpha = 255;
         }
     }
     public void reduceAlpha(){
         if(alpha != 0){
-            alpha -= 10;
+            alpha -= 40;
+        }else{
+            alpha =0;
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)

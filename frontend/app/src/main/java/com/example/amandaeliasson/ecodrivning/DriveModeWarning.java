@@ -102,7 +102,7 @@ public class DriveModeWarning extends Fragment implements Observer {
                                     }});
 
                     }
-                }, 0, 300);
+                }, 0, 500);
             }
         });
 

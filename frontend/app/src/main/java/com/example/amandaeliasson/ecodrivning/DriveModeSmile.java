@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -28,6 +31,7 @@ public class DriveModeSmile extends Fragment implements Observer {
     DataProvider dataProvider;
     int picture;
     Timer time;
+    //private ImageSwitcher imageSwitcher;
     @SuppressLint("ResourceAsColor")
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +49,14 @@ public class DriveModeSmile extends Fragment implements Observer {
         //image.changeBackgroundColor();
         //layout  = (RelativeLayout)v.findViewById(R.id.background);
         //layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greenS));
+        //final Animation in  = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_to_right_in);
+        //final Animation out = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_to_right_out);
+       // imageSwitcher = (ImageSwitcher)v.findViewById(R.id.slide_trans_imageswitcher);
         time = new Timer();
         b = (Button)v.findViewById(R.id.dataButton);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 time.schedule(new TimerTask() {
                     @Override
                     public void run() {
@@ -60,6 +66,7 @@ public class DriveModeSmile extends Fragment implements Observer {
                                 @Override
                                 public void run() {
                                     image.change();
+
                                     //image.changeBackgroundColor();
                                 }
                             });

@@ -38,7 +38,7 @@ public class FlowerView extends ImageView {
         init();
     }
     public void init(){
-        images = new int[]{R.drawable.growing1,R.drawable.growing2, R.drawable.growing3, R.drawable.growing4, R.drawable.growing5,R.drawable.growing6, R.drawable.growing7};
+        images = new int[]{R.drawable.flower1,R.drawable.flower2, R.drawable.flower3, R.drawable.flower4, R.drawable.flower5,R.drawable.flower6, R.drawable.flower7};
         index = -1;
     }
     public void setFlowerToWaitFor(FlowerView fv){

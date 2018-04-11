@@ -2,58 +2,57 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <Button
+        android:id="@+id/flowerdata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get data"
-        android:id="@+id/flowerdata"
-        />
+        android:background="@color/darkGreen"
+        android:text="Get data" />
     <RelativeLayout
-        android:layout_width="200dp"
-        android:layout_height="400dp"
         android:id="@+id/backgroundflower"
+        android:layout_width="300dp"
+        android:layout_height="700dp"
+        android:layout_marginBottom="90dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        >
+        android:layout_centerVertical="true">
         <com.example.amandaeliasson.ecodrivning.FlowerView
             android:id="@+id/flower1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
+            />
     </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="200dp"
-            android:layout_height="400dp"
-            android:layout_toRightOf="@+id/backgroundflower"
-            android:id="@+id/backgroundflower2"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            >
-            <com.example.amandaeliasson.ecodrivning.FlowerView
-                android:id="@+id/flower2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                />
-        </RelativeLayout>
     <RelativeLayout
-        android:layout_width="200dp"
-        android:layout_height="400dp"
-        android:layout_toLeftOf="@+id/backgroundflower"
-        android:id="@+id/backgroundflower3"
+        android:id="@+id/backgroundflower2"
+        android:layout_width="300dp"
+        android:layout_height="700dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        >
+        android:layout_marginBottom="90dp"
+        android:layout_toRightOf="@+id/backgroundflower">
+        <com.example.amandaeliasson.ecodrivning.FlowerView
+            android:id="@+id/flower2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/backgroundflower3"
+        android:layout_width="300dp"
+        android:layout_height="700dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="90dp"
+        android:layout_toLeftOf="@+id/backgroundflower">
         <com.example.amandaeliasson.ecodrivning.FlowerView
             android:id="@+id/flower3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             />
-
     </RelativeLayout>
 </RelativeLayout>

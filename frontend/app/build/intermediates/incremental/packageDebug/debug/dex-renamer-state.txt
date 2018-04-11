@@ -1,4 +1,4 @@
-#Wed Apr 11 11:03:14 CEST 2018
+#Wed Apr 11 22:40:59 CEST 2018
 path.1=classes.dex
 path.0=classes.dex
 renamed.5=classes6.dex
@@ -7,12 +7,12 @@ renamed.3=classes4.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
-base.5=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/74
-base.4=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/72
-base.3=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/69
-base.2=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/70
-base.1=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/73
-base.0=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/71
+base.5=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/91
+base.4=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/88
+base.3=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/92
+base.2=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/89
+base.1=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/90
+base.0=/Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/transforms/dexMerger/debug/93
 path.5=classes.dex
 path.4=classes.dex
 path.3=classes.dex

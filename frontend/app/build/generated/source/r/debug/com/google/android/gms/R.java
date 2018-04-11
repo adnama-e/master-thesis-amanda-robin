@@ -71,8 +71,8 @@ public final class R {
         public static final int common_google_signin_btn_text_light_focused = 0x7f070075;
         public static final int common_google_signin_btn_text_light_normal = 0x7f070076;
         public static final int common_google_signin_btn_text_light_normal_background = 0x7f070077;
-        public static final int googleg_disabled_color_18 = 0x7f070087;
-        public static final int googleg_standard_color_18 = 0x7f070088;
+        public static final int googleg_disabled_color_18 = 0x7f07008e;
+        public static final int googleg_standard_color_18 = 0x7f07008f;
     }
     public static final class id {
         public static final int adjust_height = 0x7f08003a;
@@ -87,13 +87,13 @@ public final class R {
         public static final int normal = 0x7f0800c8;
         public static final int radio = 0x7f0800e1;
         public static final int satellite = 0x7f0800eb;
-        public static final int standard = 0x7f080116;
-        public static final int terrain = 0x7f08011d;
-        public static final int text = 0x7f08011e;
-        public static final int text2 = 0x7f08011f;
-        public static final int toolbar = 0x7f080139;
-        public static final int wide = 0x7f08014c;
-        public static final int wrap_content = 0x7f08014f;
+        public static final int standard = 0x7f080117;
+        public static final int terrain = 0x7f08011e;
+        public static final int text = 0x7f08011f;
+        public static final int text2 = 0x7f080120;
+        public static final int toolbar = 0x7f08013a;
+        public static final int wide = 0x7f08014d;
+        public static final int wrap_content = 0x7f080150;
     }
     public static final class integer {
         public static final int google_play_services_version = 0x7f090007;
