@@ -14,6 +14,7 @@ public class ThirdView extends ImageView {
     private int index;
     private ThirdView waitFor;
 
+
     public ThirdView(Context context) {
         super(context);
         init();

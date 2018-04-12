@@ -1,7 +1,6 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.annotation.SuppressLint;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,11 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
@@ -67,22 +63,19 @@ public class DriveModeFlower extends Fragment implements Observer {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    image1.grow();
-                                    image2.grow();
                                     image3.grow();
+                                    image2.grow();
+                                    image1.grow();
                                 }
                             });
                         }else{
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(image1.fullGrown() && image2.fullGrown()) {
-                                        image3.unGrow();
-                                    }else if(image1.fullGrown()){
-                                        image2.unGrow();
-                                    }else{
                                         image1.unGrow();
-                                    }
+                                        image2.unGrow();
+                                        image3.unGrow();
+
                                 }
                             });
                         }

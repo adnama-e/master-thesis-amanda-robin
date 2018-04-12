@@ -4,42 +4,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/map"
-
     >
-
-    <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-
-<!--&lt;!&ndash;-->
-        <!--<Button-->
-            <!--android:id="@+id/radioButton"-->
-            <!--android:layout_width="30dp"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:layout_marginLeft="328dp"-->
-            <!--android:layout_marginStart="328dp"-->
-            <!--android:layout_marginTop="323dp"-->
-            <!--android:backgroundTint="@color/green1">-->
-
-        <!--</Button>-->
-
-        <!--<Button-->
-            <!--android:id="@+id/redButton"-->
-            <!--android:layout_width="30dp"-->
-            <!--android:layout_height="30dp"-->
-
-            <!--android:layout_alignEnd="@+id/radioButton"-->
-            <!--android:layout_alignRight="@+id/radioButton"-->
-            <!--android:layout_below="@+id/radioButton"-->
-            <!--android:layout_marginEnd="12dp"-->
-            <!--android:layout_marginRight="12dp"-->
-            <!--android:layout_marginTop="161dp"-->
-            <!--android:backgroundTint="@color/red"></Button>&ndash;&gt;-->
-        <!---->
-    <!--</RelativeLayout>-->
-
-
 </fragment>

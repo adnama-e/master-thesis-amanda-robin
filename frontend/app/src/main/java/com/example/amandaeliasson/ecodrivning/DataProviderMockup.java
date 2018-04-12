@@ -22,7 +22,7 @@ public class DataProviderMockup extends DataProvider {
         Calendar c=Calendar.getInstance();
         c.set(2018+1900,3,1,12,30,6);
         List<Measurement> measurements = new LinkedList<>();
-        Measurement m1 = new SpeedMeasurement(c.getTime(), 55.60457822286884, 13.001237567514181, 1);
+        Measurement m1 = new SpeedMeasurement(c.getTime(), 55.60457822286884, 13.001237567514181, 0);
         measurements.add(m1);
         latestAdd = m1;
 
@@ -31,7 +31,7 @@ public class DataProviderMockup extends DataProvider {
         measurements.add(m2);
         latestAdd = m2;
 
-        Measurement m3 = new SpeedMeasurement(new Date(), 55.60299634018647, 12.998828021809459, 1);
+        Measurement m3 = new SpeedMeasurement(new Date(), 55.60299634018647, 12.998828021809459, 0);
         measurements.add(m3);
         latestAdd = m3;
 
@@ -39,27 +39,27 @@ public class DataProviderMockup extends DataProvider {
         measurements.add(m4);
         latestAdd = m4;
 
-        Measurement m5 = new SpeedMeasurement(new Date(), 55.603563037292865, 12.996188728138804, 0);
+        Measurement m5 = new SpeedMeasurement(new Date(), 55.603563037292865, 12.996188728138804, 1);
         measurements.add(m5);
         latestAdd = m5;
 
-        Measurement m6 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 0);
+        Measurement m6 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 1);
         measurements.add(m6);
         latestAdd = m6;
 
-        Measurement m7 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 0);
+        Measurement m7 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 1);
         measurements.add(m7);
         latestAdd = m7;
 
-        Measurement m8 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 0);
+        Measurement m8 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 1);
         measurements.add(m8);
         latestAdd = m8;
 
-        Measurement m9 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 1);
+        Measurement m9 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 0);
         measurements.add(m9);
         latestAdd = m9;
 
-        Measurement m10 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 1);
+        Measurement m10 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 0);
         measurements.add(m10);
         latestAdd = m10;
 
@@ -68,7 +68,7 @@ public class DataProviderMockup extends DataProvider {
         measurements.add(m11);
         latestAdd = m11;
 
-        Measurement m12 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 1);
+        Measurement m12 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 0);
         measurements.add(m12);
         latestAdd = m12;
 

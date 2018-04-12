@@ -33,7 +33,7 @@
             android:layout_marginEnd="11dp"
             android:layout_marginRight="11dp">
 
-            <com.example.amandaeliasson.ecodrivning.FourthView
+            <com.example.amandaeliasson.ecodrivning.CloudView
                 android:id="@+id/cloud1"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -44,7 +44,7 @@
                 android:layout_marginRight="148dp"
                 android:src="@drawable/cloud" />
 
-            <com.example.amandaeliasson.ecodrivning.FourthView
+            <com.example.amandaeliasson.ecodrivning.CloudView
                 android:id="@+id/cloud2"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -56,7 +56,7 @@
                 android:layout_marginRight="67dp"
                 android:src="@drawable/cloud" />
 
-            <com.example.amandaeliasson.ecodrivning.FourthView
+            <com.example.amandaeliasson.ecodrivning.CloudView
                 android:id="@+id/cloud3"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -66,7 +66,7 @@
                 android:layout_marginBottom="17dp"
                 android:src="@drawable/cloud" />
 
-            <com.example.amandaeliasson.ecodrivning.FourthView
+            <com.example.amandaeliasson.ecodrivning.CloudView
                 android:id="@+id/cloud4"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -78,7 +78,7 @@
                 android:layout_marginStart="12dp"
                 android:src="@drawable/cloud" />
 
-            <com.example.amandaeliasson.ecodrivning.FourthView
+            <com.example.amandaeliasson.ecodrivning.CloudView
                 android:id="@+id/cloud5"
                 android:layout_width="150dp"
                 android:layout_height="150dp"

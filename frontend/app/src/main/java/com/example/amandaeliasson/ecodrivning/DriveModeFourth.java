@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -19,7 +18,7 @@ import java.util.TimerTask;
  */
 
 public class DriveModeFourth extends Fragment implements Observer {
-    FourthView image1, image2, image3, image4, image5;
+    CloudView image1, image2, image3, image4, image5;
     int picture;
     DataProvider dataProvider;
     int visibility;
@@ -42,6 +41,7 @@ public class DriveModeFourth extends Fragment implements Observer {
         image3 =  v.findViewById(R.id.cloud3);
         image4 =  v.findViewById(R.id.cloud4);
         image5 =  v.findViewById(R.id.cloud5);
+
         image1.setVisibility(View.INVISIBLE);
 
         image2.setFlowerToWaitFor(image1);
@@ -67,14 +67,24 @@ public class DriveModeFourth extends Fragment implements Observer {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    image1.grow();
-                                    image2.grow();
-                                    image3.grow();
-                                    image4.grow();
                                     image5.grow();
+                                    image4.grow();
+                                    image3.grow();
+                                    image2.grow();
+                                    image1.grow();
                                 }
                             });
                         }else{
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    image1.unGrow();
+                                    image2.unGrow();
+                                    image3.unGrow();
+                                    image4.unGrow();
+                                    image5.unGrow();
+                                }
+                            });
                         }
                     }
                 },0,1000);

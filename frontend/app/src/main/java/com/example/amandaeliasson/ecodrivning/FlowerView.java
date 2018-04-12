@@ -1,16 +1,14 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
-
-import java.util.List;
 
 /**
  * Created by amandaeliasson on 2018-04-07.
@@ -21,7 +19,8 @@ public class FlowerView extends ImageSwitcher {
     private int index;
     Animation in;
     Animation out;
-    private FlowerView waitFor;
+    private FlowerView after;
+    private FlowerView before;
 
 
     public FlowerView(Context context) {
@@ -37,7 +36,9 @@ public class FlowerView extends ImageSwitcher {
         setFactory(new ViewFactory() {
             @Override
             public View makeView() {
-                return new ImageView(getContext());
+                ImageView imageView = new ImageView(getContext());
+                imageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                return imageView;
             }
         });
         in = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in_view);
@@ -49,10 +50,11 @@ public class FlowerView extends ImageSwitcher {
         index = -1;
     }
     public void setFlowerToWaitFor(FlowerView fv){
-        waitFor = fv;
+        this.after = fv;
+        fv.before = this;
     }
     public void grow(){
-        if(waitFor==null||waitFor.fullGrown()){
+        if(after ==null|| after.fullGrown()){
             if(index ==-1){
                 setVisibility(VISIBLE);
             }
@@ -63,12 +65,15 @@ public class FlowerView extends ImageSwitcher {
         }
     }
     public void unGrow(){
-        if(index>0){
+        if((before == null || before.notGrown()) && index > 0){
             index--;
             this.setImageResource(images[index]);
         }
     }
     public boolean fullGrown(){
         return (index == images.length-1);
+    }
+    public boolean notGrown(){
+        return index == 0 || index == -1;
     }
 }

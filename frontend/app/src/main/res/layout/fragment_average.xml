@@ -1,181 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <RelativeLayout
+    android:fillViewport="true">
+
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:id="@+id/average"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        >
+        android:layout_height="match_parent"
+        android:stretchColumns="1">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Average score:"
+            android:textColor="@color/primaryTextColor"
             android:textSize="20dp"
-            android:textStyle="bold"
-            />
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_gravity="right"
-        android:layout_marginLeft="100dp"
-        android:gravity="center_vertical">
-        <com.github.anastr.speedviewlib.SpeedView
-            android:id="@+id/accView"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/av_acc"
-            app:sv_highSpeedColor="@color/green1"
-            app:sv_indicator="NeedleIndicator"
-            app:sv_lowSpeedColor="@color/red"
-            app:sv_lowSpeedPercent="33"
-            app:sv_maxSpeed="100"
-            app:sv_mediumSpeedPercent="66"
-            app:sv_minSpeed="0"
-            app:sv_unit="%"
-            app:sv_withTremble="false" />
-
-        <TextView
-            android:id="@+id/av_acc"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold" />
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Acceleration" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:id="@+id/r_2">
-        <com.github.anastr.speedviewlib.SpeedView
-            android:id="@+id/brakeView"
-            android:layout_below="@+id/av_brake"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            app:sv_highSpeedColor="@color/green1"
-            app:sv_indicator="NeedleIndicator"
-            app:sv_lowSpeedColor="@color/red"
-            app:sv_lowSpeedPercent="33"
-            app:sv_maxSpeed="100"
-            app:sv_mediumSpeedPercent="66"
-            app:sv_minSpeed="0"
-            app:sv_unit="%"
-            app:sv_withTremble="false" />
-        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            >
+            <TextView
+                android:id="@+id/av_acc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryTextColor"
+                android:text="Acceleration" />
+            <com.github.anastr.speedviewlib.SpeedView
+                android:id="@+id/accView"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:layout_below="@+id/av_acc"
+                app:sv_highSpeedColor="@color/greenS"
+                app:sv_indicator="NeedleIndicator"
+                app:sv_lowSpeedColor="@color/red"
+                app:sv_lowSpeedPercent="33"
+                app:sv_maxSpeed="100"
+                app:sv_mediumSpeedColor="@color/yellowS"
+                app:sv_mediumSpeedPercent="66"
+                app:sv_minSpeed="0"
+                app:sv_unit="%"
+                app:sv_withTremble="false" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/primaryColor"
+            android:layout_marginTop="10dp"
+            >
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/r_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/av_brake"
-            android:text="Brake" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/r_2"
-        android:layout_alignBottom="@+id/r_2"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="100dp">
-
-        <com.github.anastr.speedviewlib.SpeedView
-            android:id="@+id/speedview1"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/av_speed"
-            app:sv_highSpeedColor="@color/green1"
-            app:sv_indicator="NeedleIndicator"
-            app:sv_lowSpeedColor="@color/red"
-            app:sv_lowSpeedPercent="33"
-            app:sv_maxSpeed="100"
-            app:sv_mediumSpeedPercent="66"
-            app:sv_minSpeed="0"
-            app:sv_unit="%"
-            app:sv_withTremble="false" />
-        <TextView
-            android:id="@+id/av_speed"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:id="@+id/av_brake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryTextColor"
+                android:text="Brake" />
+            <com.github.anastr.speedviewlib.SpeedView
+                android:id="@+id/brakeView"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:layout_below="@+id/av_brake"
+                app:sv_highSpeedColor="@color/greenS"
+                app:sv_mediumSpeedColor="@color/yellowS"
+                app:sv_indicator="NeedleIndicator"
+                app:sv_lowSpeedColor="@color/red"
+                app:sv_lowSpeedPercent="33"
+                app:sv_maxSpeed="100"
+                app:sv_mediumSpeedPercent="66"
+                app:sv_minSpeed="0"
+                app:sv_unit="%"
+                app:sv_withTremble="false" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/primaryColor"
+            android:layout_marginTop="10dp"
+            >
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Legal driving" />
-    </RelativeLayout>
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:id="@+id/middle"
-        android:background="@android:color/darker_gray"
-        android:layout_below="@+id/average"
-        >
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:layout_below="@+id/middle"
-        android:id="@+id/distanceView"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
-        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:id="@+id/av_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryTextColor"
+                android:text="Legal driving" />
+            <com.github.anastr.speedviewlib.SpeedView
+                android:id="@+id/speedview1"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:layout_below="@+id/av_speed"
+                app:sv_highSpeedColor="@color/greenS"
+                app:sv_mediumSpeedColor="@color/yellowS"
+                app:sv_indicator="NeedleIndicator"
+                app:sv_lowSpeedColor="@color/red"
+                app:sv_lowSpeedPercent="33"
+                app:sv_maxSpeed="100"
+                app:sv_mediumSpeedPercent="66"
+                app:sv_minSpeed="0"
+                app:sv_unit="%"
+                app:sv_withTremble="false" />
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Total driving distance:"
-            android:id="@+id/distance2"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            />
-        <TextView
+            android:layout_height="2dp"
+            android:background="@color/primaryColor"
+            android:layout_marginTop="10dp"
+            >
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/distanceView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="50dp"
-            android:layout_below="@+id/distance2"
-            android:id="@+id/totalDistance"
-            android:layout_centerHorizontal="true"
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:id="@+id/middle2"
-        android:layout_below="@+id/distanceView"
-        android:background="@android:color/darker_gray"
-        >
+            android:layout_height="230dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+            <TextView
+                android:id="@+id/distance2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total driving distance:"
+                android:textSize="20dp"
+                android:textColor="@color/primaryTextColor"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/totalDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/distance2"
+                android:textColor="@color/secondaryTextColor"
+                android:layout_centerHorizontal="true"
+                android:textSize="50dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/primaryColor"
+            android:layout_marginTop="10dp"
+            >
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/middle3"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:layout_below="@+id/middle2"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/middle3"
-        >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Total driving time:"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:id="@+id/time2"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/time2"
-            android:textSize="50dp"
-            android:id="@+id/totalTime"
-            android:layout_centerHorizontal="true"
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@android:color/darker_gray"
-        android:layout_below="@+id/middle3"
-        >
-
-    </RelativeLayout>
-</RelativeLayout>
+            <TextView
+                android:id="@+id/time2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total driving time:"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/totalTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/time2"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/secondaryTextColor"
+                android:textSize="50dp" />
+        </RelativeLayout>
+    </TableLayout>
+</ScrollView>
