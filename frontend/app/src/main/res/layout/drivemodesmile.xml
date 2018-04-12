@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkGreen"
     >
     <ImageSwitcher
         android:id="@+id/slide_trans_imageswitcher"
@@ -15,7 +14,6 @@
         android:layout_height="800dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
-
         <com.example.amandaeliasson.ecodrivning.SmileView
             android:id="@+id/smileyId"
             android:layout_width="wrap_content"
@@ -28,14 +26,11 @@
             android:scaleY="0.9"
             android:src="@drawable/smiley_happy" />
     </RelativeLayout>
-
     <Button
         android:id="@+id/dataButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
         android:text="Get data"
-        android:background="@color/darkGreen"
-        android:textColor="@color/green1"
-
+        android:alpha="0"
         />
 </RelativeLayout>

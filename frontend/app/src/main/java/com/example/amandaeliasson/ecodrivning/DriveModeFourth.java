@@ -1,8 +1,6 @@
 package com.example.amandaeliasson.ecodrivning;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import java.sql.Time;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
@@ -39,25 +36,25 @@ public class DriveModeFourth extends Fragment implements Observer {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.drivemodefourth, container, false);
-        Button b = (Button)v.findViewById(R.id.button_change);
-        image1 = (FourthView)v.findViewById(R.id.cloud1);
-        image2 = (FourthView) v.findViewById(R.id.cloud2);
-        image3 = (FourthView) v.findViewById(R.id.cloud3);
-        image4 = (FourthView) v.findViewById(R.id.cloud4);
-        image5 = (FourthView) v.findViewById(R.id.cloud5);
+        Button b = v.findViewById(R.id.button_change);
+        image1 = v.findViewById(R.id.cloud1);
+        image2 =  v.findViewById(R.id.cloud2);
+        image3 =  v.findViewById(R.id.cloud3);
+        image4 =  v.findViewById(R.id.cloud4);
+        image5 =  v.findViewById(R.id.cloud5);
         image1.setVisibility(View.INVISIBLE);
 
-        image2.setVisibility(View.INVISIBLE);
         image2.setFlowerToWaitFor(image1);
-        image3.setVisibility(View.INVISIBLE);
+        image2.setVisibility(View.INVISIBLE);
+
         image3.setFlowerToWaitFor(image2);
-        image4.setVisibility(View.INVISIBLE);
+        image3.setVisibility(View.INVISIBLE);
+
         image4.setFlowerToWaitFor(image3);
-        image5.setVisibility(View.INVISIBLE);
+        image4.setVisibility(View.INVISIBLE);
+
         image5.setFlowerToWaitFor(image4);
-        final ImageView image = (ImageView) v.findViewById(R.id.carImage1);
-        picture = (R.drawable.carmoving2);
-        image.setImageResource(picture);
+        image5.setVisibility(View.INVISIBLE);
         time = new Timer();
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +74,7 @@ public class DriveModeFourth extends Fragment implements Observer {
                                     image5.grow();
                                 }
                             });
+                        }else{
                         }
                     }
                 },0,1000);

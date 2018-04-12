@@ -44,15 +44,14 @@ public class SmileView extends ImageSwitcher{
 
         this.setInAnimation(in);
         this.setOutAnimation(out);
-        images = new int[]{R.drawable.smiley_happy,R.drawable.smiley_ok, R.drawable.smiley_ok, R.drawable.smiley_sad};
-        colors = new int[]{R.color.greenS, R.color.LimeS, R.color.orange,R.color.red};
+        images = new int[]{R.drawable.smiley_happy2,R.drawable.smiley_ok2, R.drawable.smiley_orange, R.drawable.smiley_sad2};
         index = 0;
     }
     public void change(){
         if(index<images.length-1){
             index++;
             this.setImageResource(images[index]);
-           // InAnimation();
+
         }
     }
 
@@ -61,19 +60,7 @@ public class SmileView extends ImageSwitcher{
             index--;
 
             this.setImageResource(images[index]);
-           // outAnimation();
 
-        }
-    }
-    public void changeBackgroundColor(){
-        if(index ==0){
-            setBackgroundColor(ContextCompat.getColor(getContext(), colors[0]));
-        }else if(index ==1){
-            setBackgroundColor(ContextCompat.getColor(getContext(), colors[1]));
-        }else if(index ==2){
-            setBackgroundColor(ContextCompat.getColor(getContext(), colors[2]));
-        }else{
-            setBackgroundColor(ContextCompat.getColor(getContext(), colors[3]));
         }
     }
 }

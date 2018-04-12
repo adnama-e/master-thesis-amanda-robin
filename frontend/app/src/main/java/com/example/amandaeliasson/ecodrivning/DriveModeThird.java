@@ -42,50 +42,32 @@ public class DriveModeThird extends Fragment implements Observer {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.drivemodethird, container, false);
-        Button button = (Button) v.findViewById(R.id.videoButton);
-        Button databutton = (Button) v.findViewById(R.id.dataButton2);
-        image1 = (ThirdView) v.findViewById(R.id.cloud1m);
 
-        image2 = (ThirdView) v.findViewById(R.id.cloud2m);
+        Button databutton =v.findViewById(R.id.dataButton2);
+        image1 =  v.findViewById(R.id.cloud1m);
+
+        image2 =  v.findViewById(R.id.cloud2m);
         image2.setFlowerToWaitFor(image1);
-        image3 = (ThirdView) v.findViewById(R.id.cloud3m);
+        image3 = v.findViewById(R.id.cloud3m);
         image3.setFlowerToWaitFor(image2);
-        image4 = (ThirdView) v.findViewById(R.id.cloud4m);
+        image4 =  v.findViewById(R.id.cloud4m);
         image4.setFlowerToWaitFor(image3);
-        image5 = (ThirdView) v.findViewById(R.id.cloud5m);
+        image5 =  v.findViewById(R.id.cloud5m);
         image5.setFlowerToWaitFor(image4);
 
-        video = (VideoView) v.findViewById(R.id.video);
+        video = v.findViewById(R.id.video);
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mp.setLooping(true);
             }
         });
-       /* video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                video.start();
-            }
-        });*/
-        String uriPath = "android.resource://com.example.amandaeliasson.ecodrivning/" + R.raw.newcar2;
+        String uriPath = "android.resource://com.example.amandaeliasson.ecodrivning/" + R.raw.carmoving9;
         Uri uri = Uri.parse(uriPath);
         video.setVideoURI(uri);
         video.requestFocus();
         video.start();
         time = new Timer();
-
-       /* button.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                VideoView video = (VideoView) v.findViewById(R.id.video);
-                String uriPath = "android.resource://com.example.amandaeliasson.ecodrivning/"+R.raw.carmovie;
-                Uri uri = Uri.parse(uriPath);
-                video.setVideoURI(uri);
-                video.requestFocus();
-                    video.start();
-            }
-        });*/
         databutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

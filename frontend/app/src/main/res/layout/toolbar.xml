@@ -8,7 +8,7 @@
 <android.support.design.widget.AppBarLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/green1"
+    android:background="@color/primaryColor"
     android:theme="@style/AppTheme.AppBarOverlay"
     >
 
@@ -18,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:fitsSystemWindows="true"
-        android:background="@color/green1"
+        android:background="@color/primaryColor"
+        app:titleTextColor="@color/primaryTextColor"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         >
         <RelativeLayout
@@ -30,6 +31,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:padding="8dp"
                 android:id="@+id/start_date"
+                android:textColor="@color/primaryTextColor"
                 android:textSize="20dp"
                 android:layout_marginRight="20dp"
                 android:text="From:__________"
@@ -41,6 +43,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:padding="8dp"
                 android:textSize="20dp"
+                android:textColor="@color/primaryTextColor"
                 android:id="@+id/end_date"
                 android:text="To:__________"
                 android:layout_width="wrap_content"
@@ -50,10 +53,6 @@
                 />
 
         </RelativeLayout>
-
-
-
     </android.support.v7.widget.Toolbar>
-
 </android.support.design.widget.AppBarLayout>
 </android.support.design.widget.CoordinatorLayout>

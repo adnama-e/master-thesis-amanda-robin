@@ -44,13 +44,13 @@ public class DriveModeFlower extends Fragment implements Observer {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.drivemodeflower, container, false);
-        button = (Button) v.findViewById(R.id.flowerdata);
-        image1 = (FlowerView) v.findViewById(R.id.flower1);
+        button = v.findViewById(R.id.flowerdata);
+        image1 =  v.findViewById(R.id.flower1);
         image1.setVisibility(View.INVISIBLE);
-        image2 = (FlowerView) v.findViewById(R.id.flower2);
+        image2 = v.findViewById(R.id.flower2);
         image2.setVisibility(View.INVISIBLE);
         image2.setFlowerToWaitFor(image1);
-        image3 = (FlowerView) v.findViewById(R.id.flower3);
+        image3 = v.findViewById(R.id.flower3);
         image3.setVisibility(View.INVISIBLE);
         image3.setFlowerToWaitFor(image2);
         time = new Timer();
@@ -70,6 +70,19 @@ public class DriveModeFlower extends Fragment implements Observer {
                                     image1.grow();
                                     image2.grow();
                                     image3.grow();
+                                }
+                            });
+                        }else{
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(image1.fullGrown() && image2.fullGrown()) {
+                                        image3.unGrow();
+                                    }else if(image1.fullGrown()){
+                                        image2.unGrow();
+                                    }else{
+                                        image1.unGrow();
+                                    }
                                 }
                             });
                         }

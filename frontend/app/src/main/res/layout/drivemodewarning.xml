@@ -2,24 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkGreen">
-
-
-    <com.example.amandaeliasson.ecodrivning.WarningView
-        android:id="@+id/warning"
-        android:layout_width="800dp"
-        android:layout_height="800dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="42dp"
-        android:src="@mipmap/traffic" />
+    android:background="@android:color/white">
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
         android:text="Get data"
+        android:alpha="0"
         android:id="@+id/dataB"
-        android:textColor="@color/green1"
-        android:background="@color/darkGreen"
         />
-
+        <com.example.amandaeliasson.ecodrivning.WarningView
+            android:id="@+id/warning"
+            android:layout_width="800dp"
+            android:layout_height="800dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="42dp"
+            android:src="@mipmap/traffic"/>
 </RelativeLayout>

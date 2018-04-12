@@ -1,3 +1,0 @@
-# Referenced at /Users/amandaeliasson/AndroidStudioProjects/EcoDrivning/frontend/app/build/intermediates/manifests/full/debug/AndroidManifest.xml:21
--keep class android.support.multidex.MultiDexApplication { <init>(...); }
-

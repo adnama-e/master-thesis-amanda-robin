@@ -4,37 +4,39 @@
     android:layout_height="match_parent"
     >
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="picturechange"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:text="Get data"
+        android:alpha="0"
         android:id="@+id/button_change"
         />
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/carmoving22"
+        >
         <ImageView
             android:id="@+id/carImage1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:scaleY="1.5"
-            android:scaleX="1.5"
-            android:src="@drawable/carmoving2"
             />
-
         <RelativeLayout
             android:id="@+id/cloudview"
             android:layout_width="500dp"
             android:layout_height="480dp"
+            android:layout_above="@+id/carImage1"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true">
+            android:layout_marginBottom="27dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginRight="11dp">
 
             <com.example.amandaeliasson.ecodrivning.FourthView
+                android:id="@+id/cloud1"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:id="@+id/cloud1"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"

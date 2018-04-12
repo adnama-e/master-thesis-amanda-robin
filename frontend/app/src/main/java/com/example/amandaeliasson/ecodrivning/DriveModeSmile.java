@@ -41,19 +41,12 @@ public class DriveModeSmile extends Fragment implements Observer {
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.drivemodesmile, container, false);
-        image = (SmileView)v.findViewById(R.id.smileyId);
-        picture = R.drawable.smiley_happy;
+        image = v.findViewById(R.id.smileyId);
+        picture = R.drawable.smiley_happy2;
         image.setImageResource(picture);
-        //image.changeBackgroundColor();
-        //layout  = (RelativeLayout)v.findViewById(R.id.background);
-        //layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greenS));
-        //final Animation in  = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_to_right_in);
-        //final Animation out = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_to_right_out);
-       // imageSwitcher = (ImageSwitcher)v.findViewById(R.id.slide_trans_imageswitcher);
         time = new Timer();
-        b = (Button)v.findViewById(R.id.dataButton);
+        b = v.findViewById(R.id.dataButton);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,8 +59,6 @@ public class DriveModeSmile extends Fragment implements Observer {
                                 @Override
                                 public void run() {
                                     image.change();
-
-                                    //image.changeBackgroundColor();
                                 }
                             });
 
@@ -76,7 +67,6 @@ public class DriveModeSmile extends Fragment implements Observer {
                                 @Override
                                 public void run() {
                                     image.changeBack();
-                                   // image.changeBackgroundColor();
                                 }
                             });
                         }

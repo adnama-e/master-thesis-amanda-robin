@@ -4,10 +4,11 @@
     android:layout_height="match_parent">
     <Button
         android:id="@+id/flowerdata"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/darkGreen"
-        android:text="Get data" />
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:text="Get data"
+        android:alpha="0"
+        />
     <RelativeLayout
         android:id="@+id/backgroundflower"
         android:layout_width="300dp"

@@ -1,111 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     >
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1"
+        >
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Driving behavior"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/primaryTextColor"
         android:id="@+id/drivingbehvaiour"
         />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/progressgraph"
-        android:layout_below="@id/drivingbehvaiour"
-        >
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/relativeLayout6">
-            <com.jjoe64.graphview.GraphView
-                android:id="@+id/graph_acc"
-                android:layout_width="230dp"
-                android:layout_height="230dp"
-                android:layout_below="@+id/acc_text"
-                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Acceleration"
                 android:id="@+id/acc_text"
+                android:textColor="@color/secondaryTextColor"
                 />
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/graph_acc"
+                android:layout_width="1000dp"
+                android:layout_height="500dp"
+                android:layout_below="@+id/acc_text"
+                android:layout_centerHorizontal="true"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/primaryColor"
+            android:layout_marginTop="10dp"
+            >
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/relativeLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Brake"
                 android:id="@+id/brake_text"
+                android:textColor="@color/secondaryTextColor"
                 />
             <com.jjoe64.graphview.GraphView
                 android:id="@+id/graph_brake"
-                android:layout_width="230dp"
-                android:layout_height="230dp"
+                android:layout_width="1000dp"
+                android:layout_height="500dp"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/brake_text"
                 />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/primaryColor"
+            android:layout_marginTop="10dp"
+            >
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/relativeLayout5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="89dp"
-            android:layout_marginRight="89dp">
-
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            >
             <com.jjoe64.graphview.GraphView
                 android:id="@+id/graph_speed"
-                android:layout_width="230dp"
-                android:layout_height="230dp"
+                android:layout_width="1000dp"
+                android:layout_height="500dp"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/speed_text"
-
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Legal driving"
                 android:id="@+id/speed_text"
+                android:textColor="@color/secondaryTextColor"
                 />
         </RelativeLayout>
-    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:id="@+id/progressmiddle"
-        android:layout_below="@+id/progressgraph"
-        android:background="@android:color/darker_gray"
+        android:background="@color/primaryColor"
         android:layout_marginTop="10dp"
         >
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:layout_below="@+id/progressmiddle">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your goals"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="10dp"
-            />
-    </RelativeLayout>
-</RelativeLayout>
+    </TableLayout>
+</ScrollView>

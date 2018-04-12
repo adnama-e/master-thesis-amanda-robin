@@ -36,7 +36,7 @@ public class FourthView extends ImageView {
 
     public void init() {
         images = new int[]{R.drawable.cloud, R.drawable.cloud, R.drawable.cloud, R.drawable.cloud, R.drawable.cloud};
-        index = -1;
+        index = 0;
 
 
     }
@@ -47,7 +47,7 @@ public class FourthView extends ImageView {
 
     public void grow() {
         if (waitFor == null || waitFor.fullGrown()) {
-            if (index == -1) {
+            if (index == 0) {
                 setVisibility(VISIBLE);
             }
             if (index < images.length - 1) {
@@ -56,6 +56,12 @@ public class FourthView extends ImageView {
             }
         }
 
+    }
+    public void unGrow(){
+        if (index > 0) {
+            index--;
+            setImageResource(images[index]);
+        }
     }
 
     public boolean fullGrown() {
