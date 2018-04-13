@@ -1,15 +1,3 @@
-from sklearn.model_selection import train_test_split
-import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
-import numpy as np
-import os
-import tensorflow as tf
-from tensorflow.python.tools import freeze_graph, optimize_for_inference_lib
-from tensorflow.python.framework import graph_util
-from tensorflow.python.framework import graph_io
-from keras import backend as K
-import os.path as osp
-
 # Credit to: https://machinelearningmastery.com/convert-time-series-supervised-learning-problem-python/
 def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 	"""
@@ -22,6 +10,7 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 	Returns:
 		Pandas DataFrame of series framed for supervised learning.
 	"""
+	import pandas as pd
 	n_vars = 1 if type(data) is list else data.shape[1]
 	df = pd.DataFrame(data)
 	input_cols, output_cols, input_names, output_names = [], [], [], []
@@ -55,12 +44,19 @@ def get_models():
 	"""
 	:return: A list of the trained pbfiles.
 	"""
+	import os
 	model_dir = "/home/robintiman/master-thesis-amanda-robin/backend/learning/pbfiles"
 	models = [model for model in os.listdir(model_dir) if model.endswith("h5")]
 	return models
 
 
 def export_to_pb(model, model_name):
+	import tensorflow as tf
+	from tensorflow.python.framework import graph_util
+	from tensorflow.python.framework import graph_io
+	from keras import backend as K
+	import os
+	
 	nb_classes = 1  # The number of output nodes in the model
 	prefix_output_node_names_of_final_network = 'output_node'
 	
@@ -82,7 +78,7 @@ def export_to_pb(model, model_name):
 	
 	constant_graph = graph_util.convert_variables_to_constants(sess, sess.graph.as_graph_def(), pred_node_names)
 	graph_io.write_graph(constant_graph, output_fld, output_graph_name, as_text=False)
-	print('saved the constant graph (ready for inference) at: ', osp.join(output_fld, output_graph_name))
+	print('saved the constant graph (ready for inference) at: ', os.path.join(output_fld, output_graph_name))
 
 
 def print_graph_nodes(filename):
@@ -110,6 +106,10 @@ def export_model(saver, model, model_name):
 	:param model: The model to export
 	:param model_name: Its name 
 	"""
+	import tensorflow as tf
+	from tensorflow.python.tools import freeze_graph, optimize_for_inference_lib
+	from keras import backend as K
+	
 	model_dir = "pbfiles/"
 	input_node_names = [model.input._op.name]
 	output_node_name = model.output._op.name
@@ -145,6 +145,9 @@ def reshape_io(input, output, settings):
 
 
 def scale_data(data, interval=(0,1)):
+	import pandas as pd
+	from sklearn.preprocessing import MinMaxScaler
+	
 	scaler = MinMaxScaler(interval)
 	scaled_values = scaler.fit_transform(data.as_matrix())
 	scaled_df = pd.DataFrame(scaled_values, columns=list(data))
@@ -154,6 +157,9 @@ def scale_data(data, interval=(0,1)):
 
 def split_data(data, ratio=0.1, concat=True):
 	# TODO consider using K-fold validation
+	from sklearn.model_selection import train_test_split
+	import pandas as pd
+	
 	splitted_data = []
 	new_instance = False
 	start_index = 0
@@ -175,6 +181,8 @@ def split_data(data, ratio=0.1, concat=True):
 
 def filter_data(data, threshold=0.2, filter_discrete=False):
 	# They're practically identical to Vehicle_speed.
+	import numpy as np
+	
 	num_cols_before = len(list(data))
 	always_drop = ["Wheel_velocity_front_left-hand", "Wheel_velocity_rear_right-hand",
 	               "Wheel_velocity_front_right-hand", "Wheel_velocity_rear_left-hand"]
@@ -200,25 +208,8 @@ def filter_data(data, threshold=0.2, filter_discrete=False):
 	return data
 
 
-def calc_road_limit(data, timestep, window_size=10):
-	"""
-	This is done by taking the median vehicle speed of the last 10 time steps and the rounding off
-	to the nearest tenth.
-	We're assuming that the speed kept is reasonably withing the allowed limit.
-	:return: The speed
-	"""
-	# TODO consider a more sophisticated way of doing this
-	steps_back = steps_forward = int(window_size / 2)
-	if timestep < steps_back:
-		steps_back = timestep
-		steps_forward = window_size - timestep
-
-	vehicle_speed = data[timestep - steps_back: timestep + steps_forward].get("Vehicle_speed")
-	med = np.median(vehicle_speed.as_matrix())
-	return int(round(med/10)*10)
-
-
 def load_data(filename):
+	import pandas as pd
 	data = pd.read_csv("../datasets/" + filename)
 	data = data.drop("Class", axis=1)
 	return data

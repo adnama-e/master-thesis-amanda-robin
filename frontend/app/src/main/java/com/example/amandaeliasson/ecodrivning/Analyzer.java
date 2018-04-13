@@ -1,7 +1,6 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.content.res.AssetManager;
-
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
@@ -27,6 +26,7 @@ public class Analyzer {
     private static final String OUTPUT_NODE = "output_node0";
     private static final long[] INPUT_SHAPE = {1, 5, 27};
     private static final int OUTPUT_SIZE = 1;
+    private static final int SHIFT = 1,  ACCELERATION = 2;
 
     public Analyzer(AssetManager assetManager) {
         tf = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
@@ -46,6 +46,14 @@ public class Analyzer {
             result *= -1;
         }
         return result;
+    }
+
+    private void uploadClassificationData(double data) {
+
+    }
+
+    public int detectAction() {
+        return 0;
     }
 
     private float predictFuelConsumption(float[] data) {
