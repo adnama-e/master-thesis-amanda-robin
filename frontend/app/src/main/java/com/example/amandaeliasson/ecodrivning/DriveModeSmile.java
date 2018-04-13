@@ -31,7 +31,6 @@ public class DriveModeSmile extends Fragment implements Observer {
     DataProvider dataProvider;
     int picture;
     Timer time;
-    //private ImageSwitcher imageSwitcher;
     @SuppressLint("ResourceAsColor")
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

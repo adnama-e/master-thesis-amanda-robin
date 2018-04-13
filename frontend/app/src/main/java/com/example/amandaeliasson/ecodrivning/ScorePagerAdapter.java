@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 
 public class ScorePagerAdapter extends FragmentPagerAdapter {
-    NamedFragment [] fragments;
+    private NamedFragment [] fragments;
     public ScorePagerAdapter(FragmentManager fm, State state) {
         super(fm);
         Bundle args= new Bundle();
@@ -25,6 +25,7 @@ public class ScorePagerAdapter extends FragmentPagerAdapter {
                 fragment1, progressFragment, averageFragment
         };
     }
+
 
     @Override
     public Fragment getItem(int position) {

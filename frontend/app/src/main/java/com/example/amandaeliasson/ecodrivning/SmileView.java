@@ -58,7 +58,6 @@ public class SmileView extends ImageSwitcher{
     public void changeBack() {
         if(index !=0){
             index--;
-
             this.setImageResource(images[index]);
 
         }
