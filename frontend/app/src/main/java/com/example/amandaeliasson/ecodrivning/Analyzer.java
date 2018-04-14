@@ -3,6 +3,9 @@ package com.example.amandaeliasson.ecodrivning;
 import android.content.res.AssetManager;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobile.auth.core.IdentityManager;
+import java.util.Date;
 
 /**
  * Uses a pre-trained LSTM model to predict the expected fuel consumption.
@@ -27,9 +30,12 @@ public class Analyzer {
     private static final long[] INPUT_SHAPE = {1, 5, 27};
     private static final int OUTPUT_SIZE = 1;
     private static final int SHIFT = 1,  ACCELERATION = 2;
+    private static final int ID = 1;
+    private DynamoDBMapper dynamoDBMapper;
 
-    public Analyzer(AssetManager assetManager) {
+    public Analyzer(AssetManager assetManager, DynamoDBMapper dynamoDBMapper) {
         tf = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
+        this.dynamoDBMapper = dynamoDBMapper;
     }
 
     /**
@@ -45,11 +51,43 @@ public class Analyzer {
         if (actualFuelConsumption > expFuel) {
             result *= -1;
         }
+        uploadScore(result);
         return result;
     }
 
     private void uploadClassificationData(double data) {
+        /*
+        Use Asynchronous Calls to DynamoDB
+        Since calls to DynamoDB are synchronous, they don't belong on your UI thread.
+        Use an asynchronous method like the Runnable wrapper to call DynamoDBObjectMapper in
+        a separate thread.
 
+        Runnable runnable = new Runnable() {
+            public void run() {
+                //DynamoDB calls go here
+            }
+        };
+        Thread mythread = new Thread(runnable);
+        mythread.start();
+        */
+    }
+
+    public void uploadScore(double score) {
+        final DriveScoresDO item = new DriveScoresDO();
+        String today = new Date().toString();
+        System.out.println(today);
+        item.setUserId("RobinID");
+        item.setDate(new Date().toString());
+        item.setDriveId("Robin");
+        item.setScore(score);
+        item.setTime(1.0);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                dynamoDBMapper.save(item);
+            }
+        }).start();
     }
 
     public int detectAction() {

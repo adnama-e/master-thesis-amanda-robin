@@ -51,7 +51,7 @@ public class DriveModeWarning extends Fragment implements Observer {
         super.onCreate(savedInstanceState);
         AssetManager am = getContext().getAssets();
         dataHandler = new DataHandler(am, 1);
-        analyzer = new Analyzer(am);
+        analyzer = new Analyzer(am, MainActivity.dynamoDBMapper);
         Bundle args = getArguments();
         dataProvider = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
         dataProvider.addObserver(this);
