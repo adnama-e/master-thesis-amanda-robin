@@ -33,7 +33,7 @@ public class Analyzer {
     private static final int ID = 1;
     private DynamoDBMapper dynamoDBMapper;
 
-    public Analyzer(AssetManager assetManager, DynamoDBMapper dynamoDBMapper) {
+    Analyzer(AssetManager assetManager, DynamoDBMapper dynamoDBMapper) {
         tf = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
         this.dynamoDBMapper = dynamoDBMapper;
     }
@@ -45,7 +45,7 @@ public class Analyzer {
      * @param actualFuelConsumption - The actual fuel consumption.
      * @return A double between -1 and 1 where -1 is the worst and 1 is the best.
      */
-    public double classify(float[] data, float actualFuelConsumption) {
+    double classify(float[] data, float actualFuelConsumption) {
         float expFuel = predictFuelConsumption(data);
         double result = 1 - densityRatio(expFuel, actualFuelConsumption);
         if (actualFuelConsumption > expFuel) {

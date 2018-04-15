@@ -30,9 +30,7 @@ import java.util.TimerTask;
 
 public class DriveModeWarning extends Fragment implements Observer {
     View layout;
-
     DataProvider dataProvider;
-
     TextToSpeech textToSpeech;
     Context context;
     WarningView image;
@@ -58,6 +56,26 @@ public class DriveModeWarning extends Fragment implements Observer {
 
     }
 
+    private void runWithCSV() {
+        if (!dataHandler.nextRow()) {
+            onPause();
+        }
+        float[] input = dataHandler.getInput();
+        float output = dataHandler.getOutput();
+        double cls = analyzer.classify(input, output);
+        int alpha = 0;
+        if (cls < 0) {
+            alpha = (int) (cls * -1 * 255);
+        }
+        image.setAlpha(alpha);
+    }
+
+    private void runWithFakeData() {
+        Measurement m = dataProvider.getMeasurement();
+        image.setVisibility(View.VISIBLE);
+        image.setAlpha(alpha);
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -70,42 +88,20 @@ public class DriveModeWarning extends Fragment implements Observer {
         dataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                time.schedule(new TimerTask() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void run() {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                        time.schedule(new TimerTask() {
                             @Override
                             public void run() {
-                                Measurement m = dataProvider.getMeasurement();
-                                    if(m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() ==false) {
-                                        image.increaseAlpha();
-                                  /*      if (!dataHandler.nextRow()) {
-                                    onPause();
-                                }
-                                float[] input = dataHandler.getInput();
-                                float output = dataHandler.getOutput();
-                                double cls = analyzer.classify(input, output);
-                                int alpha = 0;
-                                if (cls < 0) {
-                                    alpha = (int) (cls * -1 * 255);
-                                }*/
-
-                                        }else{
-                                            image.reduceAlpha();
-
-                                    }
-                                    System.out.println(image.alpha());
-                                    //image.setImageAlpha(alpha);
-                                    image.setVisibility(View.VISIBLE);
-                                    image.setAlpha();
-                                    }});
-
+                                runWithCSV();
+                            }
+                        }, 0, 500);
                     }
-                }, 0, 500);
+                });
             }
         });
-
 
         context = container.getContext();
         textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
@@ -118,10 +114,7 @@ public class DriveModeWarning extends Fragment implements Observer {
             }
         });
         return layout;
-
-
     }
-
 
     public static PorterDuffColorFilter setBrightness(int progress) {
         if (progress >= 100) {
