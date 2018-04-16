@@ -5,22 +5,15 @@ import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.SeekBar;
 
-import com.google.android.gms.tasks.Task;
-
-import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
@@ -38,7 +31,7 @@ public class DriveModeWarning extends Fragment implements Observer {
     int alpha;
     DataHandler dataHandler;
     Analyzer analyzer;
-    Timer time;
+    Timer timer;
 
     public DriveModeWarning() {
         alpha = 0;
@@ -48,7 +41,7 @@ public class DriveModeWarning extends Fragment implements Observer {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AssetManager am = getContext().getAssets();
-        dataHandler = new DataHandler(am, 1);
+        dataHandler = new DataHandler(am, 1, 100);
         analyzer = new Analyzer(am, MainActivity.dynamoDBMapper);
         Bundle args = getArguments();
         dataProvider = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
@@ -56,9 +49,10 @@ public class DriveModeWarning extends Fragment implements Observer {
 
     }
 
-    private void runWithCSV() {
+    private boolean runWithCSV() {
         if (!dataHandler.nextRow()) {
-            onPause();
+            analyzer.endAndUploadSession();
+            return false;
         }
         float[] input = dataHandler.getInput();
         float output = dataHandler.getOutput();
@@ -68,6 +62,7 @@ public class DriveModeWarning extends Fragment implements Observer {
             alpha = (int) (cls * -1 * 255);
         }
         image.setAlpha(alpha);
+        return true;
     }
 
     private void runWithFakeData() {
@@ -84,22 +79,19 @@ public class DriveModeWarning extends Fragment implements Observer {
         image = layout.findViewById(R.id.warning);
         image.setVisibility(View.INVISIBLE);
         dataButton = layout.findViewById(R.id.dataB);
-        time = new Timer();
+        timer = new Timer();
         dataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                analyzer.initSession();
+                timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        time.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                runWithCSV();
-                            }
-                        }, 0, 500);
+                        if (!runWithCSV()) {
+                            timer.cancel();
+                        }
                     }
-                });
+                }, 0, 500);
             }
         });
 
@@ -131,7 +123,7 @@ public class DriveModeWarning extends Fragment implements Observer {
     }
 
     public void onPause() {
-        time.cancel();
+        timer.cancel();
         /*if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();

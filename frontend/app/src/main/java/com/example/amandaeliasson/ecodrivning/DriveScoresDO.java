@@ -16,9 +16,8 @@ import java.util.Set;
 public class DriveScoresDO {
     private String _userId;
     private String _driveId;
-    private String _date;
-    private Double _score;
-    private Double _time;
+    private List<String> _datetime;
+    private List<String> _score;
 
     @DynamoDBHashKey(attributeName = "userId")
     @DynamoDBAttribute(attributeName = "userId")
@@ -38,29 +37,21 @@ public class DriveScoresDO {
     public void setDriveId(final String _driveId) {
         this._driveId = _driveId;
     }
-    @DynamoDBAttribute(attributeName = "date")
-    public String getDate() {
-        return _date;
+    @DynamoDBAttribute(attributeName = "datetime")
+    public List<String> getDatetime() {
+        return _datetime;
     }
 
-    public void setDate(final String _date) {
-        this._date = _date;
+    public void setDatetime(final List<String> _datetime) {
+        this._datetime = _datetime;
     }
     @DynamoDBAttribute(attributeName = "score")
-    public Double getScore() {
+    public List<String> getScore() {
         return _score;
     }
 
-    public void setScore(final Double _score) {
+    public void setScore(final List<String> _score) {
         this._score = _score;
-    }
-    @DynamoDBAttribute(attributeName = "time")
-    public Double getTime() {
-        return _time;
-    }
-
-    public void setTime(final Double _time) {
-        this._time = _time;
     }
 
 }

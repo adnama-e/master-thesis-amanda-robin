@@ -1,11 +1,18 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.content.res.AssetManager;
+import android.util.ArraySet;
+import android.util.Log;
+
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
-import com.amazonaws.mobile.auth.core.IdentityManager;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Uses a pre-trained LSTM model to predict the expected fuel consumption.
@@ -29,11 +36,12 @@ public class Analyzer {
     private static final String OUTPUT_NODE = "output_node0";
     private static final long[] INPUT_SHAPE = {1, 5, 27};
     private static final int OUTPUT_SIZE = 1;
-    private static final int SHIFT = 1,  ACCELERATION = 2;
-    private static final int ID = 1;
     private DynamoDBMapper dynamoDBMapper;
+    private List<String> timeForSession, scoreForSession;
+    private int numLogs;
 
-    Analyzer(AssetManager assetManager, DynamoDBMapper dynamoDBMapper) {
+
+    public Analyzer(AssetManager assetManager, DynamoDBMapper dynamoDBMapper) {
         tf = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
         this.dynamoDBMapper = dynamoDBMapper;
     }
@@ -45,42 +53,29 @@ public class Analyzer {
      * @param actualFuelConsumption - The actual fuel consumption.
      * @return A double between -1 and 1 where -1 is the worst and 1 is the best.
      */
-    double classify(float[] data, float actualFuelConsumption) {
+    public double classify(float[] data, float actualFuelConsumption) {
         float expFuel = predictFuelConsumption(data);
-        double result = 1 - densityRatio(expFuel, actualFuelConsumption);
+        double score = 1 - densityRatio(expFuel, actualFuelConsumption);
         if (actualFuelConsumption > expFuel) {
-            result *= -1;
+            score *= -1;
         }
-        uploadScore(result);
-        return result;
+        appendScore(score);
+        return score;
     }
 
-    private void uploadClassificationData(double data) {
-        /*
-        Use Asynchronous Calls to DynamoDB
-        Since calls to DynamoDB are synchronous, they don't belong on your UI thread.
-        Use an asynchronous method like the Runnable wrapper to call DynamoDBObjectMapper in
-        a separate thread.
-
-        Runnable runnable = new Runnable() {
-            public void run() {
-                //DynamoDB calls go here
-            }
-        };
-        Thread mythread = new Thread(runnable);
-        mythread.start();
-        */
+    public void initSession() {
+        Log.i("SESS_INIT", "Analyzing session initialized.");
+        scoreForSession = new ArrayList<>();
+        timeForSession = new ArrayList<>();
+        numLogs = 0;
     }
 
-    public void uploadScore(double score) {
+    public void endAndUploadSession() {
         final DriveScoresDO item = new DriveScoresDO();
-        String today = new Date().toString();
-        System.out.println(today);
-        item.setUserId("RobinID");
-        item.setDate(new Date().toString());
+        item.setUserId("MyID");
+        item.setDatetime(timeForSession);
         item.setDriveId("Robin");
-        item.setScore(score);
-        item.setTime(1.0);
+        item.setScore(scoreForSession);
 
         new Thread(new Runnable() {
             @Override
@@ -88,10 +83,18 @@ public class Analyzer {
                 dynamoDBMapper.save(item);
             }
         }).start();
+        Log.i("SESS_END", "Analyzing session terminated");
+        Log.i("UPLOAD", String.format("%d scores recorded and uploaded", numLogs));
     }
 
-    public int detectAction() {
-        return 0;
+    /*
+    ############# PRIVATE METHODS #############
+     */
+
+    private void appendScore(double score) {
+        timeForSession.add(new Date().toString());
+        scoreForSession.add(Double.toString(score));
+        numLogs += 1;
     }
 
     private float predictFuelConsumption(float[] data) {
