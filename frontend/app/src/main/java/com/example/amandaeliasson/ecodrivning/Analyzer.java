@@ -8,9 +8,13 @@ import org.apache.commons.math3.distribution.NormalDistribution;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -39,11 +43,13 @@ public class Analyzer {
     private DynamoDBMapper dynamoDBMapper;
     private List<String> timeForSession, scoreForSession;
     private int numLogs;
+    private SimpleDateFormat dateFormatter;
 
 
     public Analyzer(AssetManager assetManager, DynamoDBMapper dynamoDBMapper) {
         tf = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
         this.dynamoDBMapper = dynamoDBMapper;
+        dateFormatter = new SimpleDateFormat("EEE MMM yyyy HH:mm:ss");
     }
 
     /**
@@ -92,7 +98,8 @@ public class Analyzer {
      */
 
     private void appendScore(double score) {
-        timeForSession.add(new Date().toString());
+        timeForSession.add(dateFormatter.format(new Date()));
+        System.out.println(dateFormatter.format(new Date()));
         scoreForSession.add(Double.toString(score));
         numLogs += 1;
     }

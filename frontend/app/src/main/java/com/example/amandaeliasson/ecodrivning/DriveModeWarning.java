@@ -1,5 +1,6 @@
 package com.example.amandaeliasson.ecodrivning;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 
 public class DriveModeWarning extends Fragment implements Observer {
@@ -49,10 +51,10 @@ public class DriveModeWarning extends Fragment implements Observer {
 
     }
 
-    private boolean runWithCSV() {
+    private int runWithCSV() {
         if (!dataHandler.nextRow()) {
             analyzer.endAndUploadSession();
-            return false;
+            return -1;
         }
         float[] input = dataHandler.getInput();
         float output = dataHandler.getOutput();
@@ -61,8 +63,7 @@ public class DriveModeWarning extends Fragment implements Observer {
         if (cls < 0) {
             alpha = (int) (cls * -1 * 255);
         }
-        image.setAlpha(alpha);
-        return true;
+        return alpha;
     }
 
     private void runWithFakeData() {
@@ -85,24 +86,15 @@ public class DriveModeWarning extends Fragment implements Observer {
             public void onClick(View view) {
                 analyzer.initSession();
                 timer.schedule(new TimerTask() {
+                    int alpha;
                     @Override
                     public void run() {
-                        if (!runWithCSV()) {
+                        alpha = runWithCSV();
+                        if (alpha == -1) {
                             timer.cancel();
                         }
                     }
-                }, 0, 500);
-            }
-        });
-
-        context = container.getContext();
-        textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status != TextToSpeech.ERROR) {
-                    textToSpeech.setLanguage(Locale.ENGLISH);
-                    // voiceCommand();
-                }
+                }, 0, 1000);
             }
         });
         return layout;
