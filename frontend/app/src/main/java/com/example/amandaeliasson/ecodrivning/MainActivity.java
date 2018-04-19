@@ -4,15 +4,13 @@ import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
-<<<<<<< HEAD
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-=======
->>>>>>> 2a50d0a63d3f87445ccacbe024b7dff0c2bcd904
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
