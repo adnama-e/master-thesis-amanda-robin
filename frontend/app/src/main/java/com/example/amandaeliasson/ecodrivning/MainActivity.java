@@ -4,22 +4,24 @@ import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+<<<<<<< HEAD
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+=======
+>>>>>>> 2a50d0a63d3f87445ccacbe024b7dff0c2bcd904
 import android.support.design.widget.NavigationView;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,37 +29,32 @@ import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.amazonaws.mobile.client.AWSMobileClient;
-import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
-import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
-
+import com.amazonaws.mobile.client.AWSStartupHandler;
+import com.amazonaws.mobile.client.AWSStartupResult;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.TimeZone;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
-
-public class MainActivity extends AppCompatActivity implements Observer /*implements NavigationView.OnNavigationItemSelectedListener*/ {
-
+public class MainActivity extends AppCompatActivity implements Observer {
     public static String ARGS_DATA_PROVIDER = "ARGS_DATA_PROVIDER";
     public static String ARGS_STATE = "ARGS_STATE";
+
     public static String ARGS_INITIAL_FRAGMENT = "ARGS_INITIAL_FRAGMENT";
 
+    public static String ARGS_DB_MAPPER = "ARGS_DB_MAPPER";
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    public static PinpointManager pinpointManager;
+    NavigationView navigationView;
     private Toolbar toolbar;
-    View layout_interact;
-    private DataHandler dataHandler;
     private DataProvider dp;
     private State state;
     private TextView startDate;
     private TextView endDate;
-    private int visable;
+    static DynamoDBMapper dynamoDBMapper;
 
 
     private ActionBarDrawerToggle drawerToggle;
@@ -66,22 +63,39 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         layout_interact = (View) findViewById(R.id.drawLayout);
+
         setUpToolbar();
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawLayout);
-        navigationView = (NavigationView) findViewById(R.id.nView);
+        drawerLayout = findViewById(R.id.drawLayout);
+        navigationView = findViewById(R.id.nView);
         setUpNavigationDrawerContent(navigationView);
         drawerToggle = setUpDrawerToggle();
 
         drawerLayout.addDrawerListener(drawerToggle);
 
         dp = new DataProviderMockup();
-        state= new State();
+        state = new State();
         state.addObserver(this);
 
         startDate = findViewById(R.id.start_date);
         endDate = findViewById(R.id.end_date);
+
+        AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
+            @Override
+            public void onComplete(AWSStartupResult awsStartupResult) {
+                Log.d("MainActivity", "AWSMobileClient is instantiated and you are connected to AWS!");
+            }
+        }).execute();
+
+
+        AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+        dynamoDBMapper = DynamoDBMapper.builder()
+                .dynamoDBClient(dynamoDBClient)
+                .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                .build();
+
 
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
                 openStartDatePicker();
             }
         });
+
         Intent intent = getIntent();
         String initClassTag = intent.getStringExtra(ARGS_INITIAL_FRAGMENT);
         if(initClassTag != null){
@@ -119,9 +134,10 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
         }
 
 
+
     }
     public void setUpToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
     }
@@ -136,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
         return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     }
 
-
     private void setUpNavigationDrawerContent(NavigationView navigation) {
         navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -145,13 +160,6 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
                 return true;
             }
         });
-    }
-    public boolean isVisable(View v){
-        if(visable == v.INVISIBLE){
-            return true;
-        }else{
-            return false;
-        }
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -184,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
                 endDate.setVisibility(View.INVISIBLE);
                 startDate.setVisibility(View.INVISIBLE);
         }
+
         try {
             fragment = (Fragment) fragmentClass.newInstance();
 
@@ -193,11 +202,10 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
 
             args.putSerializable(MainActivity.ARGS_STATE, state);
             fragment.setArguments(args);
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flcontent, fragment).commit();
 
@@ -239,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
         },currentDate.get(Calendar.YEAR),currentDate.get(Calendar.MONTH),currentDate.get(Calendar.DAY_OF_MONTH));
         pickerDialog.show();
     }
+
     public void openEndDatePicker(){
         Calendar currentDate = state.getEndDate();
         DatePickerDialog pickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -250,15 +259,10 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
         pickerDialog.show();
     }
 
-
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
     @Override
     public void update(Observable observable, Object o) {
         DateFormat dateFormat = SimpleDateFormat.getDateInstance();
-        startDate.setText("From:"+" "+dateFormat.format(state.getStartDate().getTime()));
-        endDate.setText("To:"+" "+dateFormat.format(state.getEndDate().getTime()));
+        startDate.setText("From: " + dateFormat.format(state.getStartDate().getTime()));
+        endDate.setText("To: " + dateFormat.format(state.getEndDate().getTime()));
     }
 }

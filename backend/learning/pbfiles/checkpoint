@@ -1,0 +1,2 @@
+model_checkpoint_path: "lstm-60-sec.chkp"
+all_model_checkpoint_paths: "lstm-60-sec.chkp"

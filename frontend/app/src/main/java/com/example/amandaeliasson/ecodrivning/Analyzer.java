@@ -1,9 +1,22 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.content.res.AssetManager;
+import android.util.ArraySet;
+import android.util.Log;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Uses a pre-trained LSTM model to predict the expected fuel consumption.
@@ -27,9 +40,16 @@ public class Analyzer {
     private static final String OUTPUT_NODE = "output_node0";
     private static final long[] INPUT_SHAPE = {1, 5, 27};
     private static final int OUTPUT_SIZE = 1;
+    private DynamoDBMapper dynamoDBMapper;
+    private List<String> timeForSession, scoreForSession;
+    private int numLogs;
+    private SimpleDateFormat dateFormatter;
 
-    public Analyzer(AssetManager assetManager) {
+
+    public Analyzer(AssetManager assetManager, DynamoDBMapper dynamoDBMapper) {
         tf = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
+        this.dynamoDBMapper = dynamoDBMapper;
+        dateFormatter = new SimpleDateFormat("EEE MMM yyyy HH:mm:ss");
     }
 
     /**
@@ -41,11 +61,47 @@ public class Analyzer {
      */
     public double classify(float[] data, float actualFuelConsumption) {
         float expFuel = predictFuelConsumption(data);
-        double result = 1 - densityRatio(expFuel, actualFuelConsumption);
+        double score = 1 - densityRatio(expFuel, actualFuelConsumption);
         if (actualFuelConsumption > expFuel) {
-            result *= -1;
+            score *= -1;
         }
-        return result;
+        appendScore(score);
+        return score;
+    }
+
+    public void initSession() {
+        Log.i("SESS_INIT", "Analyzing session initialized.");
+        scoreForSession = new ArrayList<>();
+        timeForSession = new ArrayList<>();
+        numLogs = 0;
+    }
+
+    public void endAndUploadSession() {
+        final DriveScoresDO item = new DriveScoresDO();
+        item.setUserId("MyID");
+        item.setDatetime(timeForSession);
+        item.setDriveId("Robin");
+        item.setScore(scoreForSession);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                dynamoDBMapper.save(item);
+            }
+        }).start();
+        Log.i("SESS_END", "Analyzing session terminated");
+        Log.i("UPLOAD", String.format("%d scores recorded and uploaded", numLogs));
+    }
+
+    /*
+    ############# PRIVATE METHODS #############
+     */
+
+    private void appendScore(double score) {
+        timeForSession.add(dateFormatter.format(new Date()));
+        System.out.println(dateFormatter.format(new Date()));
+        scoreForSession.add(Double.toString(score));
+        numLogs += 1;
     }
 
     private float predictFuelConsumption(float[] data) {

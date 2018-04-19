@@ -10,10 +10,13 @@ public class DataHandler {
     private AssetManager assetManager;
     private float output;
     private float[] inputRow;
+    private int numRows, limitRow;
 
-    public DataHandler(AssetManager assetManager, int dataIndex) {
+    public DataHandler(AssetManager assetManager, int dataIndex, int limit) {
         this.assetManager = assetManager;
         setDataset(dataIndex);
+        this.limitRow = limit;
+        numRows = 0;
     }
 
     /**
@@ -54,9 +57,14 @@ public class DataHandler {
      * @return - True if there was a next row, false otherwise.
      */
     public boolean nextRow() {
+        if (numRows == limitRow) {
+            return false;
+        }
+
         try {
             inputRow = toFloat(inputReader.readNext());
             output = toFloat(outputReader.readNext())[0];
+            numRows += 1;
             return true;
         } catch (IOException | NullPointerException e) {
             return false;

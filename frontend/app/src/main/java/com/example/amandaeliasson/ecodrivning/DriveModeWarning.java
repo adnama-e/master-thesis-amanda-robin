@@ -1,26 +1,20 @@
 package com.example.amandaeliasson.ecodrivning;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.SeekBar;
 
-import com.google.android.gms.tasks.Task;
-
-import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
@@ -28,11 +22,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
+
 public class DriveModeWarning extends Fragment implements Observer {
     View layout;
-
     DataProvider dataProvider;
-
     TextToSpeech textToSpeech;
     Context context;
     WarningView image;
@@ -40,7 +33,7 @@ public class DriveModeWarning extends Fragment implements Observer {
     int alpha;
     DataHandler dataHandler;
     Analyzer analyzer;
-    Timer time;
+    Timer timer;
 
     public DriveModeWarning() {
         alpha = 0;
@@ -50,12 +43,33 @@ public class DriveModeWarning extends Fragment implements Observer {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AssetManager am = getContext().getAssets();
-        dataHandler = new DataHandler(am, 1);
-        analyzer = new Analyzer(am);
+        dataHandler = new DataHandler(am, 1, 100);
+        analyzer = new Analyzer(am, MainActivity.dynamoDBMapper);
         Bundle args = getArguments();
         dataProvider = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
         dataProvider.addObserver(this);
 
+    }
+
+    private int runWithCSV() {
+        if (!dataHandler.nextRow()) {
+            analyzer.endAndUploadSession();
+            return -1;
+        }
+        float[] input = dataHandler.getInput();
+        float output = dataHandler.getOutput();
+        double cls = analyzer.classify(input, output);
+        int alpha = 0;
+        if (cls < 0) {
+            alpha = (int) (cls * -1 * 255);
+        }
+        return alpha;
+    }
+
+    private void runWithFakeData() {
+        Measurement m = dataProvider.getMeasurement();
+        image.setVisibility(View.VISIBLE);
+        image.setAlpha(alpha);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,13 +80,16 @@ public class DriveModeWarning extends Fragment implements Observer {
         image = layout.findViewById(R.id.warning);
         image.setVisibility(View.INVISIBLE);
         dataButton = layout.findViewById(R.id.dataB);
-        time = new Timer();
+        timer = new Timer();
         dataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                time.schedule(new TimerTask() {
+                analyzer.initSession();
+                timer.schedule(new TimerTask() {
+                    int alpha;
                     @Override
                     public void run() {
+
                         getActivity().runOnUiThread(new Runnable() {
                             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                             @Override
@@ -90,27 +107,17 @@ public class DriveModeWarning extends Fragment implements Observer {
                                     image.setAlpha();
                                     }});
 
+
+                        alpha = runWithCSV();
+                        if (alpha == -1) {
+                            timer.cancel();
+                        }
                     }
-                }, 0, 500);
-            }
-        });
-
-
-        context = container.getContext();
-        textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status != TextToSpeech.ERROR) {
-                    textToSpeech.setLanguage(Locale.ENGLISH);
-                    // voiceCommand();
-                }
+                }, 0, 1000);
             }
         });
         return layout;
-
-
     }
-
 
     public static PorterDuffColorFilter setBrightness(int progress) {
         if (progress >= 100) {
@@ -127,7 +134,7 @@ public class DriveModeWarning extends Fragment implements Observer {
     }
 
     public void onPause() {
-        time.cancel();
+        timer.cancel();
         /*if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();

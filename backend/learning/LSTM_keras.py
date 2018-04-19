@@ -99,6 +99,21 @@ def plot_predictions(predictions, true_values, time_series, density):
 	plt.show()
 
 
+def driving_score(actual, predicted):
+	"""
+	The driving score. Identical to the one used in production written in Java.
+	:param actual: Actual fuel consumption
+	:param predicted: Predicted fuel consumption
+	:return: The score
+	"""
+	upper = norm.pdf(predicted, loc=predicted, scale=0.069652)
+	lower = norm.pdf(actual, loc=predicted, scale=0.069652)
+	score = 1 - lower / upper
+	if actual > predicted:
+		score *= -1
+	return score
+	
+	
 # ###############################################
 # ###########          MAIN           ###########
 # ###############################################
@@ -106,7 +121,7 @@ def plot_predictions(predictions, true_values, time_series, density):
 
 settings = {"batch_size": 32,
             "timesteps": 5,
-            "delay": 3,
+            "delay": 1,
             "units": 32,
             "epochs": 30}
 
@@ -116,6 +131,7 @@ parser.add_argument("--name", dest="model_name", default="lstm_model")
 parser.add_argument("--list-models", action="store_true", dest="list_models")
 parser.add_argument("--predict", action="store_true", dest="predict")
 parser.add_argument("--save-pb", action="store_true", dest="save_pb")
+parser.add_argument("--visualize", action="store_true", dest="visualize")
 args = parser.parse_args()
 
 model_name = args.model_name
@@ -126,7 +142,7 @@ dataset = "kia"
 
 if list_models:
 	models = get_models()
-	print("Available pbfiles are:")
+	print("Available models are:")
 	for model in models:
 		print("* {}".format(model))
 
@@ -156,24 +172,26 @@ if args.save_pb:
 	export_to_pb(model, model_name)
 
 if do_predict:
-	for drive in test_drives:
+	print("Running predictions..")
+	scores = {"DriveID": [], "Drive_score": []}
+	for id, drive in enumerate(test_drives):
 		drive = drive.drop("Time(s)", axis=1)
 		settings["features"] = drive.shape[1]
 		input_df, output_df = series_to_supervised(drive, settings["timesteps"], 1)
-		y_pred, y_truth, density = [], [], []
+		y_pred, y_truth, score_for_drive = [], [], []
 		for step in range(input_df.shape[0]):
 			# Predict each timestep one at a time.
 			row = input_df.iloc[[step]]
 			out = output_df.iloc[[step]]
 			X, y = reshape_io(row, out, settings)
 			y_hat = model.predict(X, batch_size=1)[0]
-			y_pred.append(y_hat[0])
-			y_truth.append(y[0])
-			upper_density = norm.pdf(y_hat[0], loc=y_hat[0], scale=0.069652)
-			lower_density = norm.pdf(y[0], loc=y_hat[0], scale=0.069652)
-			print("Difference: {}\n"
-			      "Density: {}\n\n".format(y[0] - y_hat[0], lower_density / upper_density))
-			density.append(lower_density / upper_density)
+			actual_fuel, predicted_fuel = y[0], y_hat[0]
+			y_pred.append(predicted_fuel)
+			y_truth.append(actual_fuel)
+			
+			# Calculate the density classification.
+			score = driving_score(actual_fuel, predicted_fuel)
+			score_for_drive.append(score)
 		
 		# Drop the first columns
 		drive = drive.iloc[settings["timesteps"]:]
@@ -183,6 +201,12 @@ if do_predict:
 		drive["Fuel_consumption"] = y_pred
 		predictions = scaler.inverse_transform(drive.as_matrix())[:,0]
 		
-		# Plot the predictions
-		plot_predictions(predictions, truth, range(len(predictions)), density)
-			
+		# Save the driving score
+		scores["Drive_score"] += score_for_drive
+		scores["DriveID"] += [id + 1] * len(score_for_drive)
+		
+		if args.visualize:
+			# Plot the predictions
+			plot_predictions(predictions, truth, range(len(predictions)), score_for_drive)
+	
+	pd.DataFrame(data=scores).to_csv("../datasets/driving_score.csv", index=False)
