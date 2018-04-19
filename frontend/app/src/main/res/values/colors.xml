@@ -5,7 +5,7 @@
     <color name="green3">#004D40</color>
     <color name="green4">#2d882d</color>
     <color name="greenS">#4CAF50</color>
-    <color name= "LimeS">#CDDC39</color>
+    <color name="LimeS">#CDDC39</color>
     <color name="yellowS">#FFEB3B</color>
     <color name="orange">#FF8F00</color>
     <color name="red">#E65100</color>
@@ -19,4 +19,6 @@
     <color name="secondaryDarkColor">#2e7a5f</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#000000</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

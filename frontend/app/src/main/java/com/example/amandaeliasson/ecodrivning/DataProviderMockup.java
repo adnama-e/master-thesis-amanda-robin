@@ -12,6 +12,7 @@ import java.util.List;
 public class DataProviderMockup extends DataProvider {
     private Measurement latestAdd = null;
     private int counter;
+    List<Measurement> measurements;
 
 
     public DataProviderMockup() {
@@ -22,16 +23,16 @@ public class DataProviderMockup extends DataProvider {
         Calendar c=Calendar.getInstance();
         c.set(2018+1900,3,1,12,30,6);
         List<Measurement> measurements = new LinkedList<>();
-        Measurement m1 = new SpeedMeasurement(c.getTime(), 55.60457822286884, 13.001237567514181, 0);
+        Measurement m1 = new SpeedMeasurement(c.getTime(), 55.60457822286884, 13.001237567514181, 1);
         measurements.add(m1);
         latestAdd = m1;
 
         c.set(0,0,0);
-        Measurement m2 = new SpeedMeasurement(c.getTime(), 55.60329635732146, 13.001317111775279, 0);
+        Measurement m2 = new SpeedMeasurement(c.getTime(), 55.60329635732146, 13.001317111775279, 1);
         measurements.add(m2);
         latestAdd = m2;
 
-        Measurement m3 = new SpeedMeasurement(new Date(), 55.60299634018647, 12.998828021809459, 0);
+        Measurement m3 = new SpeedMeasurement(new Date(), 55.60299634018647, 12.998828021809459, 1);
         measurements.add(m3);
         latestAdd = m3;
 
@@ -39,7 +40,7 @@ public class DataProviderMockup extends DataProvider {
         measurements.add(m4);
         latestAdd = m4;
 
-        Measurement m5 = new SpeedMeasurement(new Date(), 55.603563037292865, 12.996188728138804, 1);
+        Measurement m5 = new SpeedMeasurement(new Date(), 55.603563037292865, 12.996188728138804, 0);
         measurements.add(m5);
         latestAdd = m5;
 
@@ -87,6 +88,19 @@ public class DataProviderMockup extends DataProvider {
         Measurement m16 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 1);
         measurements.add(m16);
         latestAdd = m16;
+
+
+        Measurement m17 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 1);
+        measurements.add(m17);
+        latestAdd = m17;
+
+        Measurement m18 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 1);
+        measurements.add(m18);
+        latestAdd = m18;
+
+        Measurement m19 = new SpeedMeasurement(new Date(), 55.60439033975849, 12.995669301599264, 1);
+        measurements.add(m19);
+        latestAdd = m19;
         return measurements;
     }
     public Measurement getMeasurement(){

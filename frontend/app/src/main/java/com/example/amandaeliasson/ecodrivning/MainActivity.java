@@ -1,8 +1,15 @@
 package com.example.amandaeliasson.ecodrivning;
 
+import android.app.ActionBar;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 
 import android.support.v4.app.Fragment;
@@ -16,7 +23,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.DatePicker;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
@@ -36,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
 
     public static String ARGS_DATA_PROVIDER = "ARGS_DATA_PROVIDER";
     public static String ARGS_STATE = "ARGS_STATE";
-
+    public static String ARGS_INITIAL_FRAGMENT = "ARGS_INITIAL_FRAGMENT";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -50,15 +59,15 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
     private TextView endDate;
     private int visable;
 
+
     private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         layout_interact = (View) findViewById(R.id.drawLayout);
-        //Toolbar to replace the Actionbar
         setUpToolbar();
         drawerLayout = (DrawerLayout) findViewById(R.id.drawLayout);
         navigationView = (NavigationView) findViewById(R.id.nView);
@@ -73,16 +82,6 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
 
         startDate = findViewById(R.id.start_date);
         endDate = findViewById(R.id.end_date);
-        /*Bundle args = new Bundle();
-
-        args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dp);
-
-        args.putSerializable(MainActivity.ARGS_STATE, state);
-        Fragment fragment = new DriveMode();
-        fragment.setArguments(args);
-*/
-        //FragmentManager fragmentManager = getSupportFragmentManager();
-        //fragmentManager.beginTransaction().replace(R.id.flcontent, fragment).commit();
 
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,23 +95,29 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
                 openStartDatePicker();
             }
         });
+        Intent intent = getIntent();
+        String initClassTag = intent.getStringExtra(ARGS_INITIAL_FRAGMENT);
+        if(initClassTag != null){
+            Fragment fragment = null;
+            switch (initClassTag){
+                case DriveMode.TAG:
+                    fragment = new DriveMode();
+                    break;
+                case ScoreFragment.TAG:
+                    fragment = new ScoreFragment();
+                    break;
 
-//        dataHandler = new DataHandler(getAssets());
+            }
+            if(fragment!=null){
+                Bundle args = new Bundle();
+                args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dp);
+                args.putSerializable(MainActivity.ARGS_STATE, state);
+                fragment.setArguments(args);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flcontent, fragment).commit();
+            }
+        }
 
-       /* AWSMobileClient.getInstance().initialize(this).execute();
-        PinpointConfiguration pinpointConfig = new PinpointConfiguration(
-                getApplicationContext(),
-                AWSMobileClient.getInstance().getCredentialsProvider(),
-                AWSMobileClient.getInstance().getConfiguration());
-
-        pinpointManager = new PinpointManager(pinpointConfig);
-
-        // Start a session with Pinpoint
-        pinpointManager.getSessionClient().startSession();
-
-        // Stop the session and submit the default app started event
-        pinpointManager.getSessionClient().stopSession();
-        pinpointManager.getAnalyticsClient().submitEvents();*/
 
     }
     public void setUpToolbar() {
@@ -205,14 +210,6 @@ public class MainActivity extends AppCompatActivity implements Observer /*implem
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-       /* int id = item.getItemId();
-        switch (id) {
-            case R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;*/
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }

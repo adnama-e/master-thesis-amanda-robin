@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.Adapter;
  */
 
 public class ScoreFragment extends Fragment {
+    public static final String TAG = "com.example.amandaeliasson.ecodriving.ScoreFragment";
     private State state;
     private FragmentPagerAdapter adapter;
 
@@ -43,5 +45,6 @@ public class ScoreFragment extends Fragment {
         tabLayout.setupWithViewPager(p);
         return v;
     }
+
 }
 

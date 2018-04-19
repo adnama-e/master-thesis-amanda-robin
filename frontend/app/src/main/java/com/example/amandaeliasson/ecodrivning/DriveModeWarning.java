@@ -79,18 +79,7 @@ public class DriveModeWarning extends Fragment implements Observer {
                             public void run() {
                                 Measurement m = dataProvider.getMeasurement();
                                     if(m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() ==false) {
-                                        image.increaseAlpha();
-                                  /*      if (!dataHandler.nextRow()) {
-                                    onPause();
-                                }
-                                float[] input = dataHandler.getInput();
-                                float output = dataHandler.getOutput();
-                                double cls = analyzer.classify(input, output);
-                                int alpha = 0;
-                                if (cls < 0) {
-                                    alpha = (int) (cls * -1 * 255);
-                                }*/
-
+                                            image.increaseAlpha();
                                         }else{
                                             image.reduceAlpha();
 

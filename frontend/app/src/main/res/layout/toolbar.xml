@@ -11,7 +11,6 @@
     android:background="@color/primaryColor"
     android:theme="@style/AppTheme.AppBarOverlay"
     >
-
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
@@ -34,7 +33,7 @@
                 android:textColor="@color/primaryTextColor"
                 android:textSize="20dp"
                 android:layout_marginRight="20dp"
-                android:text="From:__________"
+                android:hint="From:__________"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
@@ -45,13 +44,12 @@
                 android:textSize="20dp"
                 android:textColor="@color/primaryTextColor"
                 android:id="@+id/end_date"
-                android:text="To:__________"
+                android:hint="To:__________"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/start_date"
                 android:visibility="invisible"
                 />
-
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 </android.support.design.widget.AppBarLayout>

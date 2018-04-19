@@ -2,35 +2,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.amandaeliasson.ecodrivning.FriendFragment">
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+<android.support.v7.widget.CardView
+    android:layout_width="500dp"
+    android:layout_height="500dp"
+    app:cardCornerRadius="100dp"
+    android:id="@+id/friendpicture"
+   android:layout_marginTop="60dp"
     android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
+    android:backgroundTint="@color/primaryColor"
     >
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/friendspicture"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/friends3"
-
-        />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Connect to friends"
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <ImageView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:background="@drawable/automobile"
+           />
+   </RelativeLayout>
+</android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:id="@+id/friendsbutton"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textSize="30dp"
-        android:id="@+id/friendsbutton"
-        android:layout_below="@+id/friendspicture"
-        />
-
-</RelativeLayout>
-    <!-- TODO: Update blank fragment layout -->
-
-
-
+        android:layout_below="@+id/friendpicture"
+        android:layout_marginTop="27dp"
+        app:cardCornerRadius="25dp"
+        android:backgroundTint="@color/primaryColor"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                style="@style/Base.TextAppearance.AppCompat.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="Compete against friends"
+                android:textSize="30sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>
