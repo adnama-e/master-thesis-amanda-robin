@@ -6,9 +6,11 @@ import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
-
 
 
 public class DriveModeWarning extends Fragment implements Observer {
@@ -43,7 +44,7 @@ public class DriveModeWarning extends Fragment implements Observer {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AssetManager am = getContext().getAssets();
-        dataHandler = new DataHandler(am, 1, 100);
+        dataHandler = new DataHandler(am, 1, -1);
         analyzer = new Analyzer(am, MainActivity.dynamoDBMapper);
         Bundle args = getArguments();
         dataProvider = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
@@ -67,9 +68,23 @@ public class DriveModeWarning extends Fragment implements Observer {
     }
 
     private void runWithFakeData() {
-        Measurement m = dataProvider.getMeasurement();
-        image.setVisibility(View.VISIBLE);
-        image.setAlpha(alpha);
+        getActivity().runOnUiThread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void run() {
+                Measurement m = dataProvider.getMeasurement();
+                if (m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() == false) {
+                    image.increaseAlpha();
+                } else {
+                    image.reduceAlpha();
+
+                }
+                System.out.println(image.alpha());
+                //image.setImageAlpha(alpha);
+                image.setVisibility(View.VISIBLE);
+                image.setAlpha();
+            }
+        });
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,29 +104,11 @@ public class DriveModeWarning extends Fragment implements Observer {
                     int alpha;
                     @Override
                     public void run() {
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                            @Override
-                            public void run() {
-                                Measurement m = dataProvider.getMeasurement();
-                                    if(m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() ==false) {
-                                            image.increaseAlpha();
-                                        }else{
-                                            image.reduceAlpha();
-
-                                    }
-                                    System.out.println(image.alpha());
-                                    //image.setImageAlpha(alpha);
-                                    image.setVisibility(View.VISIBLE);
-                                    image.setAlpha();
-                                    }});
-
-
                         alpha = runWithCSV();
                         if (alpha == -1) {
                             timer.cancel();
                         }
+                        image.setAlpha(alpha);
                     }
                 }, 0, 1000);
             }
