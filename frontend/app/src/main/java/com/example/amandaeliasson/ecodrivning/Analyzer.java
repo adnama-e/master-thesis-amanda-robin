@@ -43,13 +43,13 @@ public class Analyzer {
     private DynamoDBMapper dynamoDBMapper;
     private List<String> timeForSession, scoreForSession;
     private int numLogs;
-    private SimpleDateFormat dateFormatter;
+    private DateFormat dateFormatter;
 
 
     public Analyzer(AssetManager assetManager, DynamoDBMapper dynamoDBMapper) {
         tf = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
         this.dynamoDBMapper = dynamoDBMapper;
-        dateFormatter = new SimpleDateFormat("EEE MMM yyyy HH:mm:ss");
+        dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.getDefault());
     }
 
     /**

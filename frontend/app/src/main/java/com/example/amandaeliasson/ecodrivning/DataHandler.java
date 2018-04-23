@@ -1,6 +1,8 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.content.res.AssetManager;
+import android.util.Log;
+
 import com.opencsv.CSVReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -65,6 +67,7 @@ public class DataHandler {
             inputRow = toFloat(inputReader.readNext());
             output = toFloat(outputReader.readNext())[0];
             numRows += 1;
+            Log.i("Datahandler", String.format("%d/%d rows handled", numRows, limitRow));
             return true;
         } catch (IOException | NullPointerException e) {
             return false;

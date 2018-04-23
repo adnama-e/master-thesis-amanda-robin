@@ -1,4 +1,4 @@
-package com.example.amandaeliasson.ecodrivning;
+package com.amazonaws.mobile.util;
 
 public final class StringFormatUtils {
 
