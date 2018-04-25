@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -31,6 +34,9 @@ public class DriveModeSmile extends Fragment implements Observer {
     DataProvider dataProvider;
     int picture;
     Timer time;
+    int counter;
+    TextView scoreText;
+
     @SuppressLint("ResourceAsColor")
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +50,9 @@ public class DriveModeSmile extends Fragment implements Observer {
         image = v.findViewById(R.id.smileyId);
         picture = R.drawable.smiley_happy2;
         image.setImageResource(picture);
+        scoreText = v.findViewById(R.id.todaysScore);
+        counter =0;
+        scoreText.setText(Integer.toString(counter));
         time = new Timer();
         b = v.findViewById(R.id.dataButton);
         b.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +67,8 @@ public class DriveModeSmile extends Fragment implements Observer {
                                 @Override
                                 public void run() {
                                     image.change();
+                                    counter--;
+                                    scoreText.setText(Integer.toString(counter));
                                 }
                             });
 
@@ -66,6 +77,8 @@ public class DriveModeSmile extends Fragment implements Observer {
                                 @Override
                                 public void run() {
                                     image.changeBack();
+                                    counter++;
+                                    scoreText.setText(Integer.toString(counter));
                                 }
                             });
                         }

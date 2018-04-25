@@ -9,7 +9,7 @@
     android:layout_height="500dp"
     app:cardCornerRadius="100dp"
     android:id="@+id/friendpicture"
-   android:layout_marginTop="60dp"
+    android:layout_marginTop="60dp"
     android:layout_centerHorizontal="true"
     android:backgroundTint="@color/primaryColor"
     >

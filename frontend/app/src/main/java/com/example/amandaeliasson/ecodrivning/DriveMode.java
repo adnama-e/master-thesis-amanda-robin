@@ -54,12 +54,12 @@ public class DriveMode extends Fragment implements View.OnClickListener {
         return v;
     }
 
-    @Override
-    public void onClick(View view) {
+
+   public void onClick(View view) {
         Fragment f = null;
         Class fragmentClass;
-        switch (view.getId()) {
-            case R.id.buttonF:
+       switch (view.getId()) {
+           case R.id.buttonF:
                 fragmentClass = DriveModeWarning.class;
                 break;
             case R.id.buttonS:
@@ -69,7 +69,7 @@ public class DriveMode extends Fragment implements View.OnClickListener {
                 fragmentClass = DriveModeThird.class;
                 break;
             case R.id.buttonfe:
-                fragmentClass = DriveModeFlower.class;
+               fragmentClass = DriveModeFlower.class;
                 break;
             default:
                 fragmentClass = DriveModeFourth.class;
@@ -77,22 +77,22 @@ public class DriveMode extends Fragment implements View.OnClickListener {
         try {
             f = (Fragment) fragmentClass.newInstance();
             Bundle args = new Bundle();
-            args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dp);
+           args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dp);
             f.setArguments(args);
 
         } catch (Exception e) {
-            e.printStackTrace();
+           e.printStackTrace();
         }
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content2, f).commit();
     }
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+       ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
     }
-    public void onStop() {
+   public void onStop() {
         super.onStop();
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-    }
+   }
 
 }

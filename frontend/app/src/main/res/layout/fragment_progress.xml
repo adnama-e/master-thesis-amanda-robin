@@ -1,111 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    >
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:stretchColumns="1"
-        >
-    <TextView
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Driving behavior"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/primaryTextColor"
-        android:id="@+id/drivingbehvaiour"
-        />
-        <RelativeLayout
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="80dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/acc_text"
+            style="@style/Base.TextAppearance.AppCompat.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/relativeLayout6">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Acceleration"
-                android:id="@+id/acc_text"
-                android:textColor="@color/secondaryTextColor"
-                />
-            <com.jjoe64.graphview.GraphView
-                android:id="@+id/graph_acc"
-                android:layout_width="1000dp"
-                android:layout_height="500dp"
-                android:layout_below="@+id/acc_text"
-                android:layout_centerHorizontal="true"
-                />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/primaryColor"
-            android:layout_marginTop="10dp"
-            >
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/relativeLayout4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Brake"
-                android:id="@+id/brake_text"
-                android:textColor="@color/secondaryTextColor"
-                />
-            <com.jjoe64.graphview.GraphView
-                android:id="@+id/graph_brake"
-                android:layout_width="1000dp"
-                android:layout_height="500dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/brake_text"
-                />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/primaryColor"
-            android:layout_marginTop="10dp"
-            >
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/relativeLayout5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            >
-            <com.jjoe64.graphview.GraphView
-                android:id="@+id/graph_speed"
-                android:layout_width="1000dp"
-                android:layout_height="500dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/speed_text"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Legal driving"
-                android:id="@+id/speed_text"
-                android:textColor="@color/secondaryTextColor"
-                />
-        </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:id="@+id/progressmiddle"
-        android:background="@color/primaryColor"
-        android:layout_marginTop="10dp"
-        >
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:text="Progress graph"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="20sp" />
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph_acc"
+            app:seriesColor="@color/primaryColor"
+            android:layout_width="600dp"
+            android:layout_height="600dp"
+            app:seriesType="Line"
+            android:layout_below="@+id/acc_text"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
-    </TableLayout>
-</ScrollView>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="80dp">
+
+        <TextView
+            android:id="@+id/improvtext"
+            style="@style/Base.TextAppearance.AppCompat.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:text="Improvment score"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="20sp" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="202dp"
+            android:layout_height="202dp"
+            android:layout_below="@+id/improvtext"
+            app:cardBackgroundColor="@color/primaryColor"
+            app:cardCornerRadius="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/improv"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    app:cardCornerRadius="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Headline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:id="@+id/imtext"
+                            android:textSize="50dp" />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+</RelativeLayout>

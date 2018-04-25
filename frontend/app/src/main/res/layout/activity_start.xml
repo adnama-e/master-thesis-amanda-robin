@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="80dp"
-                android:text="ECO"
+                android:text="BRUM"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="80sp"
                 android:textStyle="bold"

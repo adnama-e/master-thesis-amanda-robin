@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.github.anastr.speedviewlib.SpeedView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,15 +25,14 @@ public class AverageFragment extends NamedFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_average, container, false);
-        speedView = v.findViewById(R.id.speedview1);
+        speedView = v.findViewById(R.id.accView);
         dataprovider = new DataProviderMockup();
-        text1 = (TextView) v.findViewById(R.id.totalTime);
-        text2 = (TextView) v.findViewById(R.id.totalDistance);
+        text1 =  v.findViewById(R.id.totalTime);
+        text2 =  v.findViewById(R.id.totalDistance);
         totalDistance();
         totalTime();
         setData();
         return v;
-
     }
 
     private void setData() {
@@ -57,6 +58,6 @@ public class AverageFragment extends NamedFragment {
     }
 
     public String getName() {
-        return "Average view";
+        return "Score";
     }
 }
