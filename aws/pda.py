@@ -3,8 +3,9 @@ from datetime import datetime as dt
 import boto3
 from boto3.dynamodb.conditions import Key
 from decimal import Decimal
-from operator import mul
+from statistics import pvariance, harmonic_mean, mean, variance
 from functools import reduce
+
 
 """
 Lambda handler for AWS Lambda.
@@ -23,7 +24,7 @@ def lambda_handler(event, context):
 	# Fetch the database and get tables
 	db = boto3.resource('dynamodb')
 	overview_table = db.Table(OVERVIEW_TABLE)
-	user_id = event["userId"]
+	user_id = event['userId']
 
 	# Get the previous averages scores from the overview table
 	response = overview_table.query(
@@ -31,21 +32,25 @@ def lambda_handler(event, context):
 	)
 	if response["Count"] > 0:
 		# Get the previous scores
-		prev_averages = []
+		prev_averages = [float(score['improvementScore']) for score in response['Items']]
 	else:
 		prev_averages = []
-
+	
+	process(event)
+	return
+	
 	# Do the calculations
+	scores = list(map(float, event["score"]))
 	driving_time = duration(event["datetime"])
-	average = avg_score(event["score"])
-	improvement = improvement_score(average, prev_averages)
+	rating = rating_score(scores)
+	improvement = improvement_score(rating, prev_averages)
 
 	# Upload to the overview table
 	overview_table.put_item(
 		Item={
 			'userId': event["userId"],
 			'driveId': event["driveId"],
-			'ecoScore': Decimal(str(average)),
+			'ecoScore': Decimal(str(rating)),
 			'improvementScore': Decimal(str(improvement)),
 			'duration': str(driving_time)
 		}
@@ -53,29 +58,40 @@ def lambda_handler(event, context):
 	return "Success!"
 
 
-def avg_score(scores):
+def process(event):
+	scores = list(map(lambda x: float(x) * 100, event["score"]))
+	
+	# Harmonic mean
+	hmean = mean(scores)
+	# Pvariance
+	pvar = variance(scores, hmean)
+	pvar_zero = variance(scores, 0)
+	print(hmean, pvar, pvar_zero, var)
+	
+
+def eco_score(scores):
 	"""
 	Converts the driving scores into a 1 to 5 star rating for the current drive.
 	:param scores: The scores from the latest drive.
 	:return: The rating.
 	"""
-	summed_score = 0
-	for score in scores:
-		summed_score += float(score)
-	return summed_score / len(scores)
+	pvar = pvariance(scores)
+	return
 
 
 def improvement_score(current_score, prev_scores):
 	"""
-	The improvement score is the product of normalizing each previous score
-	with the current one.
+	The improvement score is the product of the normalized previous score
+	in regard to the current one.
 	:return: The improvement score as a multiplier of the current score
 	"""
 	if len(prev_scores) == 0:
-		return float(-1)
-
-	normalized_scores = [float(score) / current_score for score in prev_scores]
-	return reduce(mul, normalized_scores)
+		return 1
+	
+	norm = 1
+	for score in prev_scores:
+		norm *= float(score) / current_score
+	return norm
 
 
 def duration(datetime):
@@ -97,5 +113,6 @@ def total_distance():
 
 
 if __name__ == "__main__":
-	event = json.load(open("testfile.json", "r"))
-	lambda_handler(event, 0)
+	for i in range(1,4):
+		event = json.load(open("devdata{}.json".format(i), "r"))
+		lambda_handler(event, 0)
