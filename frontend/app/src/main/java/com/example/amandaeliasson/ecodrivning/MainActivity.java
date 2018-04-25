@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private TextView startDate;
     private TextView endDate;
     static DynamoDBMapper dynamoDBMapper;
+    View layout_interact;
 
 
     private ActionBarDrawerToggle drawerToggle;
@@ -118,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     break;
                 case ScoreFragment.TAG:
                     fragment = new ScoreFragment();
+                    endDate.setVisibility(View.VISIBLE);
+                    startDate.setVisibility(View.VISIBLE);
                     break;
 
             }
