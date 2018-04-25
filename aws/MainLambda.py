@@ -15,10 +15,13 @@ Requires AWS command line interface. Install by:
 def run_test(dir):
 	out = subprocess.check_output('aws lambda invoke --function-name PDA '
 	                              '--invocation-type RequestResponse '
-	                              '--payload file://{dir}/testfile.json '
+	                              '--payload file://{dir}/devdata1.json '
 	                              '--log-type Tail '
 	                              '{dir}/testoutput.txt'.format(dir=dir).split())
-	out = out[out.find('\t'.encode()) + 1:]
+	response = out.split('\t'.encode())
+	# The part that we want will be the longest one. The rest are just status codes that we are not
+	# interested in for the moment.
+	out = max(response)
 	bytes_log = base64.decodebytes(out)
 	log = bytes_log.decode()
 	print(log)
@@ -34,13 +37,17 @@ def upload_handler(lang, dir, verbose):
 		output_dir = open(stdout, "w")
 	else:
 		output_dir = open(os.devnull, 'w')
-
+	
 	subprocess.call(rm_cmd.split(), stdout=output_dir, stderr=output_dir)
 	subprocess.call(zip_cmd.split(), stdout=output_dir, stderr=output_dir)
 	subprocess.call(upload_cmd.split(), stdout=output_dir, stderr=output_dir)
 
+
+def new_code():
+	out = subprocess.check_output("ls -l PDA.py".split())
+
+
 if __name__ == "__main__":
 	dir = subprocess.check_output("pwd").decode()[:-1]  # There's a newline at the end that we don't want
-	# upload_handler("PDA.go", dir)
-	upload_handler("PDA.py", dir, verbose=False)
+	# upload_handler("PDA.py", dir, verbose=False)
 	run_test(dir)
