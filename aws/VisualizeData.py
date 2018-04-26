@@ -1,4 +1,3 @@
-import json
 from matplotlib import pyplot as plt
 from PDA import *
 from statistics import *
@@ -11,7 +10,8 @@ def visualize_event(event):
 	x = range(len(scores))
 	plt.plot(x, scores)
 	# The area and placement of the filled area is a measurement of the driving quality.
-	plt.fill_between(x, avg - deviation, avg + deviation, alpha=0.2)
+	plt.fill_between(x, avg - deviation, 0, alpha=0.2, facecolor='blue')
+	plt.fill_between(x, 0, avg + deviation, alpha=0.2, facecolor='red')
 	plt.show()
 
 
