@@ -3,8 +3,9 @@ from datetime import datetime as dt
 import boto3
 from boto3.dynamodb.conditions import Key
 from decimal import Decimal
-from statistics import pvariance, harmonic_mean, mean, variance
+from statistics import variance, mean, stdev
 from functools import reduce
+from math import sqrt
 
 
 """
@@ -36,80 +37,62 @@ def lambda_handler(event, context):
 	else:
 		prev_averages = []
 	
-	process(event)
-	return
-	
-	# Do the calculations
 	scores = list(map(float, event["score"]))
-	driving_time = duration(event["datetime"])
-	rating = rating_score(scores)
-	improvement = improvement_score(rating, prev_averages)
+	avg = mean(scores)
+	dev = stdev(scores, avg)
+
+	imp = improvement_score(dev, avg)
+	eco = eco_score(scores, avg, dev)
+	dur = duration(event["datetime"])
 
 	# Upload to the overview table
 	overview_table.put_item(
 		Item={
 			'userId': event["userId"],
 			'driveId': event["driveId"],
-			'ecoScore': Decimal(str(rating)),
-			'improvementScore': Decimal(str(improvement)),
-			'duration': str(driving_time)
+			'ecoScore': Decimal(str(eco)),
+			'improvementScore': Decimal(str(imp)),
+			'duration': str(dur)
 		}
 	)
 	return "Success!"
 
 
-def process(event):
-	scores = list(map(lambda x: float(x) * 100, event["score"]))
-	
-	# Harmonic mean
-	hmean = mean(scores)
-	# Pvariance
-	pvar = variance(scores, hmean)
-	pvar_zero = variance(scores, 0)
-	print(hmean, pvar, pvar_zero, var)
-	
-
-def eco_score(scores):
+def eco_score(scores, avg, dev):
 	"""
-	Converts the driving scores into a 1 to 5 star rating for the current drive.
-	:param scores: The scores from the latest drive.
-	:return: The rating.
+	Defined as the smoothness of the drive.
+	:param scores: 
+	:return: 
 	"""
-	pvar = pvariance(scores)
-	return
+	# TODO I'm guessing that this score is greatly affected by the fact that the car seems to be standing still for
+	# TODO long periods of time. Filter out these instances directly in the app.
+	num_outside = 0
+	for score in scores:
+		if score > avg + dev or score < avg - dev:
+			num_outside += 1
+	return 1 - num_outside / len(scores)
 
 
-def improvement_score(current_score, prev_scores):
+def improvement_score(dev, avg):
 	"""
-	The improvement score is the product of the normalized previous score
-	in regard to the current one.
-	:return: The improvement score as a multiplier of the current score
+	Ranges between 0 and 1 and a value over 0.5 means improvement.
+	:return: The improvement score
 	"""
-	if len(prev_scores) == 0:
-		return 1
-	
-	norm = 1
-	for score in prev_scores:
-		norm *= float(score) / current_score
-	return norm
+	deviation_area = dev * 2
+	improvement_area = avg + dev
+	return improvement_area / deviation_area
 
 
 def duration(datetime):
+	"""
+	Total duration in time.
+	:param datetime: The collected datetimes instances from running the app. 
+	:return: The duration between the first instance and the last. 
+	"""
 	date_pattern = "%a, %d %b %Y %H:%M:%S"
 	start_time = dt.strptime(datetime[0], date_pattern)
 	end_time = dt.strptime(datetime[-1], date_pattern)
 	return end_time - start_time
-
-
-def total_duration(table, current):
-	"""
-	Fetches the duration up to this drive and add the current duration to it.
-	"""
-	pass
-
-
-def total_distance():
-	pass
 
 
 if __name__ == "__main__":
