@@ -62,7 +62,7 @@ public class DriveModeSmile extends Fragment implements Observer {
                     @Override
                     public void run() {
                         Measurement m = dataProvider.getMeasurement();
-                        if(m.typeOfMeasurment().equals("speedmeasurment") && m.goodValue() ==false) {
+                        if(m.typeOfMeasurment().equals("ecoscore") && m.goodValue() ==false) {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

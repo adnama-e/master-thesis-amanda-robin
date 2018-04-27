@@ -110,7 +110,7 @@ public class Analyzer {
         tf.feed(INPUT_NODE, data, INPUT_SHAPE);
         // Process the data.
         tf.run(OUTPUT_NODES);
-        // Fetch the result.
+        // Fetch the measurements.
         tf.fetch(OUTPUT_NODE, output);
         return output[0];
     }

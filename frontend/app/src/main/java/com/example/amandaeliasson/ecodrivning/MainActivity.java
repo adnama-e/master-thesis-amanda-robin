@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
@@ -33,6 +34,7 @@ import com.amazonaws.mobile.client.AWSStartupResult;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
@@ -74,12 +76,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         drawerLayout.addDrawerListener(drawerToggle);
 
-        dp = new DataProviderMockup();
-        state = new State();
-        state.addObserver(this);
 
-        startDate = findViewById(R.id.start_date);
-        endDate = findViewById(R.id.end_date);
 
         AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
             @Override
@@ -94,7 +91,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 .dynamoDBClient(dynamoDBClient)
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
                 .build();
+        dp = new AWSDataProvider();
+        state = new State();
+        state.addObserver(this);
 
+        startDate = findViewById(R.id.start_date);
+        endDate = findViewById(R.id.end_date);
 
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
