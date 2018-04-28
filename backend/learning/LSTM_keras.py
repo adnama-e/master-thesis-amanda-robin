@@ -11,6 +11,7 @@ import os
 import pandas as pd
 import tensorflow as tf
 from scipy.stats import norm
+from numpy import NaN
 
 def build_model(input, output):
 	# reshape input to be 3D [samples, timesteps, features]
@@ -178,7 +179,7 @@ if do_predict:
 		drive = drive.drop("Time(s)", axis=1)
 		settings["features"] = drive.shape[1]
 		input_df, output_df = series_to_supervised(drive, settings["timesteps"], 1)
-		y_pred, y_truth, score_for_drive = [], [], []
+		y_pred, y_truth, filtered_score, score_for_drive = [], [], [], []
 		for step in range(input_df.shape[0]):
 			# Predict each timestep one at a time.
 			row = input_df.iloc[[step]]
@@ -188,9 +189,13 @@ if do_predict:
 			actual_fuel, predicted_fuel = y[0], y_hat[0]
 			y_pred.append(predicted_fuel)
 			y_truth.append(actual_fuel)
-			
+
 			# Calculate the density classification.
 			score = driving_score(actual_fuel, predicted_fuel)
+			if row["var23(t-1)"].values > 0:
+				filtered_score.append(score)
+			else:
+				filtered_score.append(NaN)
 			score_for_drive.append(score)
 		
 		# Drop the first columns
@@ -202,11 +207,11 @@ if do_predict:
 		predictions = scaler.inverse_transform(drive.as_matrix())[:,0]
 		
 		# Save the driving score
-		scores["Drive_score"] += score_for_drive
-		scores["DriveID"] += [id + 1] * len(score_for_drive)
+		scores["Drive_score"] += filtered_score
+		scores["DriveID"] += [id + 1] * len(filtered_score)
 		
 		if args.visualize:
 			# Plot the predictions
 			plot_predictions(predictions, truth, range(len(predictions)), score_for_drive)
 	
-	pd.DataFrame(data=scores).to_csv("../datasets/driving_score.csv", index=False)
+	pd.DataFrame(data=scores).to_csv("../datasets/filtered_driving_score.csv", index=False)

@@ -1,10 +1,10 @@
 from matplotlib import pyplot as plt
-from PDA import *
 from statistics import *
-
+from utils import *
+import json
 
 def visualize_event(event):
-	scores = [float(score) for score in event["score"]]
+	scores = convert_scores_to_float(event["score"])
 	avg = mean(scores)
 	deviation = stdev(scores, avg)
 	x = range(len(scores))

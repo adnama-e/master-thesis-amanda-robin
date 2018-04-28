@@ -9,7 +9,7 @@ Script for uploading scores to DynamoDB
 
 DRIVESCORES_TABLE = "brum-mobilehub-858586794-DriveScores"
 
-data = pd.read_csv("../backend/datasets/driving_score.csv")
+data = pd.read_csv("../backend/datasets/filtered_driving_score.csv")
 table = boto3.resource("dynamodb").Table(DRIVESCORES_TABLE)
 datetimes, scores = [], []
 

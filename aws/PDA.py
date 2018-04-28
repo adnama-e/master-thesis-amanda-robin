@@ -1,11 +1,7 @@
-import json
 from datetime import datetime as dt
 import boto3
-from boto3.dynamodb.conditions import Key
 from decimal import Decimal
-from statistics import variance, mean, stdev
-from functools import reduce
-from math import sqrt
+from statistics import mean, stdev
 
 
 """
@@ -17,39 +13,36 @@ Triggers when new driving data is uploaded to AWS DynamoDB.
 Should preferably be written in Go for the final product. 
 """
 
-DRIVESCORES_TABLE = "brum-mobilehub-858586794-DriveScores"
 OVERVIEW_TABLE = "brum-mobilehub-858586794-Overview"
 
 
 def lambda_handler(event, context):
+	image = event['Records'][0]['dynamodb']['NewImage']
+	datetimes = [date['S'] for date in image['datetime']['L']]
+	user_id = image['userId']['S']
+	drive_id = image['driveId']['S']
+
+	scores = []
+	for score in image['score']['L']:
+		if score['S'] != 'nan':
+			scores.append(float(score['S']))
+
 	# Fetch the database and get tables
 	db = boto3.resource('dynamodb')
 	overview_table = db.Table(OVERVIEW_TABLE)
-	user_id = event['userId']
 
-	# Get the previous averages scores from the overview table
-	response = overview_table.query(
-		KeyConditionExpression=Key('userId').eq(user_id)
-	)
-	if response["Count"] > 0:
-		# Get the previous scores
-		prev_averages = [float(score['improvementScore']) for score in response['Items']]
-	else:
-		prev_averages = []
-	
-	scores = list(map(float, event["score"]))
+	# Do the calculations
 	avg = mean(scores)
 	dev = stdev(scores, avg)
-
 	imp = improvement_score(dev, avg)
 	eco = eco_score(scores, avg, dev)
-	dur = duration(event["datetime"])
+	dur = duration(datetimes)
 
 	# Upload to the overview table
 	overview_table.put_item(
 		Item={
-			'userId': event["userId"],
-			'driveId': event["driveId"],
+			'userId': user_id,
+			'driveId': drive_id,
 			'ecoScore': Decimal(str(eco)),
 			'improvementScore': Decimal(str(imp)),
 			'duration': str(dur)
@@ -60,12 +53,10 @@ def lambda_handler(event, context):
 
 def eco_score(scores, avg, dev):
 	"""
-	Defined as the smoothness of the drive.
 	:param scores: 
 	:return: 
 	"""
-	# TODO I'm guessing that this score is greatly affected by the fact that the car seems to be standing still for
-	# TODO long periods of time. Filter out these instances directly in the app.
+	# TODO Not sure about this one.
 	num_outside = 0
 	for score in scores:
 		if score > avg + dev or score < avg - dev:
@@ -93,9 +84,3 @@ def duration(datetime):
 	start_time = dt.strptime(datetime[0], date_pattern)
 	end_time = dt.strptime(datetime[-1], date_pattern)
 	return end_time - start_time
-
-
-if __name__ == "__main__":
-	for i in range(1,4):
-		event = json.load(open("devdata{}.json".format(i), "r"))
-		lambda_handler(event, 0)

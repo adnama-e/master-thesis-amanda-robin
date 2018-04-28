@@ -21,7 +21,10 @@ def run_test(dir):
 	response = out.split('\t'.encode())
 	# The part that we want will be the longest one. The rest are just status codes that we are not
 	# interested in for the moment.
-	out = max(response)
+	out = ""
+	for b in response:
+		if len(b) > len(out):
+			out = b
 	bytes_log = base64.decodebytes(out)
 	log = bytes_log.decode()
 	print(log)
@@ -49,5 +52,5 @@ def new_code():
 
 if __name__ == "__main__":
 	dir = subprocess.check_output("pwd").decode()[:-1]  # There's a newline at the end that we don't want
-	# upload_handler("PDA.py", dir, verbose=False)
-	run_test(dir)
+	upload_handler("PDA.py", dir, verbose=False)
+	# run_test(dir)
