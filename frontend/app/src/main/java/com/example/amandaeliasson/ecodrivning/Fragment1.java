@@ -20,13 +20,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
@@ -37,14 +41,22 @@ import static android.graphics.Color.YELLOW;
  */
 
 public class Fragment1 extends NamedFragment implements
-        OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
+        OnMapReadyCallback, GoogleMap.OnMapLongClickListener, Observer {
     private GoogleMap mMap;
     private DataProviderMockup dataprovider;
     private Context thiscontext;
+    private State state;
+    private List<Polyline> lines;
+    private List<Marker> markers;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataprovider = new DataProviderMockup();
+        Bundle args = getArguments();
+        state = (State) args.getSerializable(MainActivity.ARGS_STATE);
+        lines = new LinkedList<>();
+        markers = new LinkedList<>();
+        state.addObserver(this);
 
     }
     @Override
@@ -60,9 +72,22 @@ public class Fragment1 extends NamedFragment implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        float zoomLevel = 17.0f;
 
-        List<Measurement> list = dataprovider.getData();
+
+        drawMarkers(state.getStartDate().getTime(),state.getEndDate().getTime());
+        drawLine(state.getStartDate().getTime(),state.getEndDate().getTime());
+    }
+    public void markerColor(Marker mark, boolean b){
+        if(b){
+            mark.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        }else{
+            mark.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        }
+    }
+
+    public void drawMarkers(Date start, Date end){
+        float zoomLevel = 17.0f;
+        List<Measurement> list = dataprovider.getFilteredData(start,end);
         for(Measurement m: list){
             LatLng coordinate = new LatLng(m.getCoordinate1(), m.getCoordinate2());
             String s = Double.toString(m.getCoordinate1());
@@ -72,19 +97,13 @@ public class Fragment1 extends NamedFragment implements
             mark.setTag(0);
             mMap.setOnMapLongClickListener(this);
             markerColor(mark, m.goodValue());
+            markers.add(mark);
 
         }
-        drawLine();
     }
-    public void markerColor(Marker mark, boolean b){
-        if(b){
-            mark.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        }else{
-            mark.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        }
-    }
-    public void drawLine() {
-        List<Measurement> list = dataprovider.getData();
+    public void drawLine(Date start, Date end) {
+        List<Measurement> list = dataprovider.getFilteredData(start,end);
+        if(list.size()<2) return;
         Collections.sort(list, new Comparator<Measurement>() {
             @Override
             public int compare(Measurement measurement, Measurement t1) {
@@ -105,7 +124,8 @@ public class Fragment1 extends NamedFragment implements
 
             }
             if(!(m1 == list.get(list.size()-1) && m2 == list.get(0))){
-                mMap.addPolyline(p);
+                Polyline line = mMap.addPolyline(p);
+                lines.add(line);
             }
             m1 = m2;
         }
@@ -136,5 +156,13 @@ public class Fragment1 extends NamedFragment implements
     @Override
     public String getName() {
         return "Map view";
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        for(Polyline line : lines) line.remove();
+        for(Marker marker: markers) marker.remove();
+        drawMarkers(state.getStartDate().getTime(),state.getEndDate().getTime());
+        drawLine(state.getStartDate().getTime(), state.getEndDate().getTime());
     }
 }

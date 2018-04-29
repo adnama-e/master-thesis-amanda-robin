@@ -27,6 +27,7 @@ public class DriveMode extends Fragment implements View.OnClickListener {
     public static final String TAG = "com.example.ecodriving.amandaeliasson.DriveMode";
     public Button b;
     private DataProvider dp;
+    private State state;
     //public Button dataButton;
 
     public DriveMode() {
@@ -38,6 +39,7 @@ public class DriveMode extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
        Bundle args = getArguments();
        dp = (DataProvider) args.getSerializable(MainActivity.ARGS_DATA_PROVIDER);
+       state = (State) args.getSerializable(MainActivity.ARGS_STATE);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +80,7 @@ public class DriveMode extends Fragment implements View.OnClickListener {
             f = (Fragment) fragmentClass.newInstance();
             Bundle args = new Bundle();
            args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dp);
+           args.putSerializable(MainActivity.ARGS_STATE, state);
             f.setArguments(args);
 
         } catch (Exception e) {

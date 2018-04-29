@@ -76,11 +76,11 @@ public class Analyzer {
         numLogs = 0;
     }
 
-    public void endAndUploadSession() {
+    public void endAndUploadSession(String userId, String driveId) {
         final DriveScoresDO item = new DriveScoresDO();
-        item.setUserId("MyID");
+        item.setUserId(driveId);
         item.setDatetime(timeForSession);
-        item.setDriveId("Robin");
+        item.setDriveId(userId);
         item.setScore(scoreForSession);
 
         new Thread(new Runnable() {

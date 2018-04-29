@@ -1,6 +1,7 @@
 package com.example.amandaeliasson.ecodrivning;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,26 @@ import com.github.anastr.speedviewlib.SpeedView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by amandaeliasson on 2018-02-23.
  */
 
-public class AverageFragment extends NamedFragment {
+public class AverageFragment extends NamedFragment implements Observer{
     private SpeedView speedView;
     private DataProviderMockup dataprovider;
     private TextView text1, text2;
+    private State state;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        state = (State) args.getSerializable(MainActivity.ARGS_STATE);
+        state.addObserver(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,7 +48,7 @@ public class AverageFragment extends NamedFragment {
     }
 
     private void setData() {
-        List<Measurement> data = dataprovider.getData();
+        List<Measurement> data = dataprovider.getFilteredData(state.getStartDate().getTime(), state.getStartDate().getTime());
         for (Measurement m : data) {
             if (m.typeOfMeasurment().equals("speedmeasurment")) {
                 speedView.speedPercentTo((int) m.getData());
@@ -59,5 +71,10 @@ public class AverageFragment extends NamedFragment {
 
     public String getName() {
         return "Score";
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+
     }
 }

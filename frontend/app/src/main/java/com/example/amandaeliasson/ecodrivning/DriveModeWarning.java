@@ -54,7 +54,7 @@ public class DriveModeWarning extends Fragment implements Observer {
 
     private int runWithCSV() {
         if (!dataHandler.nextRow()) {
-            analyzer.endAndUploadSession();
+            analyzer.endAndUploadSession("Amanda", "warningTest");
             return -1;
         }
         float[] input = dataHandler.getInput();

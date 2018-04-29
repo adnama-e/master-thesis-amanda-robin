@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 .dynamoDBClient(dynamoDBClient)
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
                 .build();
-        dp = new AWSDataProvider();
+        //dp = new AWSDataProvider();
+        dp = new DataProviderMockup();
         state = new State();
         state.addObserver(this);
 
@@ -163,6 +164,54 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 return true;
             }
         });
+    }
+    public void openMenuItem(int id){
+        Fragment fragment = null;
+        Class fragmentClass;
+        switch (id) {
+            case R.id.drive:
+                fragmentClass = DriveMode.class;
+                endDate.setVisibility(View.INVISIBLE);
+                startDate.setVisibility(View.INVISIBLE);
+                break;
+            case R.id.score:
+                fragmentClass = ScoreFragment.class;
+                endDate.setVisibility(View.VISIBLE);
+                startDate.setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.goal:
+                fragmentClass = GoalFragment.class;
+                endDate.setVisibility(View.INVISIBLE);
+                startDate.setVisibility(View.INVISIBLE);
+                break;
+            case R.id.Friends:
+                fragmentClass = FriendFragment.class;
+                endDate.setVisibility(View.INVISIBLE);
+                startDate.setVisibility(View.INVISIBLE);
+                break;
+            default:
+                fragmentClass = SettingsFragment.class;
+                endDate.setVisibility(View.INVISIBLE);
+                startDate.setVisibility(View.INVISIBLE);
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+
+            Bundle args = new Bundle();
+
+            args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dp);
+
+            args.putSerializable(MainActivity.ARGS_STATE, state);
+            fragment.setArguments(args);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flcontent, fragment).commit();
+
     }
 
     public void selectDrawerItem(MenuItem menuItem) {

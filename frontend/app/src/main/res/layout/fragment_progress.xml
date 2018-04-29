@@ -30,7 +30,8 @@
             android:layout_height="600dp"
             app:seriesType="Line"
             android:layout_below="@+id/acc_text"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            />
     </RelativeLayout>
 
     <RelativeLayout
