@@ -1,4 +1,4 @@
-package com.amazonaws.mobile.util;
+package com.example.amandaeliasson.ecodrivning;
 
 public final class StringFormatUtils {
 
@@ -15,7 +15,7 @@ public final class StringFormatUtils {
      */
     public static String getBytesString(final long bytes, final boolean higherPrecision) {
         final String[] quantifiers = new String[] {
-            "KB", "MB", "GB", "TB"
+                "KB", "MB", "GB", "TB"
         };
         double size = bytes;
         for (int i = 0;; i++) {
