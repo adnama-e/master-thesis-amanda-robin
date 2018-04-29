@@ -16,6 +16,7 @@ import java.util.Set;
 public class OverviewDO {
     private String _userId;
     private String _driveId;
+    private String _date;
     private String _duration;
     private Double _ecoScore;
     private Double _improvementScore;
@@ -37,6 +38,14 @@ public class OverviewDO {
 
     public void setDriveId(final String _driveId) {
         this._driveId = _driveId;
+    }
+    @DynamoDBAttribute(attributeName = "date")
+    public String getDate() {
+        return _date;
+    }
+
+    public void setDate(final String _date) {
+        this._date = _date;
     }
     @DynamoDBAttribute(attributeName = "duration")
     public String getDuration() {
