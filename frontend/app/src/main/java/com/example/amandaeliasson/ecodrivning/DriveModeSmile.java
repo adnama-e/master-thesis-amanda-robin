@@ -83,13 +83,14 @@ public class DriveModeSmile extends Fragment implements Observer {
                             if (alpha == -1) {
                                 timer.cancel();
                             }
+                            alpha +=0.004;
                             //if ((int) alpha == 0) alpha = Math.abs(alpha);
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (alpha < -0.001) {
+                                    if (alpha < 0) {
                                         image.change();
-                                    } else if (alpha > -0.001) {
+                                    } else if (alpha > -0) {
                                         image.changeBack();
                                     }
                                     scoreText.setText(String.format(Locale.ENGLISH, "%2.1f %%", alpha * 100));

@@ -111,6 +111,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 openStartDatePicker();
             }
         });
+        DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+        startDate.setText("From: "+dateFormat.format(state.getStartDate().getTime()));
+        endDate.setText("To: "+dateFormat.format(state.getEndDate().getTime()));
 
         Intent intent = getIntent();
         String initClassTag = intent.getStringExtra(ARGS_INITIAL_FRAGMENT);

@@ -27,7 +27,9 @@
                 android:layout_marginLeft="108dp"
                 android:layout_marginStart="108dp"
                 android:alpha="0.1"
-                android:text="first" />
+                android:text="first"
+                android:visibility="invisible"
+                />
 
             <Button
                 android:id="@+id/buttonS"
@@ -39,7 +41,9 @@
                 android:layout_toLeftOf="@+id/buttonT"
                 android:layout_toStartOf="@+id/buttonT"
                 android:alpha="0.1"
-                android:text="second" />
+                android:text="second"
+                android:visibility="invisible"
+                />
 
             <Button
                 android:id="@+id/buttonT"
@@ -48,7 +52,9 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:alpha="0.1"
-                android:text="third" />
+                android:text="third"
+                android:visibility="invisible"
+                />
 
             <Button
                 android:id="@+id/buttonSC"
@@ -60,7 +66,9 @@
                 android:layout_marginLeft="239dp"
                 android:layout_marginStart="239dp"
                 android:alpha="0.1"
-                android:text="fourth" />
+                android:text="fourth"
+                android:visibility="invisible"
+                />
 
             <Button
                 android:id="@+id/buttonfe"
@@ -72,7 +80,9 @@
                 android:layout_marginEnd="110dp"
                 android:layout_marginRight="110dp"
                 android:alpha="0.1"
-                android:text="fifth" />
+                android:text="fifth"
+                android:visibility="invisible"
+                />
         </RelativeLayout>
     </RelativeLayout>
 </FrameLayout>

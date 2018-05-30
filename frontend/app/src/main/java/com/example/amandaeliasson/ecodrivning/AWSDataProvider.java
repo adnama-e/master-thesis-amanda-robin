@@ -33,7 +33,7 @@ public class AWSDataProvider extends DataProvider {
 
                 for(int i=0; i<dateTimes.size();i++){
                     try {
-                        measurements.add(new EcoScoreMeasurement(df.parse(dateTimes.get(i)),0,0, Double.parseDouble(scores.get(i))));
+                        measurements.add(new EcoScoreMeasurement(df.parse(dateTimes.get(i)),0,0, Double.parseDouble(scores.get(i)),0,0, null));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -48,7 +48,7 @@ public class AWSDataProvider extends DataProvider {
 
     @Override
     public Measurement getMeasurement() {
-        if(measurements.isEmpty()) return new Measurement(new Date(), 0,0,0) {
+        if(measurements.isEmpty()) return new Measurement(new Date(), 0,0,0, 0, 0, null) {
             @Override
             public boolean goodValue() {
                 return false;

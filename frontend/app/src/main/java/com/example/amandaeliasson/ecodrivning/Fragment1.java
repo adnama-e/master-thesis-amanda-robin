@@ -41,7 +41,7 @@ import static android.graphics.Color.YELLOW;
  */
 
 public class Fragment1 extends NamedFragment implements
-        OnMapReadyCallback, GoogleMap.OnMapLongClickListener, Observer {
+        OnMapReadyCallback, GoogleMap.OnMapLongClickListener,GoogleMap.OnMarkerClickListener, Observer {
     private GoogleMap mMap;
     private DataProviderMockup dataprovider;
     private Context thiscontext;
@@ -72,7 +72,8 @@ public class Fragment1 extends NamedFragment implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setOnMapLongClickListener(this);
+        //mMap.setOnMarkerClickListener(this);
 
         drawMarkers(state.getStartDate().getTime(),state.getEndDate().getTime());
         drawLine(state.getStartDate().getTime(),state.getEndDate().getTime());
@@ -93,9 +94,12 @@ public class Fragment1 extends NamedFragment implements
             String s = Double.toString(m.getCoordinate1());
             String s2 = Double.toString(m.getCoordinate2());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, zoomLevel));
-            Marker mark = mMap.addMarker(new MarkerOptions().position(coordinate).title(s + ", " + " " + s2));
+
+            Marker mark = mMap.addMarker(new MarkerOptions().position(coordinate).title(m.markerReason));
+
+
             mark.setTag(0);
-            mMap.setOnMapLongClickListener(this);
+
             markerColor(mark, m.goodValue());
             markers.add(mark);
 
@@ -134,10 +138,11 @@ public class Fragment1 extends NamedFragment implements
     @Override
     public void onMapLongClick(LatLng latLng) {
     }
+
+    @Override
     public boolean onMarkerClick(final Marker marker) {
         // Retrieve the data from the marker.
         Integer clickCount = (Integer) marker.getTag();
-
         // Check if a click count was set, then display the click count.
         if (clickCount != null) {
             clickCount = clickCount + 1;

@@ -14,6 +14,9 @@ public class State extends Observable implements Serializable {
     public State(){
         startDate = Calendar.getInstance();
         endDate = Calendar.getInstance();
+        startDate.add(Calendar.MONTH, -2);
+        endDate.add(Calendar.MONTH, 0);
+
     }
 
     public Calendar getEndDate() {

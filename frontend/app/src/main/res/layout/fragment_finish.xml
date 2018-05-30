@@ -1,22 +1,88 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FinishFragment"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/carmoving22"
+        android:scaleY="1.2"
+        android:scaleX="1.3"
+        android:id="@+id/finishBackground"
+        >
+    </RelativeLayout>
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/tv_finish_ecoscore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_goto_scoreview"
-        android:text="Go to scoreview"
-        />
+    <android.support.v7.widget.CardView
+        android:id="@+id/backgroundcard"
+        android:layout_width="500dp"
+        android:layout_height="500dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="10dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="39dp"
+                android:text="Eco-score:"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="50sp"
+                />
+            <TextView
+                android:id="@+id/tv_finish_ecoscore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="118dp"
+                android:textColor="@color/primaryTextColor"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:textSize="130sp"
+                 />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv"
+                android:layout_width="400dp"
+                android:layout_height="100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="36dp"
+                android:alpha="0.97"
+                android:onClick="onClick"
+                app:cardBackgroundColor="@color/primaryColor"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignLeft="@+id/cv"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignStart="@+id/cv"
+                    android:layout_marginBottom="25dp">
+
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="Go to scoreview"
+                        android:textSize="40sp" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

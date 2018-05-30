@@ -79,9 +79,7 @@ public class ProgressFragment extends NamedFragment implements Observer{
         improvText = v.findViewById(R.id.imtext);
         graph3.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
         getImprovmentScore();
-
-
-        createGraph();
+        update(null,null);
         return v;
     }
     public void createGraph(){

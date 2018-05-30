@@ -41,32 +41,34 @@ public class AverageFragment extends NamedFragment implements Observer{
         dataprovider = new DataProviderMockup();
         text1 =  v.findViewById(R.id.totalTime);
         text2 =  v.findViewById(R.id.totalDistance);
-        totalDistance();
-        totalTime();
         setData();
         return v;
     }
 
     private void setData() {
-        List<Measurement> data = dataprovider.getFilteredData(state.getStartDate().getTime(), state.getStartDate().getTime());
+        List<Measurement> data = dataprovider.getFilteredData(state.getStartDate().getTime(), state.getEndDate().getTime());
+        float sum = 0;
+        int duration =0;
+        int distance = 0;
         for (Measurement m : data) {
-            if (m.typeOfMeasurment().equals("speedmeasurment")) {
-                speedView.speedPercentTo((int) m.getData());
-            }
+            sum +=m.getData();
+            duration += m.getDuration();
+            distance += m.getDistance();
         }
-    }
+        if(data.isEmpty()){
+            speedView.speedTo(0);
+        }else{
+            float averageEcoScore = (sum/data.size())*100;
 
-    public void totalDistance() {
-        int distance;
-        distance = 10;
+            speedView.speedTo(averageEcoScore);
+        }
+        int hours=duration/60,minutes=duration%60;
         text2.setText(Integer.toString(distance) + " " + "kilometers");
-
-    }
-
-    public void totalTime() {
-        int time;
-        time = 5;
-        text1.setText(Integer.toString(time) + " " + "Hours");
+        if(hours>0){
+            text1.setText(String.format("%d hours, %d minutes", hours, minutes));
+        }else{
+            text1.setText(String.format("%d minutes", minutes));
+        }
     }
 
     public String getName() {
@@ -75,6 +77,6 @@ public class AverageFragment extends NamedFragment implements Observer{
 
     @Override
     public void update(Observable observable, Object o) {
-
+        setData();
     }
 }

@@ -46,6 +46,14 @@ public class DriveMode extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.drivemode, container, false);
+        Fragment f = new DriveModeSmile();
+        Bundle args = new Bundle();
+        args.putSerializable(MainActivity.ARGS_DATA_PROVIDER, dp);
+        args.putSerializable(MainActivity.ARGS_STATE, state);
+        f.setArguments(args);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content2, f).commit();
+
         Button b = (Button) v.findViewById(R.id.buttonF);
         b.setOnClickListener(this);
         ((Button) v.findViewById(R.id.buttonS)).setOnClickListener(this);

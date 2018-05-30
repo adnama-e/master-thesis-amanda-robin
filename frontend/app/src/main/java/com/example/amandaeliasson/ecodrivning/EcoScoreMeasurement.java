@@ -9,8 +9,8 @@ import java.util.Date;
 public class EcoScoreMeasurement extends Measurement {
 
 
-    public EcoScoreMeasurement(Date d, double c1, double c2, double data) {
-        super(d, c1, c2, data);
+    public EcoScoreMeasurement(Date d, double c1, double c2, double data, int di, int du, String r) {
+        super(d, c1, c2, data, di, du, r);
     }
 
     @Override
